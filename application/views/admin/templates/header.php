@@ -155,14 +155,26 @@
 						<a href="#" class="d-block">Mathan Kumar</a>
 					</div>
 				</div>
+				<?php
+					$currentUrl = uri_string();
+				?>
 
 				<!-- Sidebar Menu -->
 				<nav class="mt-2">
 					<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 						<!-- Add icons to the links using the .nav-icon class
 							 with font-awesome or any other icon font library -->
-						<li class="nav-item has-treeview menu-open">
-							<a href="#" class="nav-link active">
+
+						<li class="nav-item">
+							<a href="/admin/dashboard" class="nav-link <?php if($currentUrl == 'admin/dashboard') echo "active"; ?>">
+								<i class="nav-icon fas fa-th"></i>
+								<p>
+									Dashboard
+								</p>
+							</a>
+						</li>
+						<li class="nav-item has-treeview <?php if($currentUrl == 'admin/mother-tongue' || $currentUrl =='admin/marital-status' || $currentUrl == 'admin/height') echo 'menu-open' ?>">
+							<a href="#" class="nav-link <?php if($currentUrl == 'admin/mother-tongue' || $currentUrl =='admin/marital-status' || $currentUrl == 'admin/height') echo 'active' ?>">
 								<i class="nav-icon fas fa-tachometer-alt"></i>
 								<p>
 									Masters
@@ -171,27 +183,27 @@
 							</a>
 							<ul class="nav nav-treeview">
 								<li class="nav-item">
-									<a href="/admin/mother-tongue" class="nav-link">
+									<a href="/admin/mother-tongue" class="nav-link <?php if($currentUrl == 'admin/mother-tongue') echo "active"; ?>">
 										<i class="far fa-circle nav-icon"></i>
 										<p>Mother Tongue</p>
 									</a>
 								</li>
 								<li class="nav-item">
-									<a href="/admin/marital-status" class="nav-link">
+									<a href="/admin/marital-status" class="nav-link <?php if($currentUrl == 'admin/marital-status') echo "active"; ?>">
 										<i class="far fa-circle nav-icon"></i>
 										<p>Marital Status</p>
 									</a>
 								</li>
 								<li class="nav-item">
-									<a href="/admin/height" class="nav-link">
+									<a href="/admin/height" class="nav-link <?php if($currentUrl == 'admin/height') echo "active"; ?>">
 										<i class="far fa-circle nav-icon"></i>
 										<p>Height</p>
 									</a>
 								</li>
 							</ul>
 						</li>
-						<li class="nav-item has-treeview menu-open">
-							<a href="#" class="nav-link active">
+						<li class="nav-item has-treeview <?php if($currentUrl == 'admin/country' || $currentUrl =='admin/state' || $currentUrl == 'admin/city') echo 'menu-open' ?>">
+							<a href="#" class="nav-link <?php if($currentUrl == 'admin/country' || $currentUrl =='admin/state' || $currentUrl == 'admin/city') echo 'active' ?>">
 								<i class="nav-icon fas fa-tachometer-alt"></i>
 								<p>
 									Location Info
@@ -200,27 +212,27 @@
 							</a>
 							<ul class="nav nav-treeview">
 								<li class="nav-item">
-									<a href="/admin/country" class="nav-link active">
+									<a href="/admin/country" class="nav-link <?php if($currentUrl == 'admin/country') echo "active"; ?>">
 										<i class="far fa-circle nav-icon"></i>
 										<p>Country</p>
 									</a>
 								</li>
 								<li class="nav-item">
-									<a href="/admin/state" class="nav-link">
+									<a href="/admin/state" class="nav-link <?php if($currentUrl == 'admin/state') echo "active"; ?>">
 										<i class="far fa-circle nav-icon"></i>
 										<p>State</p>
 									</a>
 								</li>
 								<li class="nav-item">
-									<a href="/admin/city" class="nav-link">
+									<a href="/admin/city" class="nav-link <?php if($currentUrl ==  'admin/city') echo "active"; ?>">
 										<i class="far fa-circle nav-icon"></i>
 										<p>City</p>
 									</a>
 								</li>
 							</ul>
 						</li>
-						<li class="nav-item has-treeview menu-open">
-							<a href="#" class="nav-link active">
+						<li class="nav-item has-treeview <?php if($currentUrl == 'admin/religion' || $currentUrl =='admin/caste' || $currentUrl == 'admin/sub-caste' || $currentUrl == 'admin/raasi' || $currentUrl == 'admin/star') echo 'menu-open' ?>">
+							<a href="#" class="nav-link <?php if($currentUrl == 'admin/religion' || $currentUrl =='admin/caste' || $currentUrl == 'admin/sub-caste' || $currentUrl == 'admin/raasi' || $currentUrl == 'admin/star') echo 'active' ?>">
 								<i class="nav-icon fas fa-tachometer-alt"></i>
 								<p>
 									Religion Info
@@ -229,39 +241,39 @@
 							</a>
 							<ul class="nav nav-treeview">
 								<li class="nav-item">
-									<a href="/admin/religion" class="nav-link">
+									<a href="/admin/religion" class="nav-link <?php if($currentUrl == 'admin/religion') echo "active"; ?>">
 										<i class="far fa-circle nav-icon"></i>
 										<p>Religion</p>
 									</a>
 								</li>
 								<li class="nav-item">
-									<a href="/admin/caste" class="nav-link">
+									<a href="/admin/caste" class="nav-link <?php if($currentUrl == 'admin/caste') echo "active"; ?>">
 										<i class="far fa-circle nav-icon"></i>
 										<p>Caste</p>
 									</a>
 								</li>
 								<li class="nav-item">
-									<a href="/admin/sub-caste" class="nav-link">
+									<a href="/admin/sub-caste" class="nav-link <?php if($currentUrl == 'admin/sub-caste') echo "active"; ?>">
 										<i class="far fa-circle nav-icon"></i>
 										<p>Sub Caste</p>
 									</a>
 								</li>
 								<li class="nav-item">
-									<a href="/admin/raasi" class="nav-link">
+									<a href="/admin/raasi" class="nav-link <?php if($currentUrl == 'admin/raasi') echo "active"; ?>">
 										<i class="far fa-circle nav-icon"></i>
 										<p>Raasi</p>
 									</a>
 								</li>
 								<li class="nav-item">
-									<a href="/admin/star" class="nav-link">
+									<a href="/admin/star" class="nav-link <?php if($currentUrl == 'admin/star') echo "active"; ?>">
 										<i class="far fa-circle nav-icon"></i>
 										<p>Star</p>
 									</a>
 								</li>
 							</ul>
 						</li>
-						<li class="nav-item has-treeview menu-open">
-							<a href="#" class="nav-link active">
+						<li class="nav-item has-treeview <?php if($currentUrl == 'admin/education-category' || $currentUrl =='admin/education' || $currentUrl == 'admin/occupation' || $currentUrl == 'admin/occupation-category' || $currentUrl == 'admin/annual-income' || $currentUrl == 'admin/employed-in') echo 'menu-open' ?>">
+							<a href="#" class="nav-link <?php if($currentUrl == 'admin/education-category' || $currentUrl =='admin/education' || $currentUrl == 'admin/occupation' || $currentUrl == 'admin/occupation-category' || $currentUrl == 'admin/annual-income' || $currentUrl == 'admin/employed-in') echo 'active' ?>">
 								<i class="nav-icon fas fa-tachometer-alt"></i>
 								<p>
 									Professional Info
@@ -270,51 +282,42 @@
 							</a>
 							<ul class="nav nav-treeview">
 								<li class="nav-item">
-									<a href="/admin/education-category" class="nav-link">
+									<a href="/admin/education-category" class="nav-link <?php if($currentUrl == 'admin/education-category') echo "active"; ?>">
 										<i class="far fa-circle nav-icon"></i>
 										<p>Education Category</p>
 									</a>
 								</li>
 								<li class="nav-item">
-									<a href="/admin/education" class="nav-link">
+									<a href="/admin/education" class="nav-link <?php if($currentUrl == 'admin/education') echo "active"; ?>">
 										<i class="far fa-circle nav-icon"></i>
 										<p>Education</p>
 									</a>
 								</li>
 								<li class="nav-item">
-									<a href="/admin/occupation-category" class="nav-link">
+									<a href="/admin/occupation-category" class="nav-link <?php if($currentUrl == 'admin/occupation-category') echo "active"; ?>">
 										<i class="far fa-circle nav-icon"></i>
 										<p>Occupation Category</p>
 									</a>
 								</li>
 								<li class="nav-item">
-									<a href="/admin/occupation" class="nav-link">
+									<a href="/admin/occupation" class="nav-link <?php if($currentUrl == 'admin/occupation') echo "active"; ?>">
 										<i class="far fa-circle nav-icon"></i>
 										<p>Occupation</p>
 									</a>
 								</li>
 								<li class="nav-item">
-									<a href="/admin/annual-income" class="nav-link">
+									<a href="/admin/annual-income" class="nav-link <?php if($currentUrl == 'admin/annual-income') echo "active"; ?>">
 										<i class="far fa-circle nav-icon"></i>
 										<p>Annual Income</p>
 									</a>
 								</li>
 								<li class="nav-item">
-									<a href="/admin/employed-in" class="nav-link">
+									<a href="/admin/employed-in" class="nav-link <?php if($currentUrl == 'admin/employed-in') echo "active"; ?>">
 										<i class="far fa-circle nav-icon"></i>
 										<p>Employed In</p>
 									</a>
 								</li>
 							</ul>
-						</li>
-						<li class="nav-item">
-							<a href="#" class="nav-link">
-								<i class="nav-icon fas fa-th"></i>
-								<p>
-									Simple Link
-									<span class="right badge badge-danger">New</span>
-								</p>
-							</a>
 						</li>
 					</ul>
 				</nav>
