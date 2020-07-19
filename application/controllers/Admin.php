@@ -11,6 +11,14 @@ class Admin extends CI_Controller {
 		$this->load->view('admin/templates/footer', $data);
 	}
 
+	public function dashboard()
+	{
+		$data['title'] = ucfirst("Admin dashboard"); // Capitalize the first letter
+		$this->load->view('admin/templates/header', $data);
+		$this->load->view('admin/own/dashboard');
+		$this->load->view('admin/templates/footer', $data);
+	}
+
 	public function forgotPassword()
 	{
 		$data['title'] = ucfirst("Admin forgotPassword"); // Capitalize the first letter
@@ -63,7 +71,7 @@ class Admin extends CI_Controller {
 	// Location info
 	public function country()
 	{
-		$data['title'] = ucfirst("Admin country");
+		$data['title'] = ucfirst("country");
 		$this->load->view('admin/templates/header', $data);
 		$this->load->view('admin/masters/country');
 		$this->load->view('admin/templates/footer', $data);
@@ -71,7 +79,7 @@ class Admin extends CI_Controller {
 
 	public function state()
 	{
-		$data['title'] = ucfirst("Admin state");
+		$data['title'] = ucfirst("state");
 		$this->load->view('admin/templates/header', $data);
 		$this->load->view('admin/masters/state');
 		$this->load->view('admin/templates/footer', $data);
@@ -79,7 +87,7 @@ class Admin extends CI_Controller {
 
 	public function city()
 	{
-		$data['title'] = ucfirst("Admin city");
+		$data['title'] = ucfirst("city");
 		$this->load->view('admin/templates/header', $data);
 		$this->load->view('admin/masters/city');
 		$this->load->view('admin/templates/footer', $data);

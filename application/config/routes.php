@@ -58,11 +58,13 @@ $route['verify'] = 'frontend/verify';
 $route['forgot-password'] = 'frontend/forgotPassword';
 $route['update-password'] = 'frontend/updatePassword';
 $route['change-password'] = 'frontend/changePassword';
-$route['(:any)'] = '';
+//$route['(:any)'] = '';
 
 
 // For Admin Routing :
 $route['admin_controller'] = 'admin';
+$route['admin'] = 'admin/login';
+$route['admin/dashboard'] = 'admin/dashboard';
 $route['admin/login'] = 'admin/login';
 $route['admin/forgot-password'] = 'admin/forgotPassword';
 $route['admin/update-password'] = 'admin/updatePassword';
@@ -79,13 +81,13 @@ $route['admin/city'] = 'admin/city';
 $route['admin/religion'] = 'admin/religion';
 $route['admin/caste'] = 'admin/caste';
 $route['admin/sub-caste'] = 'admin/subCaste';
-$route['admin/star'] = 'admin/star';
 $route['admin/raasi'] = 'admin/raasi';
+$route['admin/star'] = 'admin/star';
 // Professional Info
-$route['admin/education'] = 'admin/education';
 $route['admin/education-category'] = 'admin/educationCategory';
-$route['admin/occupation'] = 'admin/occupation';
+$route['admin/education'] = 'admin/education';
 $route['admin/occupation-category'] = 'admin/occupationCategory';
+$route['admin/occupation'] = 'admin/occupation';
 $route['admin/annual-income'] = 'admin/annualIncome';
 $route['admin/employed-in'] = 'admin/employedIn';
 
