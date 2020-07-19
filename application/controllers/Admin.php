@@ -6,9 +6,7 @@ class Admin extends CI_Controller {
 	public function login()
 	{
 		$data['title'] = ucfirst("Admin Login"); // Capitalize the first letter
-		$this->load->view('admin/templates/header', $data);
-		$this->load->view('admin/auth/login');
-		$this->load->view('admin/templates/footer', $data);
+		$this->load->view('admin/auth/login', $data);
 	}
 
 	public function dashboard()
@@ -19,12 +17,15 @@ class Admin extends CI_Controller {
 		$this->load->view('admin/templates/footer', $data);
 	}
 
+	public function logout()
+	{
+		redirect(base_url('/admin/login'));
+	}
+
 	public function forgotPassword()
 	{
 		$data['title'] = ucfirst("Admin forgotPassword"); // Capitalize the first letter
-		$this->load->view('admin/templates/header', $data);
-		$this->load->view('admin/auth/forgotPassword');
-		$this->load->view('admin/templates/footer', $data);
+		$this->load->view('admin/auth/forgotPassword', $data);
 	}
 
 	public function updatePassword()

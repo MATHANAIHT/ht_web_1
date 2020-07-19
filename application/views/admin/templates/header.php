@@ -319,6 +319,14 @@
 								</li>
 							</ul>
 						</li>
+						<li class="nav-item">
+							<a href="/admin/logout" class="nav-link <?php if($currentUrl == 'admin/logout') echo "active"; ?>">
+								<i class="nav-icon fas fa-th"></i>
+								<p>
+									Logout
+								</p>
+							</a>
+						</li>
 					</ul>
 				</nav>
 				<!-- /.sidebar-menu -->
