@@ -77,37 +77,54 @@ class Api extends CI_Controller {
 	public function religion()
 	{
 		header('Content-Type: application/json');
-		$query = $this->db->query('SELECT * FROM tbl_religion') ;
+		$query = $this->db->query('SELECT religion_id as rid, religion_name as rname FROM tbl_religion') ;
 		$row = $query->result();
 		echo json_encode( $row );
 	}
 	public function caste()
 	{
 		header('Content-Type: application/json');
-		$query = $this->db->query('SELECT * FROM tbl_caste') ;
-		$row = $query->result();
-		echo json_encode( $row );
+		$religion = $this->input->get('religion');
+		if($religion != ""){
+			$query = $this->db->query("SELECT caste_id as id, caste_name as cname FROM tbl_caste where religion_id='".$religion."'") ;
+			$row = $query->result();
+			echo json_encode( $row );
+		} else {
+			echo json_encode( "[]" );
+		}
 	}
 	public function subCaste()
 	{
 		header('Content-Type: application/json');
-		$query = $this->db->query('SELECT * FROM tbl_sub_caste') ;
-		$row = $query->result();
-		echo json_encode( $row );
+		$religion = $this->input->get('religion');
+		$caste = $this->input->get('caste');
+		if($religion != "" && $caste != ""){
+			$query = $this->db->query("SELECT sub_caste_id as scid, sub_caste_name as scname FROM tbl_sub_caste where caste_id='".$caste."'; ") ;
+			$row = $query->result();
+			echo json_encode( $row );
+		} else {
+			echo json_encode( "[]" );
+		}
 	}
 	public function raasi()
 	{
 		header('Content-Type: application/json');
-		$query = $this->db->query('SELECT * FROM tbl_raasi') ;
+		$query = $this->db->query('SELECT raasi_name as rname, raasi_id as id FROM tbl_raasi') ;
 		$row = $query->result();
 		echo json_encode( $row );
 	}
 	public function star()
 	{
 		header('Content-Type: application/json');
-		$query = $this->db->query('SELECT * FROM tbl_star') ;
-		$row = $query->result();
-		echo json_encode( $row );
+
+		$raasi = $this->input->get('raasi');
+		if($raasi != ""){
+			$query = $this->db->query('SELECT star_name as sname, star_id as id FROM tbl_star ') ;
+			$row = $query->result();
+			echo json_encode( $row );
+		} else {
+			echo json_encode( "[]" );
+		}
 	}
 	public function occupation()
 	{

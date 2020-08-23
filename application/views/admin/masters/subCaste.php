@@ -25,63 +25,55 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="content">
 		<div class="container-fluid">
 			<div class="row">
+
+				<!-- /.col-md-6 -->
 				<div class="col-lg-6">
-					<div class="card">
-						<div class="card-body">
-							<h5 class="card-title">Card title</h5>
-
-							<p class="card-text">
-								Some quick example text to build on the card title and make up the bulk of the card's
-								content.
-							</p>
-
-							<a href="#" class="card-link">Card link</a>
-							<a href="#" class="card-link">Another link</a>
-						</div>
-					</div>
-
 					<div class="card card-primary card-outline">
-						<div class="card-body">
-							<h5 class="card-title">Card title</h5>
-
-							<p class="card-text">
-								Some quick example text to build on the card title and make up the bulk of the card's
-								content.
-							</p>
-							<a href="#" class="card-link">Card link</a>
-							<a href="#" class="card-link">Another link</a>
+						<div class="card-header">
+							<h5 class="m-0">Add <?php echo $title; ?></h5>
 						</div>
-					</div><!-- /.card -->
+						<form role="form">
+							<div class="card-body">
+								<div class="form-group">
+									<label for="ReligionName1">Religion Name</label>
+									<select name="ReligionName1" id="ReligionName1" class="form-control">
+										<option value="">Select Religion</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="CasteName1">Caste Name</label>
+									<select name="CasteName1" id="CasteName1" class="form-control">
+										<option value="">Select Caste</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="SubCasteName1">Sub Caste Name</label>
+									<input type="text" class="form-control" id="SubCasteName1" placeholder="Sub Caste Name">
+								</div>
+							</div>
+							<div class="card-footer">
+								<button type="submit" class="btn btn-primary">Submit</button>
+							</div>
+						</form>
+					</div>
 				</div>
 				<!-- /.col-md-6 -->
 				<div class="col-lg-6">
 					<div class="card">
-						<div class="card-header">
-							<h5 class="m-0">Featured</h5>
-						</div>
 						<div class="card-body">
-							<h6 class="card-title">Special title treatment</h6>
-
-							<p class="card-text">With supporting text below as a natural lead-in to additional
-								content.</p>
-							<a href="#" class="btn btn-primary">Go somewhere</a>
-						</div>
-					</div>
-
-					<div class="card card-primary card-outline">
-						<div class="card-header">
-							<h5 class="m-0">Featured</h5>
-						</div>
-						<div class="card-body">
-							<h6 class="card-title">Special title treatment</h6>
-
-							<p class="card-text">With supporting text below as a natural lead-in to additional
-								content.</p>
-							<a href="#" class="btn btn-primary">Go somewhere</a>
+							<table id="subCasteTable" class="table table-bordered table-striped">
+								<thead>
+								<tr>
+									<th>Sub Caste</th>
+									<th>Edit</th>
+									<th>Delete</th>
+								</tr>
+								</thead>
+								<tbody></tbody>
+							</table>
 						</div>
 					</div>
 				</div>
-				<!-- /.col-md-6 -->
 			</div>
 			<!-- /.row -->
 		</div><!-- /.container-fluid -->
@@ -89,6 +81,41 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+<script>
+    var masterName = "<?php echo $title; ?>";
+    console.log("HI error " + masterName)
+    var subCasteTable = $("#subCasteTable").DataTable({
+        "responsive": true,
+        "autoWidth": false,
+        "pageLength": 5,
+        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]]
+    });
 
-
-
+    $(function () {
+        $.get("/api/religion", function(data, status){
+            data.map(function (d,i) {
+                $("#ReligionName1").append("<option value=\""+d.rid+"\">"+d.rname+"</option>");
+            });
+        });
+        $('#ReligionName1').change(function() {
+            $("#CasteName1").html("<option value=\"\">Select Religion</option>");
+            $.get("/api/caste", {religion : $('#ReligionName1').val()}, function(data, status){
+                data.map(function (d,i) {
+                    $("#CasteName1").append("<option value=\"" + d.id + "\">" + d.cname + "</option>");
+                });
+            });
+        });
+        $('#CasteName1').change(function() {
+            $.get("/api/subCaste", {religion : $('#ReligionName1').val(), caste: $('#CasteName1').val() }, function(data, status){
+                subCasteTable.clear().draw();
+                data.map(function (d,i) {
+                    subCasteTable.row.add( [
+                        d.scname,
+                        'Edit',
+                        'Delete',
+                    ] ).draw( false );
+                });
+            });
+        });
+    });
+</script>

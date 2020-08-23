@@ -25,63 +25,43 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="content">
 		<div class="container-fluid">
 			<div class="row">
+
+				<!-- /.col-md-6 -->
 				<div class="col-lg-6">
-					<div class="card">
-						<div class="card-body">
-							<h5 class="card-title">Card title</h5>
-
-							<p class="card-text">
-								Some quick example text to build on the card title and make up the bulk of the card's
-								content.
-							</p>
-
-							<a href="#" class="card-link">Card link</a>
-							<a href="#" class="card-link">Another link</a>
-						</div>
-					</div>
-
 					<div class="card card-primary card-outline">
-						<div class="card-body">
-							<h5 class="card-title">Card title</h5>
-
-							<p class="card-text">
-								Some quick example text to build on the card title and make up the bulk of the card's
-								content.
-							</p>
-							<a href="#" class="card-link">Card link</a>
-							<a href="#" class="card-link">Another link</a>
+						<div class="card-header">
+							<h5 class="m-0">Add <?php echo $title; ?></h5>
 						</div>
-					</div><!-- /.card -->
+						<form role="form">
+							<div class="card-body">
+								<div class="form-group">
+									<label for="RaasiName1">Raasi Name</label>
+									<input type="text" class="form-control" id="RaasiName1" placeholder="Raasi Name">
+								</div>
+							</div>
+							<div class="card-footer">
+								<button type="submit" class="btn btn-primary">Submit</button>
+							</div>
+						</form>
+					</div>
 				</div>
 				<!-- /.col-md-6 -->
 				<div class="col-lg-6">
 					<div class="card">
-						<div class="card-header">
-							<h5 class="m-0">Featured</h5>
-						</div>
 						<div class="card-body">
-							<h6 class="card-title">Special title treatment</h6>
-
-							<p class="card-text">With supporting text below as a natural lead-in to additional
-								content.</p>
-							<a href="#" class="btn btn-primary">Go somewhere</a>
-						</div>
-					</div>
-
-					<div class="card card-primary card-outline">
-						<div class="card-header">
-							<h5 class="m-0">Featured</h5>
-						</div>
-						<div class="card-body">
-							<h6 class="card-title">Special title treatment</h6>
-
-							<p class="card-text">With supporting text below as a natural lead-in to additional
-								content.</p>
-							<a href="#" class="btn btn-primary">Go somewhere</a>
+							<table id="raasiTable" class="table table-bordered table-striped">
+								<thead>
+								<tr>
+									<th>Raasi</th>
+									<th>Edit</th>
+									<th>Delete</th>
+								</tr>
+								</thead>
+								<tbody></tbody>
+							</table>
 						</div>
 					</div>
 				</div>
-				<!-- /.col-md-6 -->
 			</div>
 			<!-- /.row -->
 		</div><!-- /.container-fluid -->
@@ -89,6 +69,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
-
-
-
+<script>
+    var masterName = "<?php echo $title; ?>";
+    console.log("HI error " + masterName)
+    $(function () {
+        $.get("/api/raasi", function(data, status){
+            data.map(function (d,i) {
+                $("#raasiTable > tbody").append("<tr>" +
+                    "<td>"+d.rname+"</td>" +
+                    "<td>Edit</td>" +
+                    "<td>Delete</td>" +
+                    "</tr>");
+            });
+            $("#raasiTable").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "pageLength": 5,
+                "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]]
+            });
+        });
+    });
+</script>
