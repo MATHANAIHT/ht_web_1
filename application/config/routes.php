@@ -70,9 +70,7 @@ $route['admin/forgot-password'] = 'admin/forgotPassword';
 $route['admin/update-password'] = 'admin/updatePassword';
 $route['admin/change-password'] = 'admin/changePassword';
 //Masters
-$route['admin/marital-status'] = 'admin/maritalStatus';
 $route['admin/mother-tongue'] = 'admin/motherTongue';
-$route['admin/height'] = 'admin/height';
 // Location info
 $route['admin/country'] = 'admin/country';
 $route['admin/state'] = 'admin/state';
@@ -91,9 +89,26 @@ $route['admin/occupation'] = 'admin/occupation';
 $route['admin/annual-income'] = 'admin/annualIncome';
 $route['admin/employed-in'] = 'admin/employedIn';
 
-
+// For API Call
 $route['api_controller'] = 'api';
 $route['api/login'] = 'api/login';
+$route['api/user-type'] = 'api/userType';
+$route['api/admin-user'] = 'api/adminUser';
+$route['api/mother-tongue'] = 'api/motherTongue';
+$route['api/country'] = 'api/country';
+$route['api/state'] = 'api/state';
+$route['api/city'] = 'api/city';
+$route['api/religion'] = 'api/religion';
+$route['api/caste'] = 'api/caste';
+$route['api/sub-caste'] = 'api/subCaste';
+$route['api/raasi'] = 'api/raasi';
+$route['api/star'] = 'api/star';
+$route['api/occupation'] = 'api/occupation';
+$route['api/education'] = 'api/education';
+$route['api/education-category'] = 'api/educationCategory';
+$route['api/occupation-category'] = 'api/occupationCategory';
+$route['api/annual-income'] = 'api/annualIncome';
+$route['api/employed-in'] = 'api/employedIn';
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

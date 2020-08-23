@@ -53,22 +53,6 @@ class Admin extends CI_Controller {
 		$this->load->view('admin/templates/footer', $data);
 	}
 
-	public function maritalStatus()
-	{
-		$data['title'] = ucfirst("Admin maritalStatus"); // Capitalize the first letter
-		$this->load->view('admin/templates/header', $data);
-		$this->load->view('admin/masters/maritalStatus');
-		$this->load->view('admin/templates/footer', $data);
-	}
-
-	public function height()
-	{
-		$data['title'] = ucfirst("Admin height");
-		$this->load->view('admin/templates/header', $data);
-		$this->load->view('admin/masters/height');
-		$this->load->view('admin/templates/footer', $data);
-	}
-
 	// Location info
 	public function country()
 	{
