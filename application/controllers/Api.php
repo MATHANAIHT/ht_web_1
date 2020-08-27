@@ -6,6 +6,21 @@ class Api extends CI_Controller {
 	function __construct() {
 		parent::__construct();
 		$this->load->database();
+		$this->load->model('api_model');
+	}
+
+	public function delete(){
+		header('Content-Type: application/json');
+		$id = $this->input->get('id');
+		$tbl = $this->input->get('tbl');
+		$responseMessage = "error";
+		if($this->api_model->delete_from_table($id, $tbl)){
+			$responseMessage = "success";
+		}
+		$array = array(
+			'responseMessage' => $responseMessage
+		);
+		echo json_encode($array);
 	}
 
 	public function login()

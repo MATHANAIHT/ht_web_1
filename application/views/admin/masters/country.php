@@ -34,6 +34,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</div>
 						<form role="form">
 							<div class="card-body">
+								<div id="messageDisplay"></div>
 								<div class="form-group">
 									<label for="exampleInputEmail1">Country Name</label>
 									<input type="text" class="form-control" id="exampleInputCountryName1" placeholder="Country Name">
@@ -82,24 +83,58 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!-- /.content-wrapper -->
 <script>
     var masterName = "<?php echo $title; ?>";
-    console.log("HI error " + masterName)
+    var countryTable = $("#countryTable").DataTable({
+        "responsive": true,
+        "autoWidth": false,
+        "pageLength": 5,
+        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]]
+    });
+
     $(function () {
         $.get("/api/country", function(data, status){
             data.map(function (d,i) {
-                $("#countryTable > tbody").append("<tr>" +
-                    "<td>"+d.name+"</td>" +
-                    "<td>"+d.code+"</td>" +
-                    "<td>"+d.dialing+"</td>" +
-                    "<td>Edit</td>" +
-                    "<td>Delete</td>" +
-                    "</tr>");
+                countryTable.row.add( [
+                    d.name,
+                    d.code,
+                    d.dialing,
+                    "<td><a href='javascript:void(0)' onClick='deleteData("+d.id+", this)'>Edit</a></td>",
+                    "<td><button rowId='"+d.id+"'>Delete</button></td>",
+                ] ).draw( false );
             });
-            $("#countryTable").DataTable({
-                "responsive": true,
-                "autoWidth": false,
-                "pageLength": 5,
-                "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]]
+
+        });
+
+        $('#countryTable').on("click", "button", function(){
+            var rowId = $(this).attr("rowId")
+            $.get("/api/delete", {"id" : rowId, "tbl": "country"},  function(data, status) {
+                if(data.responseMessage == "success"){
+                    $("#messageDisplay").html(
+                        "<div class=\"alert alert-success alert-dismissible\">\n" +
+                        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>\n" +
+                        "<h5><i class=\"icon fas fa-check\"></i> Success!</h5>\n" +
+                        "Country deleted successfully\n" +
+                        "</div>"
+                    );
+                    countryTable.row($(this).parents('tr')).remove().draw(false);
+                } else {
+                    $("#messageDisplay").html(
+                        "<div class=\"alert alert-danger alert-dismissible\">\n" +
+                        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>\n" +
+                        "<h5><i class=\"icon fas fa-check\"></i> Failure!</h5>\n" +
+                        "Could not perform this delete action." +
+                        "</div>"
+                    );
+				}
+                setTimeout(function () {
+                    $("#messageDisplay").html("");
+                }, 3000)
             });
         });
+
+
     });
+    function deleteData(id, thisObj) {
+
+    }
+
 </script>

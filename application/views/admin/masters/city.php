@@ -111,11 +111,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 data.map(function (d,i) {
                     cityTable.row.add( [
                         d.city_name,
-                        'Edit',
-                        'Delete',
+                        "<td><a href='javascript:void(0)' onClick='deleteData("+d.city_id+")'>Edit</a></td>",
+                        "<td><a href='javascript:void(0)' onClick='deleteData("+d.city_id+")'>Delete</a></td>",
                     ] ).draw( false );
                 });
             });
         });
     });
+    function deleteData(id) {
+        $.get("/api/delete", {"id" : id, "tbl": "city"},  function(data, status) {
+            alert(data)
+        });
+    }
 </script>

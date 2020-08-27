@@ -97,11 +97,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 data.map(function (d,i) {
                     stateTable.row.add( [
                         d.name,
-                        'Edit',
-                        'Delete',
+                        "<td><a href='javascript:void(0)' onClick='deleteData("+d.id+")'>Edit</a></td>",
+                        "<td><a href='javascript:void(0)' onClick='deleteData("+d.id+")'>Delete</a></td>",
                     ] ).draw( false );
                 });
             });
         });
     });
+
+    function deleteData(id) {
+        $.get("/api/delete", {"id" : id, "tbl": "state"},  function(data, status) {
+            alert(data)
+        });
+    }
 </script>
