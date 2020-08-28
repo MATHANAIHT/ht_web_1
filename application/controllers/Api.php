@@ -23,6 +23,25 @@ class Api extends CI_Controller {
 		echo json_encode($array);
 	}
 
+	public function religion() {
+		header('Content-Type: application/json');
+		$dataId = $this->input->get('dataId');
+		$row = $this->api_model->getReligion($dataId);
+		echo json_encode($row);
+	}
+
+	public function saveReligion() {
+		header('Content-Type: application/json');
+		$action = $this->input->post('action');
+		$editId = $this->input->post('editId');
+		$religionName = $this->input->post('religionName');
+		$responseMessage = $this->api_model->saveReligion($action, $editId, $religionName);
+		$array = array(
+			'responseMessage' => $responseMessage
+		);
+		echo json_encode($array);
+	}
+
 	public function country() {
 		header('Content-Type: application/json');
 		$dataId = $this->input->get('dataId');
@@ -104,13 +123,7 @@ class Api extends CI_Controller {
 		}
 
 	}
-	public function religion()
-	{
-		header('Content-Type: application/json');
-		$query = $this->db->query('SELECT religion_id as rid, religion_name as rname FROM tbl_religion') ;
-		$row = $query->result();
-		echo json_encode( $row );
-	}
+
 	public function caste()
 	{
 		header('Content-Type: application/json');
