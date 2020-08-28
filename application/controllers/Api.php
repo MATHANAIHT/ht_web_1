@@ -23,6 +23,28 @@ class Api extends CI_Controller {
 		echo json_encode($array);
 	}
 
+	public function country() {
+		header('Content-Type: application/json');
+		$dataId = $this->input->get('dataId');
+		$row = $this->api_model->getCountry($dataId);
+		echo json_encode($row);
+	}
+
+	public function saveCountry() {
+		header('Content-Type: application/json');
+		$action = $this->input->post('action');
+		$editId = $this->input->post('editId');
+		$countryName = $this->input->post('countryName');
+		$shortName = $this->input->post('shortName');
+		$dialingCode = $this->input->post('dialingCode');
+		$responseMessage = $this->api_model->saveCountry($action, $editId, $countryName, $shortName, $dialingCode);
+		$array = array(
+			'responseMessage' => $responseMessage
+		);
+		echo json_encode($array);
+	}
+
+
 	public function login()
 	{
 		$password = $this->input->get('password');
@@ -51,13 +73,6 @@ class Api extends CI_Controller {
 	{
 		header('Content-Type: application/json');
 		$query = $this->db->query('SELECT * FROM tbl_mother_tongue') ;
-		$row = $query->result();
-		echo json_encode( $row );
-	}
-	public function country()
-	{
-		header('Content-Type: application/json');
-		$query = $this->db->query('SELECT country_id as id, country_name as name, country_code as code, international_dialing as dialing FROM tbl_country') ;
 		$row = $query->result();
 		echo json_encode( $row );
 	}

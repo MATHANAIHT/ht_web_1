@@ -110,6 +110,7 @@ $route['api/occupation-category'] = 'api/occupationCategory';
 $route['api/annual-income'] = 'api/annualIncome';
 $route['api/employed-in'] = 'api/employedIn';
 $route['api/delete'] = 'api/delete';
+$route['api/save-country'] = 'api/saveCountry';
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
