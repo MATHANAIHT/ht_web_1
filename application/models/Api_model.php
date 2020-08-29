@@ -7,6 +7,8 @@ class Api_model extends CI_Model
 			"religion" => array("name" =>"tbl_religion", "id"=> "religion_id"),
 			"motherTongue" => array("name" =>"tbl_mother_tongue", "id"=> "mother_tongue_id"),
 			"employedIn" => array("name" =>"tbl_employed_in", "id"=> "employed_in_id"),
+			"educationCategory" => array("name" =>"tbl_education_category", "id"=> "education_category_id"),
+			"occupationCategory" => array("name" =>"tbl_occupation_category", "id"=> "occupation_category_id"),
 
 			"raasi" => array("name" =>"tbl_raasi", "id"=> "raasi_id"),
 			"star" => array("name" =>"tbl_star", "id"=> "star_id"),
@@ -14,6 +16,118 @@ class Api_model extends CI_Model
 			"city" => array("name" =>"tbl_city", "id"=> "city_id"),
 		);
 		return $tableNames[$tbl];
+	}
+
+	function getEducationCategory($dataId){
+		$tbl = $this->getTables("educationCategory");
+		$tblName = $tbl["name"];
+		if($dataId == "All"){
+			$query = $this->db->get($tblName);
+		} else {
+			$query = $this->db->get_where($tblName, array($tbl["id"] => $dataId));
+		}
+		$row = $query->result();
+		return $row;
+	}
+
+	function saveEducationCategory($action, $editId, $educationCategoryName){
+		$tbl = $this->getTables("educationCategory");
+		$tblName = $tbl["name"];
+		if($action == "Add") {
+			$query = $this->db->get_where($tblName, array('education_category_name' => $educationCategoryName));
+			$row = $query->result();
+			if(count($row) == 0){
+				date_default_timezone_set("Asia/Calcutta");
+				$date = date('Y-m-d H:i:s');
+				$data = array();
+				$data["education_category_name"] = $educationCategoryName;
+				$data["created_at"] = $date;
+				$this->db->insert($tblName, $data);
+				return "success";
+			} else {
+				return "exist";
+			}
+		} else if($action == "Edit") {
+			$query = $this->db->get_where($tblName, array('education_category_name' => $educationCategoryName));
+			$insertValid = false;
+			if ($query->num_rows() == 0){
+				$insertValid = true;
+			} else if ($query->num_rows() == 1){
+				$row = $query->row();
+				if($row->education_category_id != $editId){
+					return "exist";
+				} else {
+					$insertValid = true;
+				}
+			} else {
+				$insertValid = true;
+			}
+			if($insertValid){
+				$this->db->set('education_category_name', $educationCategoryName);
+				$this->db->where($tbl["id"], $editId);
+				$this->db->update($tblName); // gi
+
+				return "success";
+			}
+			return "exist";
+		}
+		return "error";
+	}
+
+	function getOccupationCategory($dataId){
+		$tbl = $this->getTables("occupationCategory");
+		$tblName = $tbl["name"];
+		if($dataId == "All"){
+			$query = $this->db->get($tblName);
+		} else {
+			$query = $this->db->get_where($tblName, array($tbl["id"] => $dataId));
+		}
+		$row = $query->result();
+		return $row;
+	}
+
+	function saveOccupationCategory($action, $editId, $occupationCategoryName){
+		$tbl = $this->getTables("occupationCategory");
+		$tblName = $tbl["name"];
+		if($action == "Add") {
+			$query = $this->db->get_where($tblName, array('occupation_category_name' => $occupationCategoryName));
+			$row = $query->result();
+			if(count($row) == 0){
+				date_default_timezone_set("Asia/Calcutta");
+				$date = date('Y-m-d H:i:s');
+				$data = array();
+				$data["occupation_category_name"] = $occupationCategoryName;
+				$data["created_at"] = $date;
+				$this->db->insert($tblName, $data);
+				return "success";
+			} else {
+				return "exist";
+			}
+		} else if($action == "Edit") {
+			$query = $this->db->get_where($tblName, array('occupation_category_name' => $occupationCategoryName));
+			$insertValid = false;
+			if ($query->num_rows() == 0){
+				$insertValid = true;
+			} else if ($query->num_rows() == 1){
+				$row = $query->row();
+				if($row->occupation_category_id != $editId){
+					return "exist";
+				} else {
+					$insertValid = true;
+				}
+			} else {
+				$insertValid = true;
+			}
+			if($insertValid){
+				$this->db->set('occupation_category_name', $occupationCategoryName);
+				$this->db->where($tbl["id"], $editId);
+				$this->db->update($tblName); // gi
+
+				return "success";
+			}
+			return "exist";
+		}
+		return "error";
 	}
 
 	function getEmployedIn($dataId){

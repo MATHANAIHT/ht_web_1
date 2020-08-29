@@ -23,6 +23,46 @@ class Api extends CI_Controller {
 		echo json_encode($array);
 	}
 
+	public function educationCategory()
+	{
+		header('Content-Type: application/json');
+		$dataId = $this->input->get('dataId');
+		$row = $this->api_model->getEducationCategory($dataId);
+		echo json_encode($row);
+	}
+
+	public function saveEducationCategory() {
+		header('Content-Type: application/json');
+		$action = $this->input->post('action');
+		$editId = $this->input->post('editId');
+		$educationCategoryName = $this->input->post('educationCategoryName');
+		$responseMessage = $this->api_model->saveEducationCategory($action, $editId, $educationCategoryName);
+		$array = array(
+			'responseMessage' => $responseMessage
+		);
+		echo json_encode($array);
+	}
+
+	public function occupationCategory()
+	{
+		header('Content-Type: application/json');
+		$dataId = $this->input->get('dataId');
+		$row = $this->api_model->getOccupationCategory($dataId);
+		echo json_encode($row);
+	}
+
+	public function saveOccupationCategory() {
+		header('Content-Type: application/json');
+		$action = $this->input->post('action');
+		$editId = $this->input->post('editId');
+		$occupationCategoryName = $this->input->post('occupationCategoryName');
+		$responseMessage = $this->api_model->saveOccupationCategory($action, $editId, $occupationCategoryName);
+		$array = array(
+			'responseMessage' => $responseMessage
+		);
+		echo json_encode($array);
+	}
+
 	public function employedIn()
 	{
 		header('Content-Type: application/json');
@@ -214,22 +254,6 @@ class Api extends CI_Controller {
 	{
 		header('Content-Type: application/json');
 		$queryStr = "SELECT tbl_education.education_id as id, tbl_education.education_name as name, tbl_education.education_category_id  as category_id, tbl_education_category.education_category_name as category_name , tbl_education.created_at FROM tbl_education INNER JOIN tbl_education_category ON tbl_education.education_category_id=tbl_education_category.education_category_id;";
-		$query = $this->db->query($queryStr);
-		$row = $query->result();
-		echo json_encode( $row );
-	}
-	public function educationCategory()
-	{
-		header('Content-Type: application/json');
-		$queryStr = "select * from tbl_education_category;";
-		$query = $this->db->query($queryStr) ;
-		$row = $query->result();
-		echo json_encode( $row );
-	}
-	public function occupationCategory()
-	{
-		header('Content-Type: application/json');
-		$queryStr = "select * from tbl_occupation_category;";
 		$query = $this->db->query($queryStr);
 		$row = $query->result();
 		echo json_encode( $row );
