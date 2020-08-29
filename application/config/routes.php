@@ -113,6 +113,7 @@ $route['api/delete'] = 'api/delete';
 $route['api/save-country'] = 'api/saveCountry';
 $route['api/save-religion'] = 'api/saveReligion';
 $route['api/save-mother-tongue'] = 'api/saveMotherTongue';
+$route['api/save-employed-in'] = 'api/saveEmployedIn';
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

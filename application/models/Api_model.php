@@ -6,12 +6,70 @@ class Api_model extends CI_Model
 			"country" => array("name" =>"tbl_country", "id"=> "country_id"),
 			"religion" => array("name" =>"tbl_religion", "id"=> "religion_id"),
 			"motherTongue" => array("name" =>"tbl_mother_tongue", "id"=> "mother_tongue_id"),
+			"employedIn" => array("name" =>"tbl_employed_in", "id"=> "employed_in_id"),
+
 			"raasi" => array("name" =>"tbl_raasi", "id"=> "raasi_id"),
 			"star" => array("name" =>"tbl_star", "id"=> "star_id"),
 			"state" => array("name" =>"tbl_state", "id"=> "state_id"),
 			"city" => array("name" =>"tbl_city", "id"=> "city_id"),
 		);
 		return $tableNames[$tbl];
+	}
+
+	function getEmployedIn($dataId){
+		$tbl = $this->getTables("employedIn");
+		$tblName = $tbl["name"];
+		if($dataId == "All"){
+			$query = $this->db->get($tblName);
+		} else {
+			$query = $this->db->get_where($tblName, array($tbl["id"] => $dataId));
+		}
+		$row = $query->result();
+		return $row;
+	}
+
+	function saveEmployedIn($action, $editId, $employedInName){
+		$tbl = $this->getTables("employedIn");
+		$tblName = $tbl["name"];
+		if($action == "Add") {
+			$query = $this->db->get_where($tblName, array('employed_in_name' => $employedInName));
+			$row = $query->result();
+			if(count($row) == 0){
+				date_default_timezone_set("Asia/Calcutta");
+				$date = date('Y-m-d H:i:s');
+				$data = array();
+				$data["employed_in_name"] = $employedInName;
+				$data["created_at"] = $date;
+				$this->db->insert($tblName, $data);
+				return "success";
+			} else {
+				return "exist";
+			}
+		} else if($action == "Edit") {
+			$query = $this->db->get_where($tblName, array('employed_in_name' => $employedInName));
+			$insertValid = false;
+			if ($query->num_rows() == 0){
+				$insertValid = true;
+			} else if ($query->num_rows() == 1){
+				$row = $query->row();
+				if($row->employed_in_id != $editId){
+					return "exist";
+				} else {
+					$insertValid = true;
+				}
+			} else {
+				$insertValid = true;
+			}
+			if($insertValid){
+				$this->db->set('employed_in_name', $employedInName);
+				$this->db->where($tbl["id"], $editId);
+				$this->db->update($tblName); // gi
+
+				return "success";
+			}
+			return "exist";
+		}
+		return "error";
 	}
 
 	function getMotherTongue($dataId){

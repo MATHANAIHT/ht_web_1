@@ -23,6 +23,26 @@ class Api extends CI_Controller {
 		echo json_encode($array);
 	}
 
+	public function employedIn()
+	{
+		header('Content-Type: application/json');
+		$dataId = $this->input->get('dataId');
+		$row = $this->api_model->getEmployedIn($dataId);
+		echo json_encode($row);
+	}
+
+	public function saveEmployedIn() {
+		header('Content-Type: application/json');
+		$action = $this->input->post('action');
+		$editId = $this->input->post('editId');
+		$employedInName = $this->input->post('employedInName');
+		$responseMessage = $this->api_model->saveEmployedIn($action, $editId, $employedInName);
+		$array = array(
+			'responseMessage' => $responseMessage
+		);
+		echo json_encode($array);
+	}
+
 	public function motherTongue() {
 		header('Content-Type: application/json');
 		$dataId = $this->input->get('dataId');
@@ -215,14 +235,6 @@ class Api extends CI_Controller {
 		echo json_encode( $row );
 	}
 	public function annualIncome()
-	{
-		header('Content-Type: application/json');
-		$queryStr = "select * from tbl_occupation_category;";
-		$query = $this->db->query($queryStr);
-		$row = $query->result();
-		echo json_encode( $row );
-	}
-	public function employedIn()
 	{
 		header('Content-Type: application/json');
 		$queryStr = "select * from tbl_occupation_category;";
