@@ -23,6 +23,25 @@ class Api extends CI_Controller {
 		echo json_encode($array);
 	}
 
+	public function motherTongue() {
+		header('Content-Type: application/json');
+		$dataId = $this->input->get('dataId');
+		$row = $this->api_model->getMotherTongue($dataId);
+		echo json_encode($row);
+	}
+
+	public function saveMotherTongue() {
+		header('Content-Type: application/json');
+		$action = $this->input->post('action');
+		$editId = $this->input->post('editId');
+		$motherTongue = $this->input->post('motherTongueName');
+		$responseMessage = $this->api_model->saveMotherTongue($action, $editId, $motherTongue);
+		$array = array(
+			'responseMessage' => $responseMessage
+		);
+		echo json_encode($array);
+	}
+
 	public function religion() {
 		header('Content-Type: application/json');
 		$dataId = $this->input->get('dataId');
@@ -88,13 +107,7 @@ class Api extends CI_Controller {
 		$row = $query->result();
 		echo json_encode( $row );
 	}
-	public function motherTongue()
-	{
-		header('Content-Type: application/json');
-		$query = $this->db->query('SELECT * FROM tbl_mother_tongue') ;
-		$row = $query->result();
-		echo json_encode( $row );
-	}
+
 	public function state()
 	{
 		header('Content-Type: application/json');
