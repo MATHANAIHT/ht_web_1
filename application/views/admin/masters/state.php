@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div><!-- /.col -->
 				<div class="col-sm-6">
 					<ol class="breadcrumb float-sm-right">
-						<li class="breadcrumb-item"><a href="#">Home</a></li>
+						<li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
 						<li class="breadcrumb-item active"><?php echo $title; ?></li>
 					</ol>
 				</div><!-- /.col -->
@@ -30,23 +30,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="col-lg-6">
 					<div class="card card-primary card-outline">
 						<div class="card-header">
-							<h5 class="m-0">Add <?php echo $title; ?></h5>
+							<h5 class="m-0" id="masterName"></h5>
 						</div>
 						<form role="form">
 							<div class="card-body">
+								<div id="messageDisplay"></div>
+								<input type="hidden" id="action" value="Add">
+								<input type="hidden" id="editId" value="">
 								<div class="form-group">
 									<label for="Country1">Country Name</label>
-									<select name="CountryName1" id="CountryName1" class="form-control">
+									<select name="inputCountryName1" id="inputCountryName1" class="form-control">
 										<option value="">Select Country</option>
 									</select>
 								</div>
 								<div class="form-group">
-									<label for="exampleInputEmail1">State Name</label>
-									<input type="text" class="form-control" id="exampleInputStateName1" placeholder="State Name">
+									<label for="inputStateName1">State Name</label>
+									<input type="text" class="form-control" id="inputStateName1" placeholder="State Name">
 								</div>
+								<br />
 							</div>
 							<div class="card-footer">
-								<button type="submit" class="btn btn-primary">Submit</button>
+								<button type="button" class="btn btn-primary" onclick="addOrUpdate()">Submit</button>
 							</div>
 						</form>
 					</div>
@@ -77,37 +81,142 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!-- /.content-wrapper -->
 <script>
     var masterName = "<?php echo $title; ?>";
-    console.log("HI error " + masterName)
+    var stateTable = $("#stateTable").DataTable({
+        "responsive": true,
+        "autoWidth": false,
+        "pageLength": 5,
+        "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]]
+    });
+
     $(function () {
-        var stateTable = $("#stateTable").DataTable({
-            "responsive": true,
-            "autoWidth": false,
-            "pageLength": 5,
-            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]]
+        $("#masterName").html("Add "+masterName);
+        $("#action").val("Add");
+
+        getCountryList();
+
+        $('#inputCountryName1').change(function() {
+            getStateList();
         });
 
-        $.get("/api/country", function(data, status){
-            data.map(function (d,i) {
-                $("#CountryName1").append("<option value=\""+d.id+"\">"+d.name+"</option>");
-            });
-        });
-        $('#CountryName1').change(function() {
-            $.get("/api/state", {country : $('#CountryName1').val()},function(data, status){
-                stateTable.clear().draw();
-                data.map(function (d,i) {
-                    stateTable.row.add( [
-                        d.name,
-                        "<td><a href='javascript:void(0)' onClick='deleteData("+d.id+")'>Edit</a></td>",
-                        "<td><a href='javascript:void(0)' onClick='deleteData("+d.id+")'>Delete</a></td>",
-                    ] ).draw( false );
-                });
+
+
+        $('#stateTable').on("click", "button", function(){
+            var rowId = $(this).attr("rowId")
+            var that = this;
+            $.get("/api/delete", {"id" : rowId, "tbl": "state"},  function(data, status) {
+                if(data.responseMessage == "success"){
+                    $("#messageDisplay").html(
+                        "<div class=\"alert alert-success alert-dismissible\">\n" +
+                        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>\n" +
+                        "<h5><i class=\"icon fas fa-check\"></i> Success!</h5>\n" +
+                        "State deleted successfully\n" +
+                        "</div>"
+                    );
+                    stateTable.row($(that).parents('tr')).remove().draw(false);
+                } else {
+                    $("#messageDisplay").html(
+                        "<div class=\"alert alert-danger alert-dismissible\">\n" +
+                        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>\n" +
+                        "<h5><i class=\"icon fas fa-check\"></i> Failure!</h5>\n" +
+                        "Could not perform this delete action." +
+                        "</div>"
+                    );
+                }
+                setTimeout(function () {
+                    $("#messageDisplay").html("");
+                }, 3000)
             });
         });
     });
 
-    function deleteData(id) {
-        $.get("/api/delete", {"id" : id, "tbl": "state"},  function(data, status) {
-            alert(data)
+    function getStateList() {
+        $.get("/api/state", {country : $('#inputCountryName1').val()}, function(data, status){
+            stateTable.clear().draw();
+            data.map(function (d,i) {
+                stateTable.row.add( [
+                    d.state_name,
+                    "<td><a href='javascript:void(0)' onClick='fetchSingle("+d.state_id+")'>Edit</a></td>",
+                    "<td><button rowId='"+d.state_id+"'>Delete</button></td>",
+                ] ).draw( false );
+            });
         });
+    }
+
+    function fetchSingle(id) {
+        $.get("/api/state", {"dataId" : id}, function(data, status){
+            if(data.length > 0){
+                var link = " <a href='javascript:void(0)' onclick='changeToAdd(1)'>New</a>"
+                $("#masterName").html("Edit "+masterName + link);
+                $("#editId").val(data[0].state_id);
+                $("#action").val("Edit");
+                $("#inputStateName1").val(data[0].state_name);
+                $("#inputCountryName1").val(data[0].country_id);
+            }
+        });
+    }
+
+    function getCountryList() {
+        $.get("/api/country",  {"dataId" : "All"}, function(data, status){
+            data.map(function (d,i) {
+                $("#inputCountryName1").append("<option value=\""+d.country_id+"\">"+d.country_name+"</option>");
+            });
+        });
+    }
+
+    function addOrUpdate() {
+        let action = $("#action").val();
+        if(action == "Add" || action == "Edit"){
+            let editId = $("#editId").val();
+            let inputStateName1 = $("#inputStateName1").val();
+            let inputCountryName1 = $("#inputCountryName1").val();
+            let postJson = {
+                "action" : action,
+                "editId" : editId,
+                "stateName" : inputStateName1,
+                "country" : inputCountryName1
+            };
+            $.post("/api/save-state", postJson, function(data, status){
+                if(data["responseMessage"] == "success"){
+                    $("#messageDisplay").html(
+                        "<div class=\"alert alert-success alert-dismissible\">\n" +
+                        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>\n" +
+                        "<h5><i class=\"icon fas fa-check\"></i> Success!</h5>\n" +
+                        "Submitted successfully\n" +
+                        "</div>"
+                    );
+                    getStateList(stateTable)
+                } else if(data["responseMessage"] == "exist"){
+                    $("#messageDisplay").html(
+                        "<div class=\"alert alert-danger alert-dismissible\">\n" +
+                        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>\n" +
+                        "<h5><i class=\"icon fas fa-check\"></i> Failure!</h5>\n" +
+                        "State already exist" +
+                        "</div>"
+                    );
+                } else if(data["responseMessage"] == "error"){
+                    $("#messageDisplay").html(
+                        "<div class=\"alert alert-danger alert-dismissible\">\n" +
+                        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>\n" +
+                        "<h5><i class=\"icon fas fa-check\"></i> Failure!</h5>\n" +
+                        "Could not perform this delete action." +
+                        "</div>"
+                    );
+                }
+                setTimeout(function () {
+                    $("#messageDisplay").html("");
+                }, 3000)
+            });
+            getStateList();
+            changeToAdd(2)
+        }
+    }
+
+    function changeToAdd(k) {
+        $("#action").val("Add");
+        $("#editId").val("");
+        $("#inputStateName1").val("");
+        if(k == 1)
+        	$("#inputCountryName1").val("");
+        $("#masterName").html("Add "+masterName);
     }
 </script>

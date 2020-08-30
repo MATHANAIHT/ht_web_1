@@ -92,9 +92,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     });
 
     $(function () {
-        $.get("/api/religion", function(data, status){
+        $.get("/api/religion", {"dataId" : "All"}, function(data, status){
             data.map(function (d,i) {
-                $("#ReligionName1").append("<option value=\""+d.rid+"\">"+d.rname+"</option>");
+                $("#ReligionName1").append("<option value=\""+d.religion_id+"\">"+d.religion_name+"</option>");
             });
         });
         $('#ReligionName1').change(function() {

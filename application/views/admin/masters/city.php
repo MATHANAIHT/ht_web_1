@@ -92,9 +92,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     });
 
     $(function () {
-        $.get("/api/country", function(data, status){
+        $.get("/api/country", {"dataId" : "All"}, function(data, status){
             data.map(function (d,i) {
-                $("#CountryName1").append("<option value=\""+d.id+"\">"+d.name+"</option>");
+                $("#CountryName1").append("<option value=\""+d.country_id+"\">"+d.country_name+"</option>");
             });
         });
         $('#CountryName1').change(function() {

@@ -94,19 +94,25 @@ $route['api_controller'] = 'api';
 $route['api/login'] = 'api/login';
 $route['api/user-type'] = 'api/userType';
 $route['api/admin-user'] = 'api/adminUser';
-$route['api/state'] = 'api/state';
 $route['api/city'] = 'api/city';
-$route['api/caste'] = 'api/caste';
 $route['api/sub-caste'] = 'api/subCaste';
 $route['api/raasi'] = 'api/raasi';
 $route['api/star'] = 'api/star';
-$route['api/occupation'] = 'api/occupation';
-$route['api/education'] = 'api/education';
 $route['api/annual-income'] = 'api/annualIncome';
 $route['api/delete'] = 'api/delete';
 
 $route['api/country'] = 'api/country';
 $route['api/save-country'] = 'api/saveCountry';
+$route['api/state'] = 'api/state';
+$route['api/save-state'] = 'api/saveState';
+$route['api/caste'] = 'api/caste';
+$route['api/save-caste'] = 'api/saveCaste';
+
+$route['api/occupation'] = 'api/occupation';
+$route['api/save-occupation'] = 'api/saveOccupation';
+$route['api/education'] = 'api/education';
+$route['api/save-education'] = 'api/saveEducation';
+
 $route['api/religion'] = 'api/religion';
 $route['api/save-religion'] = 'api/saveReligion';
 $route['api/mother-tongue'] = 'api/motherTongue';

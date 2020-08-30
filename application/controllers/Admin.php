@@ -130,7 +130,7 @@ class Admin extends CI_Controller {
 
 	public function educationCategory()
 	{
-		$data['title'] = ucfirst("Admin educationCategory");
+		$data['title'] = ucfirst("Education Category");
 		$this->load->view('admin/templates/header', $data);
 		$this->load->view('admin/masters/educationCategory');
 		$this->load->view('admin/templates/footer', $data);
@@ -138,7 +138,7 @@ class Admin extends CI_Controller {
 
 	public function occupation()
 	{
-		$data['title'] = ucfirst("Admin occupation");
+		$data['title'] = ucfirst("Occupation");
 		$this->load->view('admin/templates/header', $data);
 		$this->load->view('admin/masters/occupation');
 		$this->load->view('admin/templates/footer', $data);
@@ -146,7 +146,7 @@ class Admin extends CI_Controller {
 
 	public function occupationCategory()
 	{
-		$data['title'] = ucfirst("Admin occupationCategory");
+		$data['title'] = ucfirst("Occupation Category");
 		$this->load->view('admin/templates/header', $data);
 		$this->load->view('admin/masters/occupationCategory');
 		$this->load->view('admin/templates/footer', $data);

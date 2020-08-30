@@ -23,6 +23,94 @@ class Api extends CI_Controller {
 		echo json_encode($array);
 	}
 
+	public function occupation()
+	{
+		header('Content-Type: application/json');
+		$dataId = $this->input->get('dataId');
+		$occupationCategory = $this->input->get('occupationCategory');
+		$row = $this->api_model->getOccupation($dataId, $occupationCategory);
+		echo json_encode($row);
+	}
+
+	public function saveOccupation() {
+		header('Content-Type: application/json');
+		$action = $this->input->post('action');
+		$editId = $this->input->post('editId');
+		$occupationName = $this->input->post('occupationName');
+		$occupationCategory = $this->input->post('occupationCategory');
+		$responseMessage = $this->api_model->saveOccupation($action, $editId, $occupationName, $occupationCategory);
+		$array = array(
+			'responseMessage' => $responseMessage
+		);
+		echo json_encode($array);
+	}
+
+	public function education()
+	{
+		header('Content-Type: application/json');
+		$dataId = $this->input->get('dataId');
+		$educationCategory = $this->input->get('educationCategory');
+		$row = $this->api_model->getEducation($dataId, $educationCategory);
+		echo json_encode($row);
+	}
+
+	public function saveEducation() {
+		header('Content-Type: application/json');
+		$action = $this->input->post('action');
+		$editId = $this->input->post('editId');
+		$educationName = $this->input->post('educationName');
+		$educationCategory = $this->input->post('educationCategory');
+		$responseMessage = $this->api_model->saveEducation($action, $editId, $educationName, $educationCategory);
+		$array = array(
+			'responseMessage' => $responseMessage
+		);
+		echo json_encode($array);
+	}
+
+	public function caste()
+	{
+		header('Content-Type: application/json');
+		$dataId = $this->input->get('dataId');
+		$religion = $this->input->get('religion');
+		$row = $this->api_model->getCaste($dataId, $religion);
+		echo json_encode($row);
+	}
+
+	public function saveCaste() {
+		header('Content-Type: application/json');
+		$action = $this->input->post('action');
+		$editId = $this->input->post('editId');
+		$casteName = $this->input->post('casteName');
+		$religion = $this->input->post('religion');
+		$responseMessage = $this->api_model->saveCaste($action, $editId, $casteName, $religion);
+		$array = array(
+			'responseMessage' => $responseMessage
+		);
+		echo json_encode($array);
+	}
+
+	public function state()
+	{
+		header('Content-Type: application/json');
+		$dataId = $this->input->get('dataId');
+		$country = $this->input->get('country');
+		$row = $this->api_model->getState($dataId, $country);
+		echo json_encode($row);
+	}
+
+	public function saveState() {
+		header('Content-Type: application/json');
+		$action = $this->input->post('action');
+		$editId = $this->input->post('editId');
+		$stateName = $this->input->post('stateName');
+		$country = $this->input->post('country');
+		$responseMessage = $this->api_model->saveState($action, $editId, $stateName, $country);
+		$array = array(
+			'responseMessage' => $responseMessage
+		);
+		echo json_encode($array);
+	}
+
 	public function educationCategory()
 	{
 		header('Content-Type: application/json');
@@ -168,20 +256,6 @@ class Api extends CI_Controller {
 		echo json_encode( $row );
 	}
 
-	public function state()
-	{
-		header('Content-Type: application/json');
-
-		$country = $this->input->get('country');
-		if($country != ""){
-			$queryStr = "SELECT ts.state_id as id, ts.state_name as name, ts.country_id FROM tbl_state ts where ts.country_id =".$country."; ";
-			$query = $this->db->query($queryStr) ;
-			$row = $query->result();
-			echo json_encode( $row );
-		} else {
-			echo json_encode( "[]" );
-		}
-	}
 	public function city()
 	{
 		header('Content-Type: application/json');
@@ -197,18 +271,6 @@ class Api extends CI_Controller {
 
 	}
 
-	public function caste()
-	{
-		header('Content-Type: application/json');
-		$religion = $this->input->get('religion');
-		if($religion != ""){
-			$query = $this->db->query("SELECT caste_id as id, caste_name as cname FROM tbl_caste where religion_id='".$religion."'") ;
-			$row = $query->result();
-			echo json_encode( $row );
-		} else {
-			echo json_encode( "[]" );
-		}
-	}
 	public function subCaste()
 	{
 		header('Content-Type: application/json');
@@ -242,22 +304,7 @@ class Api extends CI_Controller {
 			echo json_encode( "[]" );
 		}
 	}
-	public function occupation()
-	{
-		header('Content-Type: application/json');
-		$queryStr = "SELECT tbl_occupation.occupation_id as id, tbl_occupation.occupation_name as name, tbl_occupation_category.occupation_category_name as category_name, tbl_occupation.occupation_category_id as category_id, tbl_occupation.created_at FROM tbl_occupation INNER JOIN tbl_occupation_category ON tbl_occupation_category.occupation_category_id=tbl_occupation.occupation_category_id;";
-		$query = $this->db->query($queryStr) ;
-		$row = $query->result();
-		echo json_encode( $row );
-	}
-	public function education()
-	{
-		header('Content-Type: application/json');
-		$queryStr = "SELECT tbl_education.education_id as id, tbl_education.education_name as name, tbl_education.education_category_id  as category_id, tbl_education_category.education_category_name as category_name , tbl_education.created_at FROM tbl_education INNER JOIN tbl_education_category ON tbl_education.education_category_id=tbl_education_category.education_category_id;";
-		$query = $this->db->query($queryStr);
-		$row = $query->result();
-		echo json_encode( $row );
-	}
+
 	public function annualIncome()
 	{
 		header('Content-Type: application/json');
