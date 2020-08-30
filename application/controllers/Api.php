@@ -23,6 +23,44 @@ class Api extends CI_Controller {
 		echo json_encode($array);
 	}
 
+	public function raasi() {
+		header('Content-Type: application/json');
+		$dataId = $this->input->get('dataId');
+		$row = $this->api_model->getRaasi($dataId);
+		echo json_encode($row);
+	}
+
+	public function saveRaasi() {
+		header('Content-Type: application/json');
+		$action = $this->input->post('action');
+		$editId = $this->input->post('editId');
+		$raasiName = $this->input->post('raasiName');
+		$responseMessage = $this->api_model->saveRaasi($action, $editId, $raasiName);
+		$array = array(
+			'responseMessage' => $responseMessage
+		);
+		echo json_encode($array);
+	}
+
+	public function star() {
+		header('Content-Type: application/json');
+		$dataId = $this->input->get('dataId');
+		$row = $this->api_model->getStar($dataId);
+		echo json_encode($row);
+	}
+
+	public function saveStar() {
+		header('Content-Type: application/json');
+		$action = $this->input->post('action');
+		$editId = $this->input->post('editId');
+		$starName = $this->input->post('starName');
+		$responseMessage = $this->api_model->saveStar($action, $editId, $starName);
+		$array = array(
+			'responseMessage' => $responseMessage
+		);
+		echo json_encode($array);
+	}
+
 	public function city()
 	{
 		header('Content-Type: application/json');
@@ -302,26 +340,6 @@ class Api extends CI_Controller {
 		$query = $this->db->query('SELECT * FROM tbl_user_type') ;
 		$row = $query->result();
 		echo json_encode( $row );
-	}
-	public function raasi()
-	{
-		header('Content-Type: application/json');
-		$query = $this->db->query('SELECT raasi_name as rname, raasi_id as id FROM tbl_raasi') ;
-		$row = $query->result();
-		echo json_encode( $row );
-	}
-	public function star()
-	{
-		header('Content-Type: application/json');
-
-		$raasi = $this->input->get('raasi');
-		if($raasi != ""){
-			$query = $this->db->query('SELECT star_name as sname, star_id as id FROM tbl_star ') ;
-			$row = $query->result();
-			echo json_encode( $row );
-		} else {
-			echo json_encode( "[]" );
-		}
 	}
 	public function annualIncome()
 	{

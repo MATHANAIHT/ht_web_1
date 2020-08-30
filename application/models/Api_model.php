@@ -15,12 +15,122 @@ class Api_model extends CI_Model
 			"education" => array("name" =>"tbl_education", "id"=> "education_id"),
 			"city" => array("name" =>"tbl_city", "id"=> "city_id"),
 			"subCaste" => array("name" =>"tbl_sub_caste", "id"=> "sub_caste_id"),
-
-
 			"raasi" => array("name" =>"tbl_raasi", "id"=> "raasi_id"),
 			"star" => array("name" =>"tbl_star", "id"=> "star_id"),
 		);
 		return $tableNames[$tbl];
+	}
+
+	function getStar($dataId){
+		$tbl = $this->getTables("star");
+		$tblName = $tbl["name"];
+		if($dataId == "All"){
+			$query = $this->db->get($tblName);
+		} else {
+			$query = $this->db->get_where($tblName, array($tbl["id"] => $dataId));
+		}
+		$row = $query->result();
+		return $row;
+	}
+
+	function saveStar($action, $editId, $starName){
+		$tblNameObj = $this->getTables("star");
+		$tblName = $tblNameObj["name"];
+		if($action == "Add") {
+			$query = $this->db->get_where($tblName, array('star_name' => $starName));
+			$row = $query->result();
+			if(count($row) == 0){
+				date_default_timezone_set("Asia/Calcutta");
+				$date = date('Y-m-d H:i:s');
+				$data = array();
+				$data["star_name"] = $starName;
+				$data["created_at"] = $date;
+				$this->db->insert($tblName, $data);
+				return "success";
+			} else {
+				return "exist";
+			}
+		} else if($action == "Edit") {
+			$query = $this->db->get_where($tblName, array('star_name' => $starName));
+			$insertValid = false;
+			if ($query->num_rows() == 0){
+				$insertValid = true;
+			} else if ($query->num_rows() == 1){
+				$row = $query->row();
+				if($row->star_id != $editId){
+					return "exist";
+				} else {
+					$insertValid = true;
+				}
+			} else {
+				$insertValid = true;
+			}
+			if($insertValid){
+				$this->db->set('star_name', $starName);
+				$this->db->where('star_id', $editId);
+				$this->db->update($tblName); // gi
+
+				return "success";
+			}
+			return "exist";
+		}
+		return "error";
+	}
+
+	function getRaasi($dataId){
+		$tbl = $this->getTables("raasi");
+		$tblName = $tbl["name"];
+		if($dataId == "All"){
+			$query = $this->db->get($tblName);
+		} else {
+			$query = $this->db->get_where($tblName, array($tbl["id"] => $dataId));
+		}
+		$row = $query->result();
+		return $row;
+	}
+
+	function saveRaasi($action, $editId, $raasiName){
+		$tblNameObj = $this->getTables("raasi");
+		$tblName = $tblNameObj["name"];
+		if($action == "Add") {
+			$query = $this->db->get_where($tblName, array('raasi_name' => $raasiName));
+			$row = $query->result();
+			if(count($row) == 0){
+				date_default_timezone_set("Asia/Calcutta");
+				$date = date('Y-m-d H:i:s');
+				$data = array();
+				$data["raasi_name"] = $raasiName;
+				$data["created_at"] = $date;
+				$this->db->insert($tblName, $data);
+				return "success";
+			} else {
+				return "exist";
+			}
+		} else if($action == "Edit") {
+			$query = $this->db->get_where($tblName, array('raasi_name' => $raasiName));
+			$insertValid = false;
+			if ($query->num_rows() == 0){
+				$insertValid = true;
+			} else if ($query->num_rows() == 1){
+				$row = $query->row();
+				if($row->raasi_id != $editId){
+					return "exist";
+				} else {
+					$insertValid = true;
+				}
+			} else {
+				$insertValid = true;
+			}
+			if($insertValid){
+				$this->db->set('raasi_name', $raasiName);
+				$this->db->where('raasi_id', $editId);
+				$this->db->update($tblName); // gi
+
+				return "success";
+			}
+			return "exist";
+		}
+		return "error";
 	}
 
 	function getCity($dataId, $state){
