@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div><!-- /.col -->
 				<div class="col-sm-6">
 					<ol class="breadcrumb float-sm-right">
-						<li class="breadcrumb-item"><a href="#">Home</a></li>
+						<li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
 						<li class="breadcrumb-item active"><?php echo $title; ?></li>
 					</ol>
 				</div><!-- /.col -->
@@ -30,29 +30,33 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="col-lg-6">
 					<div class="card card-primary card-outline">
 						<div class="card-header">
-							<h5 class="m-0">Add <?php echo $title; ?></h5>
+							<h5 class="m-0" id="masterName"></h5>
 						</div>
 						<form role="form">
 							<div class="card-body">
+								<div id="messageDisplay"></div>
+								<input type="hidden" id="action" value="Add">
+								<input type="hidden" id="editId" value="">
 								<div class="form-group">
-									<label for="CountryName1">Country Name</label>
-									<select name="CountryName1" id="CountryName1" class="form-control">
+									<label for="Country1">Country Name</label>
+									<select name="inputCountryName1" id="inputCountryName1" class="form-control">
 										<option value="">Select Country</option>
 									</select>
 								</div>
 								<div class="form-group">
-									<label for="StateName1">State Name</label>
-									<select name="StateName1" id="StateName1" class="form-control">
+									<label for="State1">State Name</label>
+									<select name="inputStateName1" id="inputStateName1" class="form-control">
 										<option value="">Select State</option>
 									</select>
 								</div>
 								<div class="form-group">
-									<label for="exampleInputEmail1">State Name</label>
-									<input type="text" class="form-control" id="exampleInputStateName1" placeholder="State Name">
+									<label for="inputCityName1">City Name</label>
+									<input type="text" class="form-control" id="inputCityName1" placeholder="City Name">
 								</div>
+								<br />
 							</div>
 							<div class="card-footer">
-								<button type="submit" class="btn btn-primary">Submit</button>
+								<button type="button" class="btn btn-primary" onclick="addOrUpdate()">Submit</button>
 							</div>
 						</form>
 					</div>
@@ -64,7 +68,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<table id="cityTable" class="table table-bordered table-striped">
 								<thead>
 								<tr>
-									<th>State</th>
+									<th>City</th>
 									<th>Edit</th>
 									<th>Delete</th>
 								</tr>
@@ -83,7 +87,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!-- /.content-wrapper -->
 <script>
     var masterName = "<?php echo $title; ?>";
-    console.log("HI error " + masterName)
     var cityTable = $("#cityTable").DataTable({
         "responsive": true,
         "autoWidth": false,
@@ -92,35 +95,154 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     });
 
     $(function () {
-        $.get("/api/country", {"dataId" : "All"}, function(data, status){
-            data.map(function (d,i) {
-                $("#CountryName1").append("<option value=\""+d.country_id+"\">"+d.country_name+"</option>");
-            });
+        $("#masterName").html("Add "+masterName);
+        $("#action").val("Add");
+
+        getCountryList();
+
+        $('#inputCountryName1').change(function() {
+            var countryId = $('#inputCountryName1').val()
+            getStateList(countryId);
         });
-        $('#CountryName1').change(function() {
-            $("#StateName1").html("<option value=\"\">Select State</option>");
-            $.get("/api/state", {country : $('#CountryName1').val()}, function(data, status){
-                data.map(function (d,i) {
-                    $("#StateName1").append("<option value=\"" + d.id + "\">" + d.name + "</option>");
-                });
-            });
+
+        $('#inputStateName1').change(function() {
+            getCityList();
         });
-        $('#StateName1').change(function() {
-            $.get("/api/city", {country : $('#CountryName1').val(), state: $('#StateName1').val() }, function(data, status){
-                cityTable.clear().draw();
-                data.map(function (d,i) {
-                    cityTable.row.add( [
-                        d.city_name,
-                        "<td><a href='javascript:void(0)' onClick='deleteData("+d.city_id+")'>Edit</a></td>",
-                        "<td><a href='javascript:void(0)' onClick='deleteData("+d.city_id+")'>Delete</a></td>",
-                    ] ).draw( false );
-                });
+
+
+
+        $('#cityTable').on("click", "button", function(){
+            var rowId = $(this).attr("rowId")
+            var that = this;
+            $.get("/api/delete", {"id" : rowId, "tbl": "city"},  function(data, status) {
+                if(data.responseMessage == "success"){
+                    $("#messageDisplay").html(
+                        "<div class=\"alert alert-success alert-dismissible\">\n" +
+                        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>\n" +
+                        "<h5><i class=\"icon fas fa-check\"></i> Success!</h5>\n" +
+                        "City deleted successfully\n" +
+                        "</div>"
+                    );
+                    cityTable.row($(that).parents('tr')).remove().draw(false);
+                } else {
+                    $("#messageDisplay").html(
+                        "<div class=\"alert alert-danger alert-dismissible\">\n" +
+                        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>\n" +
+                        "<h5><i class=\"icon fas fa-check\"></i> Failure!</h5>\n" +
+                        "Could not perform this delete action." +
+                        "</div>"
+                    );
+                }
+                setTimeout(function () {
+                    $("#messageDisplay").html("");
+                }, 3000)
             });
         });
     });
-    function deleteData(id) {
-        $.get("/api/delete", {"id" : id, "tbl": "city"},  function(data, status) {
-            alert(data)
+
+    function getStateList(countryId) {
+        $.get("/api/state", {country : countryId }, function(data, status){
+            $("#inputStateName1").empty().append("<option value=\"\">Select State</option>");
+            data.map(function (d,i) {
+                $("#inputStateName1").append("<option value=\""+d.state_id+"\">"+d.state_name+"</option>");
+            });
+		});
+    }
+
+    function getCityList() {
+        $.get("/api/city", { state : $('#inputStateName1').val()}, function(data, status){
+            cityTable.clear().draw();
+            data.map(function (d,i) {
+                cityTable.row.add( [
+                    d.city_name,
+                    "<td><a href='javascript:void(0)' onClick='fetchSingle("+d.city_id+", "+d.country_id+", "+d.state_id+")'>Edit</a></td>",
+                    "<td><button rowId='"+d.city_id+"'>Delete</button></td>",
+                ] ).draw( false );
+            });
         });
+    }
+
+    function fetchSingle(id, country_id, state_id) {
+        getStateList(country_id)
+        $.get("/api/city", {"dataId" : id}, function(data, status){
+            if(data.length > 0){
+                var link = " <a href='javascript:void(0)' onclick='changeToAdd(1)'>New</a>"
+                $("#masterName").html("Edit "+masterName + link);
+                $("#editId").val(data[0].city_id);
+                $("#action").val("Edit");
+                $("#inputCityName1").val(data[0].city_name);
+                $("#inputCountryName1").val(data[0].country_id);
+                $("#inputStateName1").val(data[0].state_id);
+            }
+        });
+    }
+
+    function getCountryList() {
+        $.get("/api/country",  {"dataId" : "All"}, function(data, status){
+            data.map(function (d,i) {
+                $("#inputCountryName1").append("<option value=\""+d.country_id+"\">"+d.country_name+"</option>");
+            });
+        });
+    }
+
+    function addOrUpdate() {
+        let action = $("#action").val();
+        if(action == "Add" || action == "Edit"){
+            let editId = $("#editId").val();
+            let inputCityName1 = $("#inputCityName1").val();
+            let inputCountryName1 = $("#inputCountryName1").val();
+            let inputStateName1 = $("#inputStateName1").val();
+            let postJson = {
+                "action" : action,
+                "editId" : editId,
+                "cityName" : inputCityName1,
+                "country" : inputCountryName1,
+                "state" : inputStateName1
+            };
+            $.post("/api/save-city", postJson, function(data, status){
+                if(data["responseMessage"] == "success"){
+                    $("#messageDisplay").html(
+                        "<div class=\"alert alert-success alert-dismissible\">\n" +
+                        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>\n" +
+                        "<h5><i class=\"icon fas fa-check\"></i> Success!</h5>\n" +
+                        "Submitted successfully\n" +
+                        "</div>"
+                    );
+                    getCityList(cityTable)
+                } else if(data["responseMessage"] == "exist"){
+                    $("#messageDisplay").html(
+                        "<div class=\"alert alert-danger alert-dismissible\">\n" +
+                        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>\n" +
+                        "<h5><i class=\"icon fas fa-check\"></i> Failure!</h5>\n" +
+                        "City already exist" +
+                        "</div>"
+                    );
+                } else if(data["responseMessage"] == "error"){
+                    $("#messageDisplay").html(
+                        "<div class=\"alert alert-danger alert-dismissible\">\n" +
+                        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>\n" +
+                        "<h5><i class=\"icon fas fa-check\"></i> Failure!</h5>\n" +
+                        "Could not perform this delete action." +
+                        "</div>"
+                    );
+                }
+                setTimeout(function () {
+                    $("#messageDisplay").html("");
+                }, 3000)
+            });
+            getCityList();
+            changeToAdd(2)
+        }
+    }
+
+    function changeToAdd(k) {
+        $("#action").val("Add");
+        $("#editId").val("");
+        $("#inputCityName1").val("");
+        if(k == 1) {
+            $("#inputCountryName1").val("");
+            $("#inputStateName1").val("");
+        }
+        $("#masterName").html("Add "+masterName);
     }
 </script>

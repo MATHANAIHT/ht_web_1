@@ -13,12 +13,134 @@ class Api_model extends CI_Model
 			"caste" => array("name" =>"tbl_caste", "id"=> "caste_id"),
 			"occupation" => array("name" =>"tbl_occupation", "id"=> "occupation_id"),
 			"education" => array("name" =>"tbl_education", "id"=> "education_id"),
+			"city" => array("name" =>"tbl_city", "id"=> "city_id"),
+			"subCaste" => array("name" =>"tbl_sub_caste", "id"=> "sub_caste_id"),
+
 
 			"raasi" => array("name" =>"tbl_raasi", "id"=> "raasi_id"),
 			"star" => array("name" =>"tbl_star", "id"=> "star_id"),
-			"city" => array("name" =>"tbl_city", "id"=> "city_id"),
 		);
 		return $tableNames[$tbl];
+	}
+
+	function getCity($dataId, $state){
+		$tbl = $this->getTables("city");
+		$tblName = $tbl["name"];
+		if($state != ""){
+			$query = $this->db->get_where($tblName, array('state_id' => $state));
+		} else if($dataId != "") {
+			$query = $this->db->get_where($tblName, array($tbl["id"] => $dataId));
+		}
+		$row = $query->result();
+		return $row;
+	}
+
+	function saveCity($action, $editId, $state, $country, $cityName){
+		$tbl = $this->getTables("city");
+		$tblName = $tbl["name"];
+		if($action == "Add") {
+			$query = $this->db->get_where($tblName, array('city_name' => $cityName, 'country_id'=> $country, 'state_id'=> $state));
+			$row = $query->result();
+			if(count($row) == 0){
+				date_default_timezone_set("Asia/Calcutta");
+				$date = date('Y-m-d H:i:s');
+				$data = array();
+				$data["city_name"] = $cityName;
+				$data["state_id"] = $state;
+				$data["country_id"] = $country;
+				$data["created_at"] = $date;
+				$this->db->insert($tblName, $data);
+				return "success";
+			} else {
+				return "exist";
+			}
+		} else if($action == "Edit") {
+			$query = $this->db->get_where($tblName, array('city_name' => $cityName, 'country_id'=> $country, 'state_id'=> $state));
+			$insertValid = false;
+			if ($query->num_rows() == 0){
+				$insertValid = true;
+			} else if ($query->num_rows() == 1){
+				$row = $query->row();
+				if($row->city_id != $editId){
+					return "exist";
+				} else {
+					$insertValid = true;
+				}
+			} else {
+				$insertValid = true;
+			}
+			if($insertValid){
+				$this->db->set('city_name', $cityName);
+				$this->db->set('state_id', $state);
+				$this->db->set('country_id', $country);
+				$this->db->where($tbl["id"], $editId);
+				$this->db->update($tblName); // gi
+
+				return "success";
+			}
+			return "exist";
+		}
+		return "error";
+	}
+
+	function getSubCaste($dataId, $caste){
+		$tbl = $this->getTables("subCaste");
+		$tblName = $tbl["name"];
+		if($caste != ""){
+			$query = $this->db->get_where($tblName, array('caste_id' => $caste));
+		} else if($dataId != "") {
+			$query = $this->db->get_where($tblName, array($tbl["id"] => $dataId));
+		}
+		$row = $query->result();
+		return $row;
+	}
+
+	function saveSubCaste($action, $editId, $caste, $religion, $subCasteName){
+		$tbl = $this->getTables("subCaste");
+		$tblName = $tbl["name"];
+		if($action == "Add") {
+			$query = $this->db->get_where($tblName, array('sub_caste_name' => $subCasteName, 'religion_id'=> $religion, 'caste_id' => $caste));
+			$row = $query->result();
+			if(count($row) == 0){
+				date_default_timezone_set("Asia/Calcutta");
+				$date = date('Y-m-d H:i:s');
+				$data = array();
+				$data["sub_caste_name"] = $subCasteName;
+				$data["caste_id"] = $caste;
+				$data["religion_id"] = $religion;
+				$data["created_at"] = $date;
+				$this->db->insert($tblName, $data);
+				return "success";
+			} else {
+				return "exist";
+			}
+		} else if($action == "Edit") {
+			$query = $this->db->get_where($tblName, array('sub_caste_name' => $subCasteName, 'religion_id'=> $religion, 'caste_id' => $caste));
+			$insertValid = false;
+			if ($query->num_rows() == 0){
+				$insertValid = true;
+			} else if ($query->num_rows() == 1){
+				$row = $query->row();
+				if($row->sub_caste_id != $editId){
+					return "exist";
+				} else {
+					$insertValid = true;
+				}
+			} else {
+				$insertValid = true;
+			}
+			if($insertValid){
+				$this->db->set('sub_caste_name', $subCasteName);
+				$this->db->set('caste_id', $caste);
+				$this->db->set('religion_id', $religion);
+				$this->db->where($tbl["id"], $editId);
+				$this->db->update($tblName); // gi
+
+				return "success";
+			}
+			return "exist";
+		}
+		return "error";
 	}
 
 	function getOccupation($dataId, $occupationCategory){

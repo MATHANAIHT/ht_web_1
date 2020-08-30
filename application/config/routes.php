@@ -94,8 +94,6 @@ $route['api_controller'] = 'api';
 $route['api/login'] = 'api/login';
 $route['api/user-type'] = 'api/userType';
 $route['api/admin-user'] = 'api/adminUser';
-$route['api/city'] = 'api/city';
-$route['api/sub-caste'] = 'api/subCaste';
 $route['api/raasi'] = 'api/raasi';
 $route['api/star'] = 'api/star';
 $route['api/annual-income'] = 'api/annualIncome';
@@ -107,6 +105,11 @@ $route['api/state'] = 'api/state';
 $route['api/save-state'] = 'api/saveState';
 $route['api/caste'] = 'api/caste';
 $route['api/save-caste'] = 'api/saveCaste';
+
+$route['api/city'] = 'api/city';
+$route['api/save-city'] = 'api/saveCity';
+$route['api/sub-caste'] = 'api/subCaste';
+$route['api/save-sub-caste'] = 'api/saveSubCaste';
 
 $route['api/occupation'] = 'api/occupation';
 $route['api/save-occupation'] = 'api/saveOccupation';

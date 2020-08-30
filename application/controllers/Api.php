@@ -23,6 +23,52 @@ class Api extends CI_Controller {
 		echo json_encode($array);
 	}
 
+	public function city()
+	{
+		header('Content-Type: application/json');
+		$dataId = $this->input->get('dataId');
+		$state = $this->input->get('state');
+		$row = $this->api_model->getCity($dataId, $state);
+		echo json_encode($row);
+	}
+
+	public function saveCity() {
+		header('Content-Type: application/json');
+		$action = $this->input->post('action');
+		$editId = $this->input->post('editId');
+		$country = $this->input->post('country');
+		$state = $this->input->post('state');
+		$cityName = $this->input->post('cityName');
+		$responseMessage = $this->api_model->saveCity($action, $editId, $state, $country, $cityName);
+		$array = array(
+			'responseMessage' => $responseMessage
+		);
+		echo json_encode($array);
+	}
+
+	public function subCaste()
+	{
+		header('Content-Type: application/json');
+		$dataId = $this->input->get('dataId');
+		$caste = $this->input->get('caste');
+		$row = $this->api_model->getSubCaste($dataId, $caste);
+		echo json_encode($row);
+	}
+
+	public function saveSubCaste() {
+		header('Content-Type: application/json');
+		$action = $this->input->post('action');
+		$editId = $this->input->post('editId');
+		$religion = $this->input->post('religion');
+		$caste = $this->input->post('caste');
+		$subCasteName = $this->input->post('subCasteName');
+		$responseMessage = $this->api_model->saveSubCaste($action, $editId, $caste, $religion, $subCasteName);
+		$array = array(
+			'responseMessage' => $responseMessage
+		);
+		echo json_encode($array);
+	}
+
 	public function occupation()
 	{
 		header('Content-Type: application/json');
@@ -231,6 +277,8 @@ class Api extends CI_Controller {
 	}
 
 
+
+
 	public function login()
 	{
 		$password = $this->input->get('password');
@@ -255,35 +303,6 @@ class Api extends CI_Controller {
 		$row = $query->result();
 		echo json_encode( $row );
 	}
-
-	public function city()
-	{
-		header('Content-Type: application/json');
-		$country = $this->input->get('country');
-		$state = $this->input->get('state');
-		if($country != "" && $state != "") {
-			$query = $this->db->query("SELECT * FROM tbl_city where country_id='".$country."' and state_id='".$state."'; ") ;
-			$row = $query->result();
-			echo json_encode( $row );
-		} else {
-			echo json_encode( "[]" );
-		}
-
-	}
-
-	public function subCaste()
-	{
-		header('Content-Type: application/json');
-		$religion = $this->input->get('religion');
-		$caste = $this->input->get('caste');
-		if($religion != "" && $caste != ""){
-			$query = $this->db->query("SELECT sub_caste_id as scid, sub_caste_name as scname FROM tbl_sub_caste where caste_id='".$caste."'; ") ;
-			$row = $query->result();
-			echo json_encode( $row );
-		} else {
-			echo json_encode( "[]" );
-		}
-	}
 	public function raasi()
 	{
 		header('Content-Type: application/json');
@@ -304,7 +323,6 @@ class Api extends CI_Controller {
 			echo json_encode( "[]" );
 		}
 	}
-
 	public function annualIncome()
 	{
 		header('Content-Type: application/json');
