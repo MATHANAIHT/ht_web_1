@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
+	<meta http-equiv=Content-Type content="text/html; charset=utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
 
@@ -195,18 +195,18 @@
 										<p>Mother Tongue</p>
 									</a>
 								</li>
-								<li class="nav-item">
-									<a href="/admin/marital-status" class="nav-link <?php if($currentUrl == 'admin/marital-status') echo "active"; ?>">
+<!--								<li class="nav-item">
+									<a href="/admin/marital-status" class="nav-link <?php /*if($currentUrl == 'admin/marital-status') echo "active"; */?>">
 										<i class="far fa-circle nav-icon"></i>
 										<p>Marital Status</p>
 									</a>
 								</li>
 								<li class="nav-item">
-									<a href="/admin/height" class="nav-link <?php if($currentUrl == 'admin/height') echo "active"; ?>">
+									<a href="/admin/height" class="nav-link <?php /*if($currentUrl == 'admin/height') echo "active"; */?>">
 										<i class="far fa-circle nav-icon"></i>
 										<p>Height</p>
 									</a>
-								</li>
+								</li>-->
 							</ul>
 						</li>
 						<li class="nav-item has-treeview <?php if($currentUrl == 'admin/country' || $currentUrl =='admin/state' || $currentUrl == 'admin/city') echo 'menu-open' ?>">
@@ -279,8 +279,9 @@
 								</li>
 							</ul>
 						</li>
-						<li class="nav-item has-treeview <?php if($currentUrl == 'admin/education-category' || $currentUrl =='admin/education' || $currentUrl == 'admin/occupation' || $currentUrl == 'admin/occupation-category' || $currentUrl == 'admin/annual-income' || $currentUrl == 'admin/employed-in') echo 'menu-open' ?>">
-							<a href="#" class="nav-link <?php if($currentUrl == 'admin/education-category' || $currentUrl =='admin/education' || $currentUrl == 'admin/occupation' || $currentUrl == 'admin/occupation-category' || $currentUrl == 'admin/annual-income' || $currentUrl == 'admin/employed-in') echo 'active' ?>">
+
+						<li class="nav-item has-treeview <?php if($currentUrl == 'admin/education-category' || $currentUrl =='admin/education' || $currentUrl == 'admin/occupation' || $currentUrl == 'admin/occupation-category' || $currentUrl == 'admin/annual-income' || $currentUrl == 'admin/employed-in'  || $currentUrl == 'admin/annual-income') echo 'menu-open' ?>">
+							<a href="#" class="nav-link <?php if($currentUrl == 'admin/education-category' || $currentUrl =='admin/education' || $currentUrl == 'admin/occupation' || $currentUrl == 'admin/occupation-category' || $currentUrl == 'admin/annual-income' || $currentUrl == 'admin/employed-in' || $currentUrl == 'admin/annual-income') echo 'active' ?>">
 								<i class="nav-icon fas fa-tachometer-alt"></i>
 								<p>
 									Professional Info
@@ -312,16 +313,22 @@
 										<p>Occupation</p>
 									</a>
 								</li>
-								<li class="nav-item">
-									<a href="/admin/annual-income" class="nav-link <?php if($currentUrl == 'admin/annual-income') echo "active"; ?>">
+								<!--<li class="nav-item">
+									<a href="/admin/annual-income" class="nav-link <?php /*if($currentUrl == 'admin/annual-income') echo "active"; */?>">
 										<i class="far fa-circle nav-icon"></i>
 										<p>Annual Income</p>
 									</a>
-								</li>
+								</li>-->
 								<li class="nav-item">
 									<a href="/admin/employed-in" class="nav-link <?php if($currentUrl == 'admin/employed-in') echo "active"; ?>">
 										<i class="far fa-circle nav-icon"></i>
 										<p>Employed In</p>
+									</a>
+								</li>
+								<li class="nav-item">
+									<a href="/admin/annual-income" class="nav-link <?php if($currentUrl == 'admin/annual-income') echo "active"; ?>">
+										<i class="far fa-circle nav-icon"></i>
+										<p>Annual Income</p>
 									</a>
 								</li>
 							</ul>

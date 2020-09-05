@@ -23,6 +23,27 @@ class Api extends CI_Controller {
 		echo json_encode($array);
 	}
 
+
+	public function annualIncome()
+	{
+		header('Content-Type: application/json');
+		$dataId = $this->input->get('dataId');
+		$row = $this->api_model->getAnnualIncome($dataId);
+		echo json_encode($row);
+	}
+
+	public function saveAnnualIncome() {
+		header('Content-Type: application/json');
+		$action = $this->input->post('action');
+		$editId = $this->input->post('editId');
+		$annualIncome = $this->input->post('annualIncomeName');
+		$responseMessage = $this->api_model->saveAnnualIncome($action, $editId, $annualIncome);
+		$array = array(
+			'responseMessage' => $responseMessage
+		);
+		echo json_encode($array);
+	}
+
 	public function raasi() {
 		header('Content-Type: application/json');
 		$dataId = $this->input->get('dataId');
@@ -43,9 +64,11 @@ class Api extends CI_Controller {
 	}
 
 	public function star() {
+
 		header('Content-Type: application/json');
 		$dataId = $this->input->get('dataId');
-		$row = $this->api_model->getStar($dataId);
+		$raasi = $this->input->get('raasi');
+		$row = $this->api_model->getStar($dataId, $raasi);
 		echo json_encode($row);
 	}
 
@@ -54,7 +77,8 @@ class Api extends CI_Controller {
 		$action = $this->input->post('action');
 		$editId = $this->input->post('editId');
 		$starName = $this->input->post('starName');
-		$responseMessage = $this->api_model->saveStar($action, $editId, $starName);
+		$raasi = $this->input->post('raasi');
+		$responseMessage = $this->api_model->saveStar($action, $editId, $starName, $raasi);
 		$array = array(
 			'responseMessage' => $responseMessage
 		);
@@ -338,14 +362,6 @@ class Api extends CI_Controller {
 	{
 		header('Content-Type: application/json');
 		$query = $this->db->query('SELECT * FROM tbl_user_type') ;
-		$row = $query->result();
-		echo json_encode( $row );
-	}
-	public function annualIncome()
-	{
-		header('Content-Type: application/json');
-		$queryStr = "select * from tbl_occupation_category;";
-		$query = $this->db->query($queryStr);
 		$row = $query->result();
 		echo json_encode( $row );
 	}

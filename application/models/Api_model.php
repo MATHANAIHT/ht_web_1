@@ -17,12 +17,14 @@ class Api_model extends CI_Model
 			"subCaste" => array("name" =>"tbl_sub_caste", "id"=> "sub_caste_id"),
 			"raasi" => array("name" =>"tbl_raasi", "id"=> "raasi_id"),
 			"star" => array("name" =>"tbl_star", "id"=> "star_id"),
+			"annualIncome" => array("name" =>"tbl_annual_income", "id"=> "annual_income_id"),
 		);
 		return $tableNames[$tbl];
 	}
 
-	function getStar($dataId){
-		$tbl = $this->getTables("star");
+
+	function getAnnualIncome($dataId){
+		$tbl = $this->getTables("annualIncome");
 		$tblName = $tbl["name"];
 		if($dataId == "All"){
 			$query = $this->db->get($tblName);
@@ -33,17 +35,17 @@ class Api_model extends CI_Model
 		return $row;
 	}
 
-	function saveStar($action, $editId, $starName){
-		$tblNameObj = $this->getTables("star");
+	function saveAnnualIncome($action, $editId, $annualIncome){
+		$tblNameObj = $this->getTables("annualIncome");
 		$tblName = $tblNameObj["name"];
 		if($action == "Add") {
-			$query = $this->db->get_where($tblName, array('star_name' => $starName));
+			$query = $this->db->get_where($tblName, array('annual_income' => $annualIncome));
 			$row = $query->result();
 			if(count($row) == 0){
 				date_default_timezone_set("Asia/Calcutta");
 				$date = date('Y-m-d H:i:s');
 				$data = array();
-				$data["star_name"] = $starName;
+				$data["annual_income"] = $annualIncome;
 				$data["created_at"] = $date;
 				$this->db->insert($tblName, $data);
 				return "success";
@@ -51,7 +53,65 @@ class Api_model extends CI_Model
 				return "exist";
 			}
 		} else if($action == "Edit") {
-			$query = $this->db->get_where($tblName, array('star_name' => $starName));
+			$query = $this->db->get_where($tblName, array('annual_income' => $annualIncome));
+			$insertValid = false;
+			if ($query->num_rows() == 0){
+				$insertValid = true;
+			} else if ($query->num_rows() == 1){
+				$row = $query->row();
+				if($row->annual_income_id != $editId){
+					return "exist";
+				} else {
+					$insertValid = true;
+				}
+			} else {
+				$insertValid = true;
+			}
+			if($insertValid){
+				$this->db->set('annual_income', $annualIncome);
+				$this->db->where('annual_income_id', $editId);
+				$this->db->update($tblName); // gi
+
+				return "success";
+			}
+			return "exist";
+		}
+		return "error";
+	}
+
+
+	function getStar($dataId, $raasi){
+		$tbl = $this->getTables("star");
+		$tblName = $tbl["name"];
+		if($raasi != ""){
+			$query = $this->db->get_where($tblName, array('raasi_id' => $raasi));
+		} else if($dataId != "") {
+			$query = $this->db->get_where($tblName, array($tbl["id"] => $dataId));
+		}
+		$row = $query->result();
+		return $row;
+	}
+
+	function saveStar($action, $editId, $starName, $raasi){
+		$tbl = $this->getTables("star");
+		$tblName = $tbl["name"];
+		if($action == "Add") {
+			$query = $this->db->get_where($tblName, array('star_name' => $starName, 'raasi_id'=> $raasi));
+			$row = $query->result();
+			if(count($row) == 0){
+				date_default_timezone_set("Asia/Calcutta");
+				$date = date('Y-m-d H:i:s');
+				$data = array();
+				$data["star_name"] = $starName;
+				$data["raasi_id"] = $raasi;
+				$data["created_at"] = $date;
+				$this->db->insert($tblName, $data);
+				return "success";
+			} else {
+				return "exist";
+			}
+		} else if($action == "Edit") {
+			$query = $this->db->get_where($tblName, array('star_name' => $starName, 'raasi_id'=> $raasi));
 			$insertValid = false;
 			if ($query->num_rows() == 0){
 				$insertValid = true;
@@ -67,7 +127,8 @@ class Api_model extends CI_Model
 			}
 			if($insertValid){
 				$this->db->set('star_name', $starName);
-				$this->db->where('star_id', $editId);
+				$this->db->set('raasi_id', $raasi);
+				$this->db->where($tbl["id"], $editId);
 				$this->db->update($tblName); // gi
 
 				return "success";
@@ -77,6 +138,7 @@ class Api_model extends CI_Model
 		return "error";
 	}
 
+	
 	function getRaasi($dataId){
 		$tbl = $this->getTables("raasi");
 		$tblName = $tbl["name"];

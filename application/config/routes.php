@@ -51,13 +51,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 
 // For User Routing :
-$route['default_controller'] = 'frontend';
-$route['login'] = 'frontend/login';
-$route['register'] = 'frontend/register';
-$route['verify'] = 'frontend/verify';
-$route['forgot-password'] = 'frontend/forgotPassword';
-$route['update-password'] = 'frontend/updatePassword';
-$route['change-password'] = 'frontend/changePassword';
+//$route['default_controller'] = 'frontend';
+//$route['login'] = 'frontend/login';
+//$route['register'] = 'frontend/register';
+//$route['verify'] = 'frontend/verify';
+//$route['forgot-password'] = 'frontend/forgotPassword';
+//$route['update-password'] = 'frontend/updatePassword';
+//$route['change-password'] = 'frontend/changePassword';
 //$route['(:any)'] = '';
 
 
@@ -69,19 +69,15 @@ $route['admin/login'] = 'admin/login';
 $route['admin/forgot-password'] = 'admin/forgotPassword';
 $route['admin/update-password'] = 'admin/updatePassword';
 $route['admin/change-password'] = 'admin/changePassword';
-//Masters
 $route['admin/mother-tongue'] = 'admin/motherTongue';
-// Location info
 $route['admin/country'] = 'admin/country';
 $route['admin/state'] = 'admin/state';
 $route['admin/city'] = 'admin/city';
-// Religion info
 $route['admin/religion'] = 'admin/religion';
 $route['admin/caste'] = 'admin/caste';
 $route['admin/sub-caste'] = 'admin/subCaste';
 $route['admin/raasi'] = 'admin/raasi';
 $route['admin/star'] = 'admin/star';
-// Professional Info
 $route['admin/education-category'] = 'admin/educationCategory';
 $route['admin/education'] = 'admin/education';
 $route['admin/occupation-category'] = 'admin/occupationCategory';
@@ -94,9 +90,9 @@ $route['api_controller'] = 'api';
 $route['api/login'] = 'api/login';
 $route['api/user-type'] = 'api/userType';
 $route['api/admin-user'] = 'api/adminUser';
-$route['api/annual-income'] = 'api/annualIncome';
 $route['api/delete'] = 'api/delete';
-
+$route['api/annual-income'] = 'api/annualIncome';
+$route['api/save-annual-income'] = 'api/saveAnnualIncome';
 $route['api/country'] = 'api/country';
 $route['api/save-country'] = 'api/saveCountry';
 $route['api/state'] = 'api/state';
@@ -128,3 +124,14 @@ $route['api/save-occupation-category'] = 'api/saveOccupationCategory';
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
+
+$route['default_controller'] = 'front';
+$route['front_controller'] = 'front';
+$route['login'] = 'front/login';
+$route['register'] = 'front/register';
+$route['verify'] = 'front/verify';
+$route['forgot-password'] = 'front/forgotPassword';
+$route['update-password'] = 'front/updatePassword';
+$route['change-password'] = 'front/changePassword';
+$route['(:any)'] = 'front/login';

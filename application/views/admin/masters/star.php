@@ -38,6 +38,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<input type="hidden" id="action" value="Add">
 								<input type="hidden" id="editId" value="">
 								<div class="form-group">
+									<label for="Raasi1">Raasi Name</label>
+									<select name="inputRaasiName1" id="inputRaasiName1" class="form-control">
+										<option value="">Select Raasi</option>
+									</select>
+								</div>
+								<div class="form-group">
 									<label for="inputStarName1">Star Name</label>
 									<input type="text" class="form-control" id="inputStarName1" placeholder="Star Name">
 								</div>
@@ -86,7 +92,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         $("#masterName").html("Add "+masterName);
         $("#action").val("Add");
 
-        getStarList(starTable);
+        getRaasiList();
+
+        $('#inputRaasiName1').change(function() {
+            getStarList();
+        });
+
+
 
         $('#starTable').on("click", "button", function(){
             var rowId = $(this).attr("rowId")
@@ -117,20 +129,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         });
     });
 
-    function fetchSingle(id) {
-        $.get("/api/star", {"dataId" : id}, function(data, status){
-            if(data.length > 0){
-                var link = " <a href='javascript:void(0)' onclick='changeToAdd()'>New</a>"
-                $("#masterName").html("Edit "+masterName + link);
-                $("#editId").val(data[0].star_id);
-                $("#action").val("Edit");
-                $("#inputStarName1").val(data[0].star_name);
-            }
-        });
-    }
-
-    function getStarList(starTable) {
-        $.get("/api/star", {"dataId" : "All"}, function(data, status){
+    function getStarList() {
+        $.get("/api/star", {raasi : $('#inputRaasiName1').val()}, function(data, status){
             starTable.clear().draw();
             data.map(function (d,i) {
                 starTable.row.add( [
@@ -142,15 +142,38 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         });
     }
 
+    function fetchSingle(id) {
+        $.get("/api/star", {"dataId" : id}, function(data, status){
+            if(data.length > 0){
+                var link = " <a href='javascript:void(0)' onclick='changeToAdd(1)'>New</a>"
+                $("#masterName").html("Edit "+masterName + link);
+                $("#editId").val(data[0].star_id);
+                $("#action").val("Edit");
+                $("#inputStarName1").val(data[0].star_name);
+                $("#inputRaasiName1").val(data[0].raasi_id);
+            }
+        });
+    }
+
+    function getRaasiList() {
+        $.get("/api/raasi",  {"dataId" : "All"}, function(data, status){
+            data.map(function (d,i) {
+                $("#inputRaasiName1").append("<option value=\""+d.raasi_id+"\">"+d.raasi_name+"</option>");
+            });
+        });
+    }
+
     function addOrUpdate() {
         let action = $("#action").val();
         if(action == "Add" || action == "Edit"){
             let editId = $("#editId").val();
             let inputStarName1 = $("#inputStarName1").val();
+            let inputRaasiName1 = $("#inputRaasiName1").val();
             let postJson = {
                 "action" : action,
                 "editId" : editId,
-                "starName" : inputStarName1
+                "starName" : inputStarName1,
+                "raasi" : inputRaasiName1
             };
             $.post("/api/save-star", postJson, function(data, status){
                 if(data["responseMessage"] == "success"){
@@ -183,17 +206,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     $("#messageDisplay").html("");
                 }, 3000)
             });
-            $("#action").val("Add");
-            $("#editId").val("");
-            $("#inputStarName1").val("");
-            $("#masterName").html("Add "+masterName);
+            getStarList();
+            changeToAdd(2)
         }
     }
 
-    function changeToAdd() {
+    function changeToAdd(k) {
         $("#action").val("Add");
         $("#editId").val("");
         $("#inputStarName1").val("");
+        if(k == 1)
+        	$("#inputRaasiName1").val("");
         $("#masterName").html("Add "+masterName);
     }
 </script>
