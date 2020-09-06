@@ -24,8 +24,35 @@ class Api extends CI_Controller {
 	}
 
 	public function createUser($action){
-		echo $action;
-		print_r($_POST);
+		header('Content-Type: application/json');
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('profileCreatedFor', 'Profile Created For', 'required');
+		$this->form_validation->set_rules('fullName', 'Name', 'required');
+		$this->form_validation->set_rules('dateOfBirth3', 'D.O.B Year', 'required');
+		$this->form_validation->set_rules('dateOfBirth2', 'D.O.B Month', 'required');
+		$this->form_validation->set_rules('dateOfBirth1', 'D.O.B Day', 'required');
+		$this->form_validation->set_rules('religion', 'Religion', 'required');
+		$this->form_validation->set_rules('caste', 'Caste', 'required');
+		$this->form_validation->set_rules('maritalStatus', 'Marital Status', 'required');
+		$this->form_validation->set_rules('motherTongue', 'Mother Tongue', 'required');
+		$this->form_validation->set_rules('country', 'Country', 'required');
+		$this->form_validation->set_rules('mobile', 'Mobile', 'required|numeric|min_length[10]|max_length[10]|is_unique[tbl_user_login.mobile_number]');
+		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|is_unique[tbl_user_login.email_id]');
+		$this->form_validation->set_rules('password', 'Password', 'required');
+
+		$array = array();
+		$array["dataType"] = "";
+		$array["message"] = "";
+		if ($this->form_validation->run() != FALSE) {
+			$array = $this->api_model->createUser($this->input->post());
+
+		} else {
+			$array["dataType"] = "error";
+			$array["message"] = validation_errors(" ", "::::");
+		}
+
+		echo json_encode($array);
 	}
 
 	public function annualIncome()

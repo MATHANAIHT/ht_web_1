@@ -25,7 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<div class="col-sm-6">
 						<ol class="breadcrumb float-sm-right">
 							<li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
-							<li class="breadcrumb-item active"><?php echo $title; ?></li>
+							<li class="breadcrumb-item active">Add <?php echo $title; ?></li>
 						</ol>
 					</div>
 				</div>
@@ -35,54 +35,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<!-- Main content -->
 		<section class="content">
 			<div class="row">
-				<!--<div class="col-md-3">
-					<div class="card">
-						<div class="card-header">
-							<h3 class="card-title">Folders</h3>
-							<div class="card-tools">
-								<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-								</button>
-							</div>
-						</div>
-						<div class="card-body p-0">
-							<ul class="nav nav-pills flex-column">
-								<li class="nav-item active">
-									<a href="#" class="nav-link">
-										<i class="fas fa-inbox"></i> General
-									</a>
-								</li>
-								<li class="nav-item">
-									<a href="#" class="nav-link">
-										<i class="far fa-envelope"></i> Sent
-									</a>
-								</li>
-								<li class="nav-item">
-									<a href="#" class="nav-link">
-										<i class="far fa-file-alt"></i> Drafts
-									</a>
-								</li>
-								<li class="nav-item">
-									<a href="#" class="nav-link">
-										<i class="fas fa-filter"></i> Junk
-										<span class="badge bg-warning float-right">65</span>
-									</a>
-								</li>
-								<li class="nav-item">
-									<a href="#" class="nav-link">
-										<i class="far fa-trash-alt"></i> Trash
-									</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>-->
 				<div class="col-md-12">
 					<div class="card card-primary card-outline">
-						<div class="card-header">
-							<h3 class="card-title"><?php echo $title; ?></h3>
-						</div>
+						<!--<div class="card-header">
+							<h3 class="card-title"><?php /*echo $title; */?></h3>
+						</div>-->
 						<div class="card-body">
 							<form action="" id="addUserForm">
+								<div id="messageDisplay"></div>
 								<div class="row">
 									<div class="col-sm-6">
 										<div class="form-group">
@@ -128,19 +88,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<div class="col-8">
 													<div class="form-group clearfix" style="padding-top: 10px">
 														<div class="icheck-primary d-inline">
-															<input type="radio" id="gender1" name="gender">
+															<input type="radio" id="gender1" name="gender" value="Male">
 															<label for="gender1">
 																Male&nbsp;
 															</label>
 														</div>
 														<div class="icheck-primary d-inline">
-															<input type="radio" id="gender2" name="gender">
+															<input type="radio" id="gender2" name="gender" value="Female">
 															<label for="gender2">
 																Female&nbsp;
 															</label>
 														</div>
 														<div class="icheck-primary d-inline">
-															<input type="radio" id="gender3" name="gender">
+															<input type="radio" id="gender3" name="gender" value="Other">
 															<label for="gender3">
 																Other
 															</label>
@@ -444,7 +404,39 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
             $('#createUser').click(function () {
                 $.post("/api/users/add", $('#addUserForm').serialize(), function(data, status){
-                    alert(data)
+					if(data["error"] != ""){
+					    let dataType = data["dataType"];
+					    let MESSAGE = data["message"];
+                        if(dataType == "error"){
+                            let msg = ""
+							if(MESSAGE.includes("::::")){
+                                let errArray = MESSAGE.split("::::");
+                                msg = errArray[0]
+							} else {
+							    msg = MESSAGE
+							}
+                            $("#messageDisplay").html(
+                                "<div class=\"alert alert-danger alert-dismissible\">\n" +
+                                "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>\n" +
+                                "<h5><i class=\"icon fas fa-check\"></i> Failure!</h5>\n" +
+                                msg +
+                                "</div>"
+                            );
+						} else {
+                            $("#messageDisplay").html(
+                                "<div class=\"alert alert-success alert-dismissible\">\n" +
+                                "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>\n" +
+                                "<h5><i class=\"icon fas fa-check\"></i> Success!</h5>\n" +
+                                "Submitted successfully\n" +
+                                "</div>"
+                            );
+                            $("#addUserForm").trigger("reset");
+                            $('.select2').val("").trigger('change');
+						}
+						setTimeout(function () {
+							$("#messageDisplay").html("");
+						}, 3000)
+					}
                 });
             })
         });

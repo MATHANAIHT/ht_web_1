@@ -21,6 +21,7 @@ ALTER TABLE `tbl_raasi` CHANGE `raasi_name` `raasi_name` varchar(255) CHARACTER 
 create table tbl_user (
 	user_id bigint(20) NOT NULL PRIMARY KEY auto_increment,
 	profile_created_by varchar(255),
+	gender varchar(255),
 	full_name varchar(255),
 	date_of_birth varchar(255),
 	marital_status varchar(255),
@@ -59,7 +60,9 @@ create table tbl_user_login (
 	mobile_number varchar(255),
 	email_id varchar(255),
 	password varchar(255) NOT NULL,
-	FOREIGN KEY (user_id) REFERENCES tbl_user(user_id)
+	country bigint(20) NOT NULL,
+	FOREIGN KEY (user_id) REFERENCES tbl_user(user_id),
+	FOREIGN KEY (country) REFERENCES tbl_country(country_id)
 );
 
 create table tbl_user_family (

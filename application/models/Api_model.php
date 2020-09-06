@@ -22,6 +22,44 @@ class Api_model extends CI_Model
 		return $tableNames[$tbl];
 	}
 
+	function createUser($postDataArray){
+		$dataType = "error";
+		$message = "Please try again later.";
+
+		$dob = new DateTime();
+		$dob->setDate($postDataArray['dateOfBirth3'], $postDataArray['dateOfBirth2'], $postDataArray['dateOfBirth1']);
+		$data = array(
+			'profile_created_by' => $postDataArray['profileCreatedFor'],
+			'gender' => $postDataArray['gender'],
+			'full_name' => $postDataArray['fullName'],
+			'date_of_birth' => $dob->format('Y-m-d'),
+			'marital_status' => $postDataArray['maritalStatus'],
+			'religion' => $postDataArray['religion'],
+			'caste' => $postDataArray['caste'],
+			'mother_tongue' => $postDataArray['motherTongue'],
+		);
+		$this->db->insert('tbl_user', $data);
+		$userId = $this->db->insert_id();
+
+		if($userId > 0){
+			$data1 = array(
+				'user_id' => $userId,
+				'mobile_number' => $postDataArray['mobile'],
+				'email_id' => $postDataArray['email'],
+				'password' => $postDataArray['password'],
+				'country' => $postDataArray['country'],
+			);
+			$this->db->insert('tbl_user_login', $data1);
+			$dataType = "succcess";
+			$message = "Success";
+		}
+
+		$array = array(
+			'dataType' => $dataType,
+			'message' => $message
+		);
+		return $array;
+	}
 
 	function getAnnualIncome($dataId){
 		$tbl = $this->getTables("annualIncome");
@@ -138,7 +176,7 @@ class Api_model extends CI_Model
 		return "error";
 	}
 
-	
+
 	function getRaasi($dataId){
 		$tbl = $this->getTables("raasi");
 		$tblName = $tbl["name"];
