@@ -23,6 +23,10 @@ class Api extends CI_Controller {
 		echo json_encode($array);
 	}
 
+	public function createUser($action){
+		echo $action;
+		print_r($_POST);
+	}
 
 	public function annualIncome()
 	{

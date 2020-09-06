@@ -9,6 +9,16 @@ class Admin extends CI_Controller {
 		$this->load->view('admin/auth/login', $data);
 	}
 
+	public function users()
+	{
+		$data['title'] = ucfirst("User");
+//		$data['action'] = ucfirst($action);
+//		$data['editId'] = $editId;
+		$this->load->view('admin/templates/header', $data);
+		$this->load->view('admin/own/user');
+		$this->load->view('admin/templates/footer', $data);
+	}
+
 	public function dashboard()
 	{
 		$data['title'] = ucfirst("Admin dashboard"); // Capitalize the first letter

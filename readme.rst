@@ -12,14 +12,14 @@ ALTER DATABASE matrimony CHARACTER SET utf8 COLLATE utf8_general_ci;
 SELECT default_character_set_name FROM information_schema.SCHEMATA S WHERE schema_name = "matrimony";
 
 // For tamil language
-ALTER TABLE `tbl_raasi` CHANGE `raasi_name` `raasi_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL; 
+ALTER TABLE `tbl_raasi` CHANGE `raasi_name` `raasi_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
 
 
 *******************************************************************
 // User's Tables
 *******************************************************************
-create table tbl_user ( 
-	user_id bigint(20) NOT NULL PRIMARY KEY auto_increment, 
+create table tbl_user (
+	user_id bigint(20) NOT NULL PRIMARY KEY auto_increment,
 	profile_created_by varchar(255),
 	full_name varchar(255),
 	date_of_birth varchar(255),
@@ -37,7 +37,7 @@ create table tbl_user (
 	star varchar(255),
 	raasi varchar(255),
 	is_chevvai_dosham varchar(255),
-	chevvai_dosham varchar(255), 
+	chevvai_dosham varchar(255),
 	eating_habits varchar(255),
 	smoking_habits varchar(255),
 	drinking_habits varchar(255),
@@ -54,9 +54,10 @@ create table tbl_user (
 	FOREIGN KEY (caste) REFERENCES tbl_caste(caste_id)
 );
 
-create table tbl_user_login ( 
-	user_id bigint(20) NOT NULL PRIMARY KEY, 
-	email_id varchar(255) NOT NULL,
+create table tbl_user_login (
+	user_id bigint(20) NOT NULL PRIMARY KEY,
+	mobile_number varchar(255),
+	email_id varchar(255),
 	password varchar(255) NOT NULL,
 	FOREIGN KEY (user_id) REFERENCES tbl_user(user_id)
 );
@@ -74,7 +75,7 @@ create table tbl_user_family (
 	bro_married varchar(255),
 	no_of_sis varchar(255),
 	sis_married varchar(255),
-	about_family varchar(255),		
+	about_family varchar(255),
 	modified_at timestamp,
 	FOREIGN KEY (user_id) REFERENCES tbl_user(user_id)
 );
@@ -87,7 +88,7 @@ create table tbl_user_education (
 	employed_in bigint(20),
 	occupation varchar(255),
 	occu_details varchar(255),
-	annual_income bigint(20),		
+	annual_income bigint(20),
 	modified_at timestamp,
 	FOREIGN KEY (user_id) REFERENCES tbl_user(user_id),
 	FOREIGN KEY (education) REFERENCES tbl_education(education_id),
@@ -115,7 +116,7 @@ create table tbl_user_partner (
 	p_smoking varchar(255),
 	p_drinking varchar(255),
 	p_annual_income varchar(255),
-	p_about_my_partner varchar(255),		
+	p_about_my_partner varchar(255),
 	modified_at timestamp,
 	FOREIGN KEY (user_id) REFERENCES tbl_user(user_id)
 );
