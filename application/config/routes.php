@@ -85,6 +85,7 @@ $route['admin/occupation'] = 'admin/occupation';
 $route['admin/annual-income'] = 'admin/annualIncome';
 $route['admin/employed-in'] = 'admin/employedIn';
 $route['admin/users'] = 'admin/users';
+$route['admin/users/list'] = 'admin/listUsers';
 
 // For API Call
 $route['api_controller'] = 'api';
@@ -123,6 +124,7 @@ $route['api/save-education-category'] = 'api/saveEducationCategory';
 $route['api/occupation-category'] = 'api/occupationCategory';
 $route['api/save-occupation-category'] = 'api/saveOccupationCategory';
 $route['api/users/(:any)'] = 'api/createUser/$1';
+$route['api/users'] = 'api/getUsers';
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

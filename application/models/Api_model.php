@@ -22,6 +22,12 @@ class Api_model extends CI_Model
 		return $tableNames[$tbl];
 	}
 
+	function getUsers($postDataArray){
+		$query = $this->db->query("select u.user_id, u.full_name, u.date_of_birth, u.last_login, u.created_at, u.gender, u.religion, u.caste, ul.mobile_number, ul.email_id from tbl_user u left join tbl_user_login ul on ul.user_id=u.user_id");
+		$row = $query->result();
+		return $row;
+	}
+
 	function createUser($postDataArray){
 		$dataType = "error";
 		$message = "Please try again later.";

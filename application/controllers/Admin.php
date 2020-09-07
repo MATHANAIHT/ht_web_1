@@ -9,11 +9,17 @@ class Admin extends CI_Controller {
 		$this->load->view('admin/auth/login', $data);
 	}
 
+	public function listUsers()
+	{
+		$data['title'] = ucfirst("User's List");
+		$this->load->view('admin/templates/header', $data);
+		$this->load->view('admin/own/usersList');
+		$this->load->view('admin/templates/footer', $data);
+	}
+
 	public function users()
 	{
 		$data['title'] = ucfirst("User");
-//		$data['action'] = ucfirst($action);
-//		$data['editId'] = $editId;
 		$this->load->view('admin/templates/header', $data);
 		$this->load->view('admin/own/user');
 		$this->load->view('admin/templates/footer', $data);

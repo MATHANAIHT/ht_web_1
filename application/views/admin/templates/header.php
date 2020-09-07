@@ -180,8 +180,8 @@
 								</p>
 							</a>
 						</li>
-						<li class="nav-item has-treeview <?php if($currentUrl == 'admin/users/add' || $currentUrl == 'admin/users' || $currentUrl == 'admin/height') echo 'menu-open' ?>">
-							<a href="#" class="nav-link <?php if($currentUrl == 'admin/users/add' || $currentUrl == 'admin/users'  || $currentUrl == 'admin/height') echo 'active' ?>">
+						<li class="nav-item has-treeview <?php if($currentUrl == 'admin/users/add' || $currentUrl == 'admin/users/list' || $currentUrl == 'admin/height') echo 'menu-open' ?>">
+							<a href="#" class="nav-link <?php if($currentUrl == 'admin/users/add' || $currentUrl == 'admin/users/list'  || $currentUrl == 'admin/height') echo 'active' ?>">
 								<i class="nav-icon fas fa-tachometer-alt"></i>
 								<p>
 									Users
@@ -190,7 +190,7 @@
 							</a>
 							<ul class="nav nav-treeview">
 								<li class="nav-item">
-									<a href="/admin/users" class="nav-link <?php if($currentUrl == 'admin/users') echo "active"; ?>">
+									<a href="/admin/users/list" class="nav-link <?php if($currentUrl == 'admin/users/list') echo "active"; ?>">
 										<i class="far fa-circle nav-icon"></i>
 										<p>List</p>
 									</a>
