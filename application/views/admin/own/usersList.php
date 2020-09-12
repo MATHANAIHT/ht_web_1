@@ -127,7 +127,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     d.mobile_number,
                     // d.caste,
                     d.last_login,
-                    "<td><a href='javascript:void(0)' onClick='fetchSingle("+d.user_id+")'>Edit</a></td>",
+                    "<td><a href='/admin/users/edit/"+d.user_id+"' target='_blank'>Edit</a></td>",
                     "<td><button rowId='"+d.user_id+"'>Delete</button></td>",
                 ] ).draw( false );
             });

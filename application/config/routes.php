@@ -86,6 +86,7 @@ $route['admin/annual-income'] = 'admin/annualIncome';
 $route['admin/employed-in'] = 'admin/employedIn';
 $route['admin/users'] = 'admin/users';
 $route['admin/users/list'] = 'admin/listUsers';
+$route['admin/users/edit/(:any)'] = 'admin/editUsers/$1';
 
 // For API Call
 $route['api_controller'] = 'api';
