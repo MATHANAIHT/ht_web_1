@@ -3,6 +3,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Admin extends CI_Controller {
 
+	function __construct() {
+		parent::__construct();
+		$this->load->database();
+	}
+
 	public function login()
 	{
 		$data['title'] = ucfirst("Admin Login"); // Capitalize the first letter
@@ -12,6 +17,31 @@ class Admin extends CI_Controller {
 	public function editUsers($id)
 	{
 		$data['title'] = ucfirst("User's Edit");
+
+		$query1 = $this->db->get("tbl_mother_tongue");;
+		$data['motherTongueList'] = $query1->result_array();
+
+		$query2 = $this->db->get("tbl_religion");;
+		$data['religionList'] = $query2->result_array();
+
+		$query3 = $this->db->get("tbl_star");;
+		$data['starList'] = $query3->result_array();
+
+		$query4 = $this->db->get("tbl_employed_in");;
+		$data['employedInList'] = $query4->result_array();
+
+		$query5 = $this->db->get("tbl_occupation");;
+		$data['occupationList'] = $query5->result_array();
+
+		$query6 = $this->db->get("tbl_annual_income");;
+		$data['annualIncomeList'] = $query6->result_array();
+
+		$query7 = $this->db->get("tbl_education");;
+		$data['educationList'] = $query7->result_array();
+
+		$query8 = $this->db->get("tbl_country");;
+		$data['countryList'] = $query8->result_array();
+
 		$this->load->view('admin/templates/header', $data);
 		$this->load->view('admin/own/editUsers');
 		$this->load->view('admin/templates/footer', $data);

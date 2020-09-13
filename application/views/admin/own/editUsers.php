@@ -255,6 +255,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<select name="motherTongue" id="motherTongue"
 														class="form-control select2" style="width: 100%;">
 													<option value="">Select</option>
+													<?php
+													for($i=0; $i<count($motherTongueList); $i++){
+														echo "<option value=\"".$motherTongueList[$i]['mother_tongue_id']."\">".$motherTongueList[$i]['mother_tongue_name']."</option>";
+													}
+													?>
 												</select>
 											</div>
 										</div>
@@ -437,6 +442,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<select name="religion" id="religion" class="form-control select2"
 														style="width: 100%;">
 													<option value="">Select</option>
+													<?php
+														for($i=0; $i<count($religionList); $i++){
+															echo "<option value=\"".$religionList[$i]['religion_id']."\">".$religionList[$i]['religion_name']."</option>";
+														}
+													?>
 												</select>
 											</div>
 										</div>
@@ -488,9 +498,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 													   style="padding-left: 10px; padding-top: 5px">Star</label>
 											</div>
 											<div class="col-8">
-												<select name="Star" id="Star" class="form-control select2"
-														style="width: 100%;">
+												<select name="Star" id="Star" class="form-control select2" style="width: 100%;">
 													<option value="">Select</option>
+													<?php
+													for($i=0; $i<count($starList); $i++){
+														echo "<option value=\"".$starList[$i]['star_id']."\">".$starList[$i]['star_name']."</option>";
+													}
+													?>
 												</select>
 											</div>
 										</div>
@@ -555,6 +569,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<select name="country" id="country" class="form-control select2"
 														style="width: 100%;">
 													<option value="">Select</option>
+													<?php
+													for($i=0; $i<count($countryList); $i++){
+														echo "<option value=\"".$countryList[$i]['country_id']."\">".$countryList[$i]['country_name']."</option>";
+													}
+													?>
 												</select>
 											</div>
 										</div>
@@ -602,6 +621,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<select name="HighestEducation" id="HighestEducation"
 														class="form-control select2" style="width: 100%;">
 													<option value="">Select Education</option>
+													<?php
+													for($i=0; $i<count($educationList); $i++){
+														echo "<option value=\"".$educationList[$i]['education_id']."\">".$educationList[$i]['education_name']."</option>";
+													}
+													?>
 												</select>
 											</div>
 										</div>
@@ -642,6 +666,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<select name="EmployedIn" id="EmployedIn" class="form-control select2"
 														style="width: 100%;">
 													<option value="">Select EmployedIn</option>
+													<?php
+														for($i=0; $i<count($employedInList); $i++){
+															echo "<option value=\"".$employedInList[$i]['employed_in_id']."\">".$employedInList[$i]['employed_in_name']."</option>";
+														}
+													?>
 												</select>
 											</div>
 										</div>
@@ -656,6 +685,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<select name="Occupation" id="Occupation" class="form-control select2"
 														style="width: 100%;">
 													<option value="">Select Occupation</option>
+													<?php
+														for($i=0; $i<count($occupationList); $i++){
+															echo "<option value=\"".$occupationList[$i]['occupation_id']."\">".$occupationList[$i]['occupation_name']."</option>";
+														}
+													?>
 												</select>
 											</div>
 										</div>
@@ -695,6 +729,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<select name="AnnualIncome" id="AnnualIncome"
 														class="form-control select2" style="width: 100%;">
 													<option value="">Select AnnualIncome</option>
+													<?php
+														for($i=0; $i<count($annualIncomeList); $i++){
+															echo "<option value=\"".$annualIncomeList[$i]['annual_income_id']."\">".$annualIncomeList[$i]['annual_income']."</option>";
+														}
+													?>
 												</select>
 											</div>
 										</div>
@@ -706,8 +745,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group">
 										<div class="row">
 											<div class="col-4">
-												<label for="AnnualIncome" style="padding-left: 10px;padding-top: 5px">Family
-													Value *</label>
+												<label for="FamilyValue" style="padding-left: 10px;padding-top: 5px">Family Value *</label>
 											</div>
 											<div class="col-8">
 												<div class="form-group clearfix" style="padding-top: 10px">
@@ -746,8 +784,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group">
 										<div class="row">
 											<div class="col-4">
-												<label for="AnnualIncome" style="padding-left: 10px;padding-top: 5px">Family
-													Type *</label>
+												<label for="FamilyType" style="padding-left: 10px;padding-top: 5px">Family Type *</label>
 											</div>
 											<div class="col-8">
 												<div class="form-group clearfix" style="padding-top: 10px">
@@ -779,8 +816,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group">
 										<div class="row">
 											<div class="col-4">
-												<label for="AnnualIncome" style="padding-left: 10px;padding-top: 5px">Family
-													Status *</label>
+												<label for="FamilyStatus" style="padding-left: 10px;padding-top: 5px">Family Status *</label>
 											</div>
 											<div class="col-8">
 												<div class="form-group clearfix" style="padding-top: 10px">
@@ -823,8 +859,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 													Occupation</label>
 											</div>
 											<div class="col-8">
-												<input type="text" name="FathersOccupation" class="form-control"
-													   id="FathersOccupation" class="form-control">
+												<select name="FathersOccupation" id="FathersOccupation" class="form-control select2" style="width: 100%;">
+													<option value="">Select</option>
+													<?php
+													for($i=0; $i<count($occupationList); $i++){
+														echo "<option value=\"".$occupationList[$i]['occupation_id']."\">".$occupationList[$i]['occupation_name']."</option>";
+													}
+													?>
+												</select>
 											</div>
 										</div>
 									</div>
@@ -835,8 +877,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 													Occupation</label>
 											</div>
 											<div class="col-8">
-												<input type="text" name="MothersOccupation" class="form-control"
-													   id="MothersOccupation" class="form-control">
+												<select name="MothersOccupation" id="MothersOccupation" class="form-control select2" style="width: 100%;">
+													<option value="">Select</option>
+													<?php
+													for($i=0; $i<count($occupationList); $i++){
+														echo "<option value=\"".$occupationList[$i]['occupation_id']."\">".$occupationList[$i]['occupation_name']."</option>";
+													}
+													?>
+												</select>
 											</div>
 										</div>
 									</div>
@@ -865,20 +913,56 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group">
 										<div class="row">
 											<div class="col-3">
-												<input type="text" name="NoOfBrothers" class="form-control"
-													   id="NoOfBrothers" class="form-control">
+												<select name="NoOfBrothers" id="NoOfBrothers" class="form-control select2" style="width: 100%;">
+													<option value="0">0</option>
+													<option value="1">1</option>
+													<option value="2">2</option>
+													<option value="3">3 </option>
+													<option value="4">4</option>
+													<option value="5">5</option>
+													<option value="6">6</option>
+													<option value="7">7</option>
+													<option value="7+">7+</option>
+												</select>
 											</div>
 											<div class="col-3">
-												<input type="text" name="BrothersMarried" class="form-control"
-													   id="BrothersMarried" class="form-control">
+												<select name="BrothersMarried" id="BrothersMarried" class="form-control select2" style="width: 100%;">
+													<option value="None">None</option>
+													<option value="1">1</option>
+													<option value="2">2</option>
+													<option value="3">3 </option>
+													<option value="4">4</option>
+													<option value="5">5</option>
+													<option value="6">6</option>
+													<option value="7">7</option>
+													<option value="7+">7+</option>
+												</select>
 											</div>
 											<div class="col-3">
-												<input type="text" name="NoOfSisters" class="form-control"
-													   id="NoOfSisters" class="form-control">
+												<select name="NoOfSisters" id="NoOfSisters" class="form-control select2" style="width: 100%;">
+													<option value="0">0</option>
+													<option value="1">1</option>
+													<option value="2">2</option>
+													<option value="3">3 </option>
+													<option value="4">4</option>
+													<option value="5">5</option>
+													<option value="6">6</option>
+													<option value="7">7</option>
+													<option value="7+">7+</option>
+												</select>
 											</div>
 											<div class="col-3">
-												<input type="text" name="SistersMarried" class="form-control"
-													   id="SistersMarried" class="form-control">
+												<select name="SistersMarried" id="SistersMarried" class="form-control select2" style="width: 100%;">
+													<option value="None">None</option>
+													<option value="1">1</option>
+													<option value="2">2</option>
+													<option value="3">3 </option>
+													<option value="4">4</option>
+													<option value="5">5</option>
+													<option value="6">6</option>
+													<option value="7">7</option>
+													<option value="7+">7+</option>
+												</select>
 											</div>
 										</div>
 									</div>
@@ -901,8 +985,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group">
 										<div class="row">
 											<div class="col-4">
-												<label for="OldPassword" style="padding-left: 10px; padding-top: 5px">Old
-													Password</label>
+												<label for="OldPassword" style="padding-left: 10px; padding-top: 5px">Old Password</label>
 											</div>
 											<div class="col-8">
 												<input type="password" name="OldPassword" class="form-control"
@@ -913,8 +996,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group">
 										<div class="row">
 											<div class="col-4">
-												<label for="NewPassword" style="padding-left: 10px; padding-top: 5px">New
-													Password</label>
+												<label for="NewPassword" style="padding-left: 10px; padding-top: 5px">New Password</label>
 											</div>
 											<div class="col-8">
 												<input type="password" name="NewPassword" class="form-control"
@@ -925,9 +1007,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group">
 										<div class="row">
 											<div class="col-4">
-												<label for="ConfirmNewPassword"
-													   style="padding-left: 10px; padding-top: 5px">Confirm New
-													Password</label>
+												<label for="ConfirmNewPassword" style="padding-left: 10px; padding-top: 5px">Confirm New Password</label>
 											</div>
 											<div class="col-8">
 												<input type="password" name="ConfirmNewPassword" class="form-control"
@@ -945,11 +1025,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<label for="OldPassword" style="padding-left: 10px;">Preferred Age</label>
 											</div>
 											<div class="col-8">
-												From <select style="width:80px;" name="STAGE" id="STAGE" >
+												From <select style="width:80px;" name="PStartAge" id="PStartAge" >
 													<option value="">From</option>
+													<?php
+														for($i=18; $i<71; $i++){
+															echo "<option value=\"".$i."\">".$i."</option>";
+														}
+													?>
 												</select>
-												To <select style="width:80px;" name="ENAGE" id="ENAGE" >
+												To <select style="width:80px;" name="PEndAge" id="PEndAge" >
 													<option value="">To</option>
+													<?php
+													for($i=21; $i<71; $i++){
+														echo "<option value=\"".$i."\">".$i."</option>";
+													}
+													?>
 												</select>
 											</div>
 										</div>
@@ -962,39 +1052,39 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="col-8">
 												<div class="clearfix" >
 													<div class="icheck-primary d-inline" style="padding-right: 38px">
-														<input type="checkbox" id="MaritalStatus1" name="MaritalStatus"
+														<input type="checkbox" id="PMaritalStatus1" name="PMaritalStatus"
 															   value="Any">
-														<label for="MaritalStatus1">
+														<label for="PMaritalStatus1">
 															Any
 														</label>
 													</div>
 													<div class="icheck-primary d-inline">
-														<input type="checkbox" id="MaritalStatus2" name="MaritalStatus"
+														<input type="checkbox" id="PMaritalStatus2" name="PMaritalStatus"
 															   value="Never Married">
-														<label for="MaritalStatus2">
+														<label for="PMaritalStatus2">
 															Never Married
 														</label>
 													</div>
 													<br />
 													<div class="icheck-primary d-inline">
-														<input type="checkbox" id="MaritalStatus3" name="MaritalStatus"
+														<input type="checkbox" id="PMaritalStatus3" name="PMaritalStatus"
 															   value="Divorced">
-														<label for="MaritalStatus3">
+														<label for="PMaritalStatus3">
 															Divorced&nbsp;
 														</label>
 													</div>
 													<div class="icheck-primary d-inline">
-														<input type="checkbox" id="MaritalStatus4" name="MaritalStatus"
+														<input type="checkbox" id="PMaritalStatus4" name="PMaritalStatus"
 															   value="Widowed">
-														<label for="MaritalStatus4">
+														<label for="PMaritalStatus4">
 															Widowed
 														</label>
 													</div>
 													<br />
 													<div class="icheck-primary d-inline">
-														<input type="checkbox" id="MaritalStatus5" name="MaritalStatus"
+														<input type="checkbox" id="PMaritalStatus5" name="PMaritalStatus"
 															   value="Awaiting divorce">
-														<label for="MaritalStatus5">
+														<label for="PMaritalStatus5">
 															Awaiting divorce
 														</label>
 													</div>
@@ -1003,17 +1093,39 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										</div>
 									</div>
 									<div class="form-group">
+										<?php
+										function convert_to_cm($feet, $inches = 0) {
+											$inches = ($feet * 12) + $inches;
+											return (int) round($inches / 0.393701);
+										}
+										function personHeightOptions(){
+											$r = '';
+											for($foot=4;$foot<=7;$foot++){
+												for($inches=0;$inches<=11;$inches++){
+													$cm = convert_to_cm($foot, $inches);
+													if($inches==0){
+														$r .= "<option value='$cm'> $foot ft / ".convert_to_cm($foot, $inches)." cm</option>";
+													}else{
+														$r .= "<option value='$cm'> $foot ft $inches ins / ".convert_to_cm($foot, $inches)." cm </option>";
+													}
+												}
+											}
+											return $r;
+										}
+										?>
 										<div class="row">
 											<div class="col-4">
 												<label for="Height" style="padding-left: 10px;">Height</label>
 											</div>
 											<div class="col-8">
-												<select name="fromHeight" id="fromHeight">
+												<select name="fromPHeight" id="fromPHeight">
 													<option value="">Height</option>
+													<?php echo  personHeightOptions(); ?>
 												</select>
 												To&nbsp;
-												<select name="toHeight" id="toHeight">
+												<select name="toPHeight" id="toPHeight">
 													<option value="">Height</option>
+													<?php echo  personHeightOptions(); ?>
 												</select>
 											</div>
 										</div>
@@ -1021,30 +1133,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group">
 										<div class="row">
 											<div class="col-4">
-												<label for="Height" style="padding-left: 10px;">Physical Status</label>
+												<label for="PPhysicalStatus" style="padding-left: 10px;">Physical Status</label>
 											</div>
 											<div class="col-8">
 												<div class="clearfix">
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="PhysicalStatus1" name="PhysicalStatus"
+														<input type="radio" id="PPhysicalStatus1" name="PPhysicalStatus"
 															   value="Normal">
-														<label for="PhysicalStatus1">
+														<label for="PPhysicalStatus1">
 															Normal
 														</label>
 													</div>
 													<br />
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="PhysicalStatus2" name="PhysicalStatus"
-															   value="Physically challenged">
-														<label for="PhysicalStatus2">
+														<input type="radio" id="PhysicalStatus2" name="PPhysicalStatus"
+															   value="PPhysically challenged">
+														<label for="PPhysicalStatus2">
 															Physically challenged
 														</label>
 													</div>
 													<br />
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="PhysicalStatus3" name="PhysicalStatus"
+														<input type="radio" id="PPhysicalStatus3" name="PPhysicalStatus"
 															   value="Doesn't matter">
-														<label for="PhysicalStatus3">
+														<label for="PPhysicalStatus3">
 															Doesn't matter
 														</label>
 													</div>
@@ -1055,39 +1167,39 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group">
 										<div class="row">
 											<div class="col-4">
-												<label for="Height" style="padding-left: 10px;">Eating Habits</label>
+												<label for="PEatingHabits" style="padding-left: 10px;">Eating Habits</label>
 											</div>
 											<div class="col-8">
 												<div class="clearfix">
 
 													<div class="icheck-primary d-inline">
-														<input type="checkbox" id="EatingHabits4" name="EatingHabits"
+														<input type="checkbox" id="PEatingHabits1" name="PEatingHabits"
 															   value="Doesn't matter">
-														<label for="BodyType4">
+														<label for="PEatingHabits1">
 															Doesn't matter
 														</label>
 													</div>
 													<br />
 													<div class="icheck-primary d-inline">
-														<input type="checkbox" id="EatingHabits1" name="EatingHabits"
+														<input type="checkbox" id="PEatingHabits2" name="PEatingHabits"
 															   value="Vegetarian">
-														<label for="BodyType2">
+														<label for="PEatingHabits2">
 															Vegetarian
 														</label>
 													</div>
 													<br />
 													<div class="icheck-primary d-inline">
-														<input type="checkbox" id="EatingHabits2" name="EatingHabits"
+														<input type="checkbox" id="PEatingHabits3" name="PEatingHabits"
 															   value="Non Vegetarian">
-														<label for="BodyType3">
+														<label for="PEatingHabits3">
 															Non Vegetarian
 														</label>
 													</div>
 													<br />
 													<div class="icheck-primary d-inline">
-														<input type="checkbox" id="EatingHabits3" name="EatingHabits"
+														<input type="checkbox" id="PEatingHabits4" name="PEatingHabits"
 															   value="Eggetarian">
-														<label for="BodyType4">
+														<label for="PEatingHabits4">
 															Eggetarian
 														</label>
 													</div>
@@ -1103,33 +1215,33 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="col-8">
 												<div class="clearfix">
 													<div class="icheck-primary d-inline">
-														<input type="checkbox" id="DrinkingHabits1" name="DrinkingHabits"
+														<input type="checkbox" id="PDrinkingHabits1" name="PDrinkingHabits"
 															   value="Doesn't matter">
-														<label for="DrinkingHabits1">
+														<label for="PDrinkingHabits1">
 															Doesn't matter
 														</label>
 													</div>
 													<br />
 													<div class="icheck-primary d-inline">
-														<input type="checkbox" id="DrinkingHabits2" name="DrinkingHabits"
+														<input type="checkbox" id="PDrinkingHabits2" name="PDrinkingHabits"
 															   value="Never drinks">
-														<label for="DrinkingHabits2">
+														<label for="PDrinkingHabits2">
 															Never drinks
 														</label>
 													</div>
 													<br />
 													<div class="icheck-primary d-inline">
-														<input type="checkbox" id="DrinkingHabits3" name="DrinkingHabits"
+														<input type="checkbox" id="PDrinkingHabits3" name="PDrinkingHabits"
 															   value="Drinks socially">
-														<label for="DrinkingHabits3">
+														<label for="PDrinkingHabits3">
 															Drinks socially
 														</label>
 													</div>
 													<br />
 													<div class="icheck-primary d-inline">
-														<input type="checkbox" id="DrinkingHabits4" name="DrinkingHabits"
+														<input type="checkbox" id="PDrinkingHabits4" name="PDrinkingHabits"
 															   value="Drinks regularly">
-														<label for="DrinkingHabits4">
+														<label for="PDrinkingHabits4">
 															Drinks regularly
 														</label>
 													</div>
@@ -1145,17 +1257,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="col-8">
 												<div class="clearfix">
 													<div class="icheck-primary d-inline">
-														<input type="checkbox" id="SmokingHabits1" name="SmokingHabits"
+														<input type="checkbox" id="PSmokingHabits1" name="PSmokingHabits"
 															   value="Doesn't matter">
-														<label for="SmokingHabits1">
+														<label for="PSmokingHabits1">
 															Doesn't matter
 														</label>
 													</div>
 													<br>
 													<div class="icheck-primary d-inline">
-														<input type="checkbox" id="SmokingHabits2" name="SmokingHabits"
+														<input type="checkbox" id="PSmokingHabits2" name="PSmokingHabits"
 															   value="Never smokes">
-														<label for="SmokingHabits2">
+														<label for="PSmokingHabits2">
 															Never smokes
 														</label>
 													</div>
@@ -1169,9 +1281,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 													</div>
 													<br>
 													<div class="icheck-primary d-inline">
-														<input type="checkbox" id="SmokingHabits4" name="SmokingHabits"
+														<input type="checkbox" id="PSmokingHabits4" name="PSmokingHabits"
 															   value="Smokes regularly">
-														<label for="SmokingHabits4">
+														<label for="PSmokingHabits4">
 															Smokes regularly
 														</label>
 													</div>
@@ -1181,12 +1293,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									</div>
 									<div class="form-group">
 										<div class="row">
+											<div class="col-4 align-middle">
+												<label for="PMotherTongue" style="padding-left: 10px;">Mother Tongue</label>
+											</div>
+											<div class="col-8">
+												<select name="PMotherTongue" id="PMotherTongue" class="form-control" multiple>
+													<option value="">Select</option>
+													<option value="Any">Any</option>
+													<?php
+														for($i=0; $i<count($motherTongueList); $i++){
+															echo "<option value=\"".$motherTongueList[$i]['mother_tongue_id']."\">".$motherTongueList[$i]['mother_tongue_name']."</option>";
+														}
+													?>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="row">
 											<div class="col-4">
-												<label for="OldPassword" style="padding-left: 10px;">Religion</label>
+												<label for="PReligion" style="padding-left: 10px;">Religion</label>
 											</div>
 											<div class="col-8 align-middle">
-												<select name="religion" id="religion" class="form-control">
+												<select name="PReligion" id="PReligion" class="form-control">
 													<option value="">Select</option>
+													<option value="Any">Any</option>
+													<?php
+													for($i=0; $i<count($religionList); $i++){
+														echo "<option value=\"".$religionList[$i]['religion_id']."\">".$religionList[$i]['religion_name']."</option>";
+													}
+													?>
 												</select>
 											</div>
 										</div>
@@ -1194,10 +1330,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group">
 										<div class="row">
 											<div class="col-4 align-middle">
-												<label for="OldPassword" style="padding-left: 10px;">Mother Tongue</label>
+												<label for="PCaste" style="padding-left: 10px;">Caste</label>
 											</div>
 											<div class="col-8">
-												<select name="MotherTongue" id="MotherTongue" class="form-control">
+												<select name="PCaste" id="PCaste" class="form-control">
 													<option value="">Select</option>
 												</select>
 											</div>
@@ -1206,10 +1342,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group">
 										<div class="row">
 											<div class="col-4 align-middle">
-												<label for="OldPassword" style="padding-left: 10px;">Caste</label>
+												<label for="PSubCaste" style="padding-left: 10px;padding-top: 5px;">Sub Caste</label>
 											</div>
 											<div class="col-8">
-												<select name="Caste" id="Caste" class="form-control">
+												<select name="PSubCaste" id="PSubCaste" class="form-control">
 													<option value="">Select</option>
 												</select>
 											</div>
@@ -1218,25 +1354,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group">
 										<div class="row">
 											<div class="col-4 align-middle">
-												<label for="OldPassword" style="padding-left: 10px;padding-top: 5px;">Sub Caste</label>
-											</div>
-											<div class="col-8">
-												<select name="SubCaste" id="SubCaste" class="form-control">
-													<option value="">Select</option>
-												</select>
-											</div>
-										</div>
-									</div>
-									<div class="form-group">
-										<div class="row">
-											<div class="col-4 align-middle">
-												<label for="OldPassword" style="padding-left: 10px;">Dosham</label>
+												<label for="Dosham" style="padding-left: 10px;">Dosham</label>
 											</div>
 											<div class="col-8">
 												<div class="clearfix">
 													<div class="icheck-primary d-inline">
 														<input type="radio" id="Dosham1" name="Dosham"
-															   value="No">
+															   value="Yes">
 														<label for="Dosham1">
 															Yes
 														</label>
@@ -1262,11 +1386,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group">
 										<div class="row">
 											<div class="col-4 align-middle">
-												<label for="Star" style="padding-left: 10px;">Star</label>
+												<label for="PStar" style="padding-left: 10px;">Star</label>
 											</div>
 											<div class="col-8">
-												<select name="Star" id="Star" class="form-control">
+												<select name="PStar" id="PStar" class="form-control" multiple>
 													<option value="">Select</option>
+													<option value="Any">Any</option>
+													<?php
+													for($i=0; $i<count($starList); $i++){
+														echo "<option value=\"".$starList[$i]['star_id']."\">".$starList[$i]['star_name']."</option>";
+													}
+													?>
 												</select>
 											</div>
 										</div>
@@ -1278,11 +1408,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group">
 										<div class="row">
 											<div class="col-4 align-middle">
-												<label for="Star" style="padding-left: 10px;">Education</label>
+												<label for="PEducation" style="padding-left: 10px;">Education</label>
 											</div>
 											<div class="col-8">
-												<select name="Star" id="Star" class="form-control">
+												<select name="PEducation" id="PEducation" class="form-control" multiple>
 													<option value="">Select</option>
+													<option value="Any">Any</option>
+													<?php
+														for($i=0; $i<count($educationList); $i++){
+															echo "<option value=\"".$educationList[$i]['education_id']."\">".$educationList[$i]['education_name']."</option>";
+														}
+													?>
 												</select>
 											</div>
 										</div>
@@ -1290,11 +1426,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group">
 										<div class="row">
 											<div class="col-4 align-middle">
-												<label for="Star" style="padding-left: 10px;">Employed In</label>
+												<label for="PEmployedIn" style="padding-left: 10px;">Employed In</label>
 											</div>
 											<div class="col-8">
-												<select name="Star" id="Star" class="form-control">
+												<select name="PEmployedIn" id="PEmployedIn" class="form-control" multiple>
 													<option value="">Select</option>
+													<?php
+													for($i=0; $i<count($employedInList); $i++){
+														echo "<option value=\"".$employedInList[$i]['employed_in_id']."\">".$employedInList[$i]['employed_in_name']."</option>";
+													}
+													?>
 												</select>
 											</div>
 										</div>
@@ -1302,11 +1443,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group">
 										<div class="row">
 											<div class="col-4 align-middle">
-												<label for="Star" style="padding-left: 10px;">Occupation</label>
+												<label for="POccupation" style="padding-left: 10px;">Occupation</label>
 											</div>
 											<div class="col-8">
-												<select name="Star" id="Star" class="form-control">
+												<select name="POccupation" id="POccupation" class="form-control" multiple>
 													<option value="">Select</option>
+													<option value="Any">Any</option>
+													<?php
+													for($i=0; $i<count($occupationList); $i++){
+														echo "<option value=\"".$occupationList[$i]['occupation_id']."\">".$occupationList[$i]['occupation_name']."</option>";
+													}
+													?>
 												</select>
 											</div>
 										</div>
@@ -1314,11 +1461,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group">
 										<div class="row">
 											<div class="col-4 align-middle">
-												<label for="Star" style="padding-left: 10px;">Annual Income</label>
+												<label for="PAnnualIncome" style="padding-left: 10px;">Annual Income</label>
 											</div>
 											<div class="col-8">
-												<select name="Star" id="Star" class="form-control">
+												<select name="PAnnualIncome" id="PAnnualIncome" class="form-control">
 													<option value="">Select</option>
+													<?php
+														for($i=0; $i<count($annualIncomeList); $i++){
+															echo "<option value=\"".$annualIncomeList[$i]['annual_income_id']."\">".$annualIncomeList[$i]['annual_income']."</option>";
+														}
+													?>
 												</select>
 											</div>
 										</div>
@@ -1330,10 +1482,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<div class="form-group">
 									<div class="row">
 										<div class="col-4 align-middle">
-											<label for="Star" style="padding-left: 10px;">Country Living In</label>
+											<label for="PCountryLivingIn" style="padding-left: 10px;">Country Living In</label>
 										</div>
 										<div class="col-8">
-											<select name="CountryLivingIn" id="CountryLivingIn" class="form-control">
+											<select name="PCountryLivingIn" id="PCountryLivingIn" class="form-control" multiple>
+												<option value="">Select</option>
+												<option value="Any">Any</option>
+												<?php
+													for($i=0; $i<count($countryList); $i++){
+														echo "<option value=\"".$countryList[$i]['country_id']."\">".$countryList[$i]['country_name']."</option>";
+													}
+												?>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="row">
+										<div class="col-4 align-middle">
+											<label for="PResidingState" style="padding-left: 10px;">Residing State</label>
+										</div>
+										<div class="col-8">
+											<select name="PResidingState" id="PResidingState" class="form-control">
 												<option value="">Select</option>
 											</select>
 										</div>
@@ -1342,10 +1512,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<div class="form-group">
 									<div class="row">
 										<div class="col-4 align-middle">
-											<label for="Star" style="padding-left: 10px;">Residing State</label>
+											<label for="PDistrict" style="padding-left: 10px;">District</label>
 										</div>
 										<div class="col-8">
-											<select name="ResidingState" id="ResidingState" class="form-control">
+											<select name="PDistrict" id="PDistrict" class="form-control">
 												<option value="">Select</option>
 											</select>
 										</div>
@@ -1354,23 +1524,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<div class="form-group">
 									<div class="row">
 										<div class="col-4 align-middle">
-											<label for="Star" style="padding-left: 10px;">District</label>
+											<label for="PCitizenship" style="padding-left: 10px;">Citizenship</label>
 										</div>
 										<div class="col-8">
-											<select name="District" id="District" class="form-control">
+											<select name="PCitizenship" id="PCitizenship" class="form-control" multiple>
 												<option value="">Select</option>
-											</select>
-										</div>
-									</div>
-								</div>
-								<div class="form-group">
-									<div class="row">
-										<div class="col-4 align-middle">
-											<label for="Star" style="padding-left: 10px;">Citizenship</label>
-										</div>
-										<div class="col-8">
-											<select name="Citizenship" id="Citizenship" class="form-control">
-												<option value="">Select</option>
+												<option value="Any">Any</option>
+												<?php
+												for($i=0; $i<count($countryList); $i++){
+													echo "<option value=\"".$countryList[$i]['country_id']."\">".$countryList[$i]['country_name']."</option>";
+												}
+												?>
 											</select>
 										</div>
 									</div>
@@ -1381,10 +1545,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group">
 										<div class="row">
 											<div class="col-4 align-middle">
-												<label for="WhatIAmLookingFor" style="padding-left: 10px;">What I am looking for</label>
+												<label for="PWhatIAmLookingFor" style="padding-left: 10px;">What I am looking for</label>
 											</div>
 											<div class="col-8">
-												<textarea name="WhatIAmLookingFor" id="WhatIAmLookingFor" class="form-control" rows="5"></textarea>
+												<textarea name="PWhatIAmLookingFor" id="PWhatIAmLookingFor" class="form-control" rows="5"></textarea>
 											</div>
 										</div>
 									</div>
