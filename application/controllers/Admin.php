@@ -24,23 +24,26 @@ class Admin extends CI_Controller {
 		$query2 = $this->db->get("tbl_religion");;
 		$data['religionList'] = $query2->result_array();
 
-		$query3 = $this->db->get("tbl_star");;
-		$data['starList'] = $query3->result_array();
+		$query3 = $this->db->get("tbl_raasi");;
+		$data['rassiList'] = $query3->result_array();
 
 		$query4 = $this->db->get("tbl_employed_in");;
 		$data['employedInList'] = $query4->result_array();
 
-		$query5 = $this->db->get("tbl_occupation");;
+		$query5 = $this->db->query("SELECT occu.occupation_id, occu.occupation_name, occucat.occupation_category_name FROM tbl_occupation AS occu LEFT JOIN tbl_occupation_category AS occucat ON occu.occupation_category_id = occucat.occupation_category_id ORDER BY occucat.occupation_category_name;");;
 		$data['occupationList'] = $query5->result_array();
 
-		$query6 = $this->db->get("tbl_annual_income");;
+		$query6 = $this->db->get("tbl_annual_income");
 		$data['annualIncomeList'] = $query6->result_array();
 
-		$query7 = $this->db->get("tbl_education");;
+		$query7 = $this->db->query("SELECT edu.education_id, edu.education_name, educat.education_category_name FROM tbl_education AS edu LEFT JOIN tbl_education_category AS educat ON edu.education_category_id = educat.education_category_id ORDER BY educat.education_category_name;");;
 		$data['educationList'] = $query7->result_array();
 
 		$query8 = $this->db->get("tbl_country");;
 		$data['countryList'] = $query8->result_array();
+
+		$query9 = $this->db->get("tbl_star");;
+		$data['starList'] = $query9->result_array();
 
 		$this->load->view('admin/templates/header', $data);
 		$this->load->view('admin/own/editUsers');
