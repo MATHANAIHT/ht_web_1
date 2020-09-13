@@ -34,13 +34,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<table id="usersTable" class="table table-bordered table-striped">
 								<thead>
 								<tr>
-									<th>Create At</th>
+									<th>Matrimony ID</th>
 									<th>Name</th>
 									<th>Gender</th>
 									<th>D.O.B</th>
 									<th>Email</th>
 									<th>Mobile</th>
-<!--									<th>Country</th>-->
+									<th>Create At</th>
 									<th>Last Login</th>
 									<th>Edit</th>
 									<th>Delete</th>
@@ -119,16 +119,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             usersTable.clear().draw();
             data.map(function (d,i) {
                 usersTable.row.add( [
-                    d.created_at,
+                    d.matrimony_id,
                     d.full_name,
                     d.gender,
                     d.date_of_birth,
                     d.email_id,
                     d.mobile_number,
-                    // d.caste,
+                    d.created_at,
                     d.last_login,
-                    "<td><a href='/admin/users/edit/"+d.user_id+"' target='_blank'>Edit</a></td>",
-                    "<td><button rowId='"+d.user_id+"'>Delete</button></td>",
+                    "<td><a href='/admin/users/edit/"+d.matrimony_id+"' target='_blank'>Edit</a></td>",
+                    "<td><button rowId='"+d.matrimony_id+"'>Delete</button></td>",
                 ] ).draw( false );
             });
         });

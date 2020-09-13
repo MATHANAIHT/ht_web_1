@@ -23,7 +23,7 @@ class Api_model extends CI_Model
 	}
 
 	function getUsers($postDataArray){
-		$query = $this->db->query("select u.user_id, u.full_name, u.date_of_birth, u.last_login, u.created_at, u.gender, u.religion, u.caste, ul.mobile_number, ul.email_id from tbl_user u left join tbl_user_login ul on ul.user_id=u.user_id");
+		$query = $this->db->query("select u.matrimony_id, u.user_id, u.full_name, u.date_of_birth, u.last_login, u.created_at, u.gender, u.religion, u.caste, ul.mobile_number, ul.email_id from tbl_user u left join tbl_user_login ul on ul.user_id=u.user_id");
 		$row = $query->result();
 		return $row;
 	}
@@ -47,9 +47,15 @@ class Api_model extends CI_Model
 		$this->db->insert('tbl_user', $data);
 		$userId = $this->db->insert_id();
 
+		$matrimony_id = 'M'. (10000 + $userId);
+		$this->db->set('matrimony_id', $matrimony_id);
+		$this->db->where('user_id', $userId);
+		$this->db->update('tbl_user');
+
 		if($userId > 0){
 			$data1 = array(
 				'user_id' => $userId,
+				'matrimony_id' => $matrimony_id,
 				'mobile_number' => $postDataArray['mobile'],
 				'email_id' => $postDataArray['email'],
 				'password' => $postDataArray['password'],
