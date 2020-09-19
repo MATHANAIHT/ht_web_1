@@ -94,6 +94,7 @@ create table tbl_user_education (
 	employed_in bigint(20),
 	occupation varchar(255),
 	occu_details varchar(255),
+	organization varchar(255),
 	annual_income bigint(20),
 	modified_at timestamp,
 	FOREIGN KEY (user_id) REFERENCES tbl_user(user_id),

@@ -650,15 +650,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="col-8">
 												<?php
 
-												function getEducation($educationList){
+												function getEducation($educationList, $selectedId){
 													$r = "";
 													$headerEduArray = array();
 													for($i=0; $i<count($educationList); $i++){
+														$selected = "";
+														if($selectedId != "" && $selectedId != null && $selectedId==$educationList[$i]['education_id']){
+															$selected = "selected";
+														}
+
 														if(in_array( $educationList[$i]['education_category_name'], $headerEduArray)){
-															$r.="<option value=\"".$educationList[$i]['education_id']."\">&nbsp;&nbsp;&nbsp;".$educationList[$i]['education_name']."</option>";
+															$r.="<option ".$selected." value=\"".$educationList[$i]['education_id']."\">".$educationList[$i]['education_name']."</option>";
 														} else {
 															$r.="<option disabled>".$educationList[$i]['education_category_name']."</option>";
-															$r.="<option value=\"".$educationList[$i]['education_id']."\">&nbsp;&nbsp;&nbsp;".$educationList[$i]['education_name']."</option>";
+															$r.="<option ".$selected." value=\"".$educationList[$i]['education_id']."\">".$educationList[$i]['education_name']."</option>";
 															array_push($headerEduArray, $educationList[$i]['education_category_name']);
 														}
 													}
@@ -669,7 +674,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<select name="HighestEducation" id="HighestEducation"
 														class="form-control select2" style="width: 100%;">
 													<option value="">Select Education</option>
-													<?php echo getEducation($educationList); ?>
+													<?php echo getEducation($educationList, $user->education); ?>
 												</select>
 											</div>
 										</div>
@@ -682,7 +687,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 													: </label>
 											</div>
 											<div class="col-8">
-												<input type="text" name="EducationInDetail" class="form-control"
+												<input type="text" name="EducationInDetail" class="form-control" value="<?php echo $user->edu_details; ?>"
 													   id="EducationInDetail" class="form-control">
 											</div>
 										</div>
@@ -695,7 +700,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 													Institution : </label>
 											</div>
 											<div class="col-8">
-												<input type="text" name="CollegeOrInstitution" class="form-control"
+												<input type="text" name="CollegeOrInstitution" class="form-control" value="<?php echo $user->edu_collage; ?>"
 													   id="CollegeOrInstitution" class="form-control">
 											</div>
 										</div>
@@ -712,7 +717,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 													<option value="">Select EmployedIn</option>
 													<?php
 														for($i=0; $i<count($employedInList); $i++){
-															echo "<option value=\"".$employedInList[$i]['employed_in_id']."\">".$employedInList[$i]['employed_in_name']."</option>";
+															$selected = "";
+															if($user->employed_in == $employedInList[$i]['employed_in_id']){
+																$selected = "selected";
+															}
+															echo "<option ".$selected." value=\"".$employedInList[$i]['employed_in_id']."\">".$employedInList[$i]['employed_in_name']."</option>";
 														}
 													?>
 												</select>
@@ -727,15 +736,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											</div>
 											<div class="col-8">
 												<?php
-												function getOccupation($occupationList){
+												function getOccupation($occupationList, $selectedId){
 													$headerOccuArray = array();
 													$r = "";
 													for($i=0; $i<count($occupationList); $i++){
+														$selected = "";
+														if($selectedId != "" && $selectedId != null && $selectedId == $occupationList[$i]['occupation_id']){
+															$selected = "selected";
+														}
+
 														if(in_array( $occupationList[$i]['occupation_category_name'], $headerOccuArray)){
-															$r.="<option value=\"".$occupationList[$i]['occupation_id']."\">&nbsp;&nbsp;&nbsp;".$occupationList[$i]['occupation_name']."</option>";
+															$r.="<option ".$selected." value=\"".$occupationList[$i]['occupation_id']."\">".$occupationList[$i]['occupation_name']."</option>";
 														} else {
 															$r.="<option disabled>".$occupationList[$i]['occupation_category_name']."</option>";
-															$r.="<option value=\"".$occupationList[$i]['occupation_id']."\">&nbsp;&nbsp;&nbsp;".$occupationList[$i]['occupation_name']."</option>";
+															$r.="<option ".$selected." value=\"".$occupationList[$i]['occupation_id']."\">".$occupationList[$i]['occupation_name']."</option>";
 															array_push($headerOccuArray, $occupationList[$i]['occupation_category_name']);
 														}
 													}
@@ -745,7 +759,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<select name="Occupation" id="Occupation" class="form-control select2"
 														style="width: 100%;">
 													<option value="">Select Occupation</option>
-													<?php echo getOccupation($occupationList); ?>
+													<?php echo getOccupation($occupationList, $user->occupation); ?>
 												</select>
 											</div>
 										</div>
@@ -758,7 +772,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 													Detail : </label>
 											</div>
 											<div class="col-8">
-												<input type="text" name="OccupationInDetail" class="form-control"
+												<input type="text" name="OccupationInDetail" class="form-control" value="<?php echo $user->occu_details; ?>"
 													   id="OccupationInDetail" class="form-control">
 											</div>
 										</div>
@@ -770,7 +784,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 													Organization : </label>
 											</div>
 											<div class="col-8">
-												<input type="text" name="Organization" class="form-control"
+												<input type="text" name="Organization" class="form-control" value="<?php echo $user->organization; ?>"
 													   id="Organization" class="form-control">
 											</div>
 										</div>
@@ -787,7 +801,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 													<option value="">Select AnnualIncome</option>
 													<?php
 														for($i=0; $i<count($annualIncomeList); $i++){
-															echo "<option value=\"".$annualIncomeList[$i]['annual_income_id']."\">".$annualIncomeList[$i]['annual_income']."</option>";
+															$selected = "";
+															if($user->annual_income == $annualIncomeList[$i]['annual_income_id']){
+																$selected = "selected";
+															}
+
+															echo "<option ".$selected." value=\"".$annualIncomeList[$i]['annual_income_id']."\">".$annualIncomeList[$i]['annual_income']."</option>";
 														}
 													?>
 												</select>
@@ -806,29 +825,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="col-8">
 												<div class="clearfix">
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="FamilyValue1" name="FamilyValue"
-															   value="Orthodox">
+														<input type="radio" id="FamilyValue1" name="FamilyValue" <?php if($user->family_value == "Orthodox"){ echo "checked"; } ?> value="Orthodox">
 														<label for="FamilyValue1">
 															Orthodox&nbsp;&nbsp;
 														</label>
 													</div>
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="FamilyValue2" name="FamilyValue"
-															   value="Traditional">
+														<input type="radio" id="FamilyValue2" name="FamilyValue" <?php if($user->family_value == "Traditional"){ echo "checked"; } ?> value="Traditional">
 														<label for="FamilyValue2">
 															Traditional&nbsp;&nbsp;
 														</label>
 													</div>
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="FamilyValue3" name="FamilyValue"
-															   value="Moderate">
+														<input type="radio" id="FamilyValue3" name="FamilyValue" <?php if($user->family_value == "Moderate"){ echo "checked"; } ?> value="Moderate">
 														<label for="FamilyValue3">
 															Moderate&nbsp;&nbsp;
 														</label>
 													</div>
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="FamilyValue4" name="FamilyValue"
-															   value="Liberal">
+														<input type="radio" id="FamilyValue4" name="FamilyValue" <?php if($user->family_value == "Liberal"){ echo "checked"; } ?> value="Liberal">
 														<label for="FamilyValue4">
 															Liberal
 														</label>
@@ -845,22 +860,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="col-8">
 												<div class="clearfix">
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="FamilyType1" name="FamilyType"
-															   value="Joint Family">
+														<input type="radio" id="FamilyType1" name="FamilyType" value="Joint Family" <?php if($user->family_type == "Joint Family"){ echo "checked"; } ?> >
 														<label for="FamilyType1">
 															Joint Family&nbsp;&nbsp;
 														</label>
 													</div>
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="FamilyType2" name="FamilyType"
-															   value="Nuclear Family">
+														<input type="radio" id="FamilyType2" name="FamilyType" value="Nuclear Family" <?php if($user->family_type == "Nuclear Family"){ echo "checked"; } ?> >
 														<label for="FamilyType2">
 															Nuclear Family&nbsp;&nbsp;
 														</label>
 													</div>
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="FamilyType3" name="FamilyType"
-															   value="Others">
+														<input type="radio" id="FamilyType3" name="FamilyType" value="Others" <?php if($user->family_type == "Others"){ echo "checked"; } ?> >
 														<label for="FamilyType3">
 															Others
 														</label>
@@ -877,29 +889,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="col-8">
 												<div class="clearfix">
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="FamilyStatus1" name="FamilyStatus"
-															   value="Middle Class">
+														<input type="radio" id="FamilyStatus1" name="FamilyStatus" value="Middle Class" <?php if($user->family_status == "Middle Class"){ echo "checked"; } ?> >
 														<label for="FamilyStatus1">
 															Middle Class&nbsp;&nbsp;
 														</label>
 													</div>
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="FamilyStatus2" name="FamilyStatus"
-															   value="Upper Middle Class">
+														<input type="radio" id="FamilyStatus2" name="FamilyStatus" value="Upper Middle Class" <?php if($user->family_status == "Upper Middle Class"){ echo "checked"; } ?> >
 														<label for="FamilyStatus2">
 															Upper Middle Class&nbsp;&nbsp;
 														</label>
 													</div>
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="FamilyStatus3" name="FamilyStatus"
-															   value="Rich">
+														<input type="radio" id="FamilyStatus3" name="FamilyStatus" value="Rich" <?php if($user->family_status == "Rich"){ echo "checked"; } ?>>
 														<label for="FamilyStatus3">
 															Rich&nbsp;&nbsp;
 														</label>
 													</div>
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="FamilyStatus4" name="FamilyStatus"
-															   value="Affluent">
+														<input type="radio" id="FamilyStatus4" name="FamilyStatus" value="Affluent" <?php if($user->family_status == "Affluent"){ echo "checked"; } ?> >
 														<label for="FamilyStatus4">
 															Affluent
 														</label>
@@ -917,7 +925,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="col-8">
 												<select name="FathersOccupation" id="FathersOccupation" class="form-control select2" style="width: 100%;">
 													<option value="">Select</option>
-													<?php echo getOccupation($occupationList); ?>
+													<?php echo getOccupation($occupationList, $user->father_occupation); ?>
 												</select>
 											</div>
 										</div>
@@ -931,28 +939,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="col-8">
 												<select name="MothersOccupation" id="MothersOccupation" class="form-control select2" style="width: 100%;">
 													<option value="">Select</option>
-													<?php echo getOccupation($occupationList); ?>
+													<?php echo getOccupation($occupationList, $user->mother_occupation); ?>
 												</select>
 											</div>
 										</div>
 									</div>
+
 									<div class="form-group">
 										<div class="row">
 											<div class="col-3">
-												<label for="Name" style="padding-left: 10px; padding-top: 5px">No.of
-													Brothers</label>
+												<label for="Name" style="padding-left: 10px; padding-top: 5px">No.of Brothers</label>
 											</div>
 											<div class="col-3">
-												<label for="Name" style="padding-left: 10px; padding-top: 5px">Brothers
-													Married</label>
+												<label for="BrothersMarried" style="padding-left: 10px; padding-top: 5px">Brothers Married</label>
 											</div>
 											<div class="col-3">
-												<label for="Name" style="padding-left: 10px; padding-top: 5px">No.of
-													Sisters</label>
+												<label for="Name" style="padding-left: 10px; padding-top: 5px">No.of Sisters</label>
 											</div>
 											<div class="col-3">
-												<label for="Name" style="padding-left: 10px; padding-top: 5px">Sisters
-													Married</label>
+												<label for="SistersMarried" style="padding-left: 10px; padding-top: 5px">Sisters Married</label>
 											</div>
 											<div class="col-8">
 											</div>
@@ -962,67 +967,96 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<div class="row">
 											<div class="col-3">
 												<select name="NoOfBrothers" id="NoOfBrothers" class="form-control select2" style="width: 100%;">
-													<option value="0">0</option>
-													<option value="1">1</option>
-													<option value="2">2</option>
-													<option value="3">3 </option>
-													<option value="4">4</option>
-													<option value="5">5</option>
-													<option value="6">6</option>
-													<option value="7">7</option>
-													<option value="7+">7+</option>
+													<option value="">Select</option>
+													<?php
+														for($i=0; $i<8; $i++){
+															$selected = "";
+															if($i == $user->no_of_bro){
+																$selected = "selected";
+															}
+ 															echo "<option ".$selected." value=\"".$i."\">".$i."</option>";
+														}
+													?>
+													<option value="7+" <?php if($user->no_of_bro == "7+"){ echo "selected"; } ?> >7+</option>
 												</select>
 											</div>
 											<div class="col-3">
 												<select name="BrothersMarried" id="BrothersMarried" class="form-control select2" style="width: 100%;">
-													<option value="None">None</option>
-													<option value="1">1</option>
-													<option value="2">2</option>
-													<option value="3">3 </option>
-													<option value="4">4</option>
-													<option value="5">5</option>
-													<option value="6">6</option>
-													<option value="7">7</option>
-													<option value="7+">7+</option>
+													<option value="">Select</option>
+													<option value="None" <?php if($user->bro_married == "None"){ echo "selected"; } ?> >None</option>
+													<?php
+													for($i=1; $i<8; $i++){
+														$selected = "";
+														if($i == $user->bro_married){
+															$selected = "selected";
+														}
+														echo "<option ".$selected." value=\"".$i."\">".$i."</option>";
+													}
+													?>
+													<option value="7+" <?php if($user->bro_married == "7+"){ echo "selected"; } ?> >7+</option>
 												</select>
 											</div>
 											<div class="col-3">
 												<select name="NoOfSisters" id="NoOfSisters" class="form-control select2" style="width: 100%;">
-													<option value="0">0</option>
-													<option value="1">1</option>
-													<option value="2">2</option>
-													<option value="3">3 </option>
-													<option value="4">4</option>
-													<option value="5">5</option>
-													<option value="6">6</option>
-													<option value="7">7</option>
-													<option value="7+">7+</option>
+													<option value="">Select</option>
+													<?php
+													for($i=0; $i<8; $i++){
+														$selected = "";
+														if($i == $user->no_of_sis){
+															$selected = "selected";
+														}
+														echo "<option ".$selected." value=\"".$i."\">".$i."</option>";
+													}
+													?>
+													<option value="7+" <?php if($user->no_of_sis == "7+"){ echo "selected"; } ?> >7+</option>
 												</select>
 											</div>
 											<div class="col-3">
 												<select name="SistersMarried" id="SistersMarried" class="form-control select2" style="width: 100%;">
-													<option value="None">None</option>
-													<option value="1">1</option>
-													<option value="2">2</option>
-													<option value="3">3 </option>
-													<option value="4">4</option>
-													<option value="5">5</option>
-													<option value="6">6</option>
-													<option value="7">7</option>
-													<option value="7+">7+</option>
+													<option value="">Select</option>
+													<option value="None" <?php if($user->sis_married == "None"){ echo "selected"; } ?> >None</option>
+													<?php
+													for($i=1; $i<8; $i++){
+														$selected = "";
+														if($i == $user->sis_married){
+															$selected = "selected";
+														}
+														echo "<option ".$selected." value=\"".$i."\">".$i."</option>";
+													}
+													?>
+													<option value="7+" <?php if($user->sis_married == "7+"){ echo "selected"; } ?> >7+</option>
 												</select>
+											</div>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<div class="row">
+											<div class="col-4">
+												<label for="AboutMyFamily" style="padding-left: 10px; padding-top: 5px">About My Family</label>
+											</div>
+											<div class="col-8">
+												<textarea name="AboutMyFamily" class="form-control" id="AboutMyFamily" class="form-control"><?php echo $user->about_family; ?></textarea>
 											</div>
 										</div>
 									</div>
 									<div class="form-group">
 										<div class="row">
 											<div class="col-4">
-												<label for="Name" style="padding-left: 10px; padding-top: 5px">About My
-													Family</label>
+												<label for="ParentsNo" style="padding-left: 10px; padding-top: 5px">Parents No</label>
 											</div>
 											<div class="col-8">
-												<textarea name="AboutMyFamily" class="form-control" id="AboutMyFamily"
-														  class="form-control"></textarea>
+												<input type="text" name="ParentsNo" class="form-control" id="ParentsNo" class="form-control" value="<?php echo $user->parents_no; ?>" />
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="row">
+											<div class="col-4">
+												<label for="NativePlace" style="padding-left: 10px; padding-top: 5px">Native Place</label>
+											</div>
+											<div class="col-8">
+												<input type="text" name="NativePlace" class="form-control" id="NativePlace" class="form-control" value="<?php echo $user->native_place; ?>"/>
 											</div>
 										</div>
 									</div>
@@ -1468,7 +1502,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<select name="PEducation" id="PEducation" class="form-control select2" style="width: 100%" multiple>
 													<option value="">Select</option>
 													<option value="Any">Any</option>
-													<?php echo getEducation($educationList); ?>
+													<?php echo getEducation($educationList, ""); ?>
 												</select>
 											</div>
 										</div>
@@ -1499,7 +1533,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<select name="POccupation" id="POccupation" class="form-control select2" style="width: 100%" multiple>
 													<option value="">Select</option>
 													<option value="Any">Any</option>
-													<?php echo  getOccupation($occupationList); ?>
+													<?php echo  getOccupation($occupationList, ""); ?>
 												</select>
 											</div>
 										</div>
@@ -1781,17 +1815,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             var formId = $("#formId").val();
             $.post("/api/users/update/"+formId+"/"+matrimonyId, $("#formId"+formId).serialize(), function(data, status){
                 alert(JSON.stringify(data))
+                // alert(data)
             });
-
-            /*idList.map(i => {
-                console.log("id -> " + id + " , i -> " + i)
-
-                if (id == i){
-                    $("#edit" + i).show()
-                }
-                else
-                    $("#edit" + i).hide()
-            })*/
         }
 
         function getCasteList() {

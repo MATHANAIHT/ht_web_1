@@ -24,79 +24,250 @@ class Api_model extends CI_Model
 
 	function isValidToUpdate($dataArray, $index, $existValue){
 		if(array_key_exists($index, $dataArray)){
-			if($dataArray[$index] != "" && $dataArray[$index] != $existValue){
+			if($dataArray[$index] != "" && $dataArray[$index] != null && $dataArray[$index] != $existValue){
 				return true;
 			}
 		}
 		return false;
 	}
 
+	function checkEmptyValue($data){
+		if($data != ""){
+			return $data;
+		}
+		return null;
+	}
+
 	function updateUser($formId, $matrimonyId, $data){
 		$responseCode = "0";
 		$responseMessage = "No data updated";
 		if($matrimonyId != ""){
-			$queryStr = "select * from tbl_user u where u.matrimony_id = '".$matrimonyId."'";
-			$query = $this->db->query($queryStr);
-			$row = $query->result();
-			if(count($row) == 1){
-				$rData = $row[0];
-				if($formId == 1){
-					$updateStr = "";
-					if(self::isValidToUpdate($data, "profileCreatedFor", $rData->profile_created_by)){
-						$updateStr .= "profile_created_by=\"".$data["profileCreatedFor"]."\", ";
-					}
-					if(self::isValidToUpdate($data, "fullName", $rData->full_name)){
-						$updateStr .= "full_name=\"".$data["fullName"]."\", ";
-					}
-					if(self::isValidToUpdate($data, "Height", $rData->height)){
-						$updateStr .= "height=\"".$data["Height"]."\", ";
-					}
-					if(self::isValidToUpdate($data, "Weight", $rData->weight)){
-						$updateStr .= "weight=\"".$data["Weight"]."\", ";
-					}
-					if(self::isValidToUpdate($data, "maritalStatus", $rData->marital_status)){
-						$updateStr .= "marital_status=\"".$data["maritalStatus"]."\", ";
-					}
-					if(self::isValidToUpdate($data, "motherTongue", $rData->mother_tongue)){
-						$updateStr .= "mother_tongue=\"".$data["motherTongue"]."\", ";
-					}
-					if(self::isValidToUpdate($data, "PhysicalStatus", $rData->physical_status)){
-						$updateStr .= "physical_status=\"".$data["PhysicalStatus"]."\", ";
-					}
-					if(self::isValidToUpdate($data, "BodyType", $rData->body_type)){
-						$updateStr .= "body_type=\"".$data["BodyType"]."\", ";
-					}
-					if(self::isValidToUpdate($data, "EatingHabits", $rData->eating_habits)){
-						$updateStr .= "eating_habits=\"".$data["EatingHabits"]."\", ";
-					}
-					if(self::isValidToUpdate($data, "DrinkingHabits", $rData->drinking_habits)){
-						$updateStr .= "drinking_habits=\"".$data["DrinkingHabits"]."\", ";
-					}
-					if(self::isValidToUpdate($data, "SmokingHabits", $rData->smoking_habits)){
-						$updateStr .= "smoking_habits=\"".$data["SmokingHabits"]."\", ";
-					}
-					$existDOB = $rData->date_of_birth;
-					$existDOBArray = explode("-", $existDOB);
-					if(count($existDOBArray) > 0){
-						$eDOB3 = ltrim($existDOBArray[0], "0");
-						$eDOB2 = ltrim($existDOBArray[1], "0");
-						$eDOB1 = ltrim($existDOBArray[2], "0");
+			date_default_timezone_set("Asia/Calcutta");
+			$currentDate = date('Y-m-d H:i:s');
 
-						if(self::isValidToUpdate($data, "dateOfBirth3", $eDOB3) || self::isValidToUpdate($data, "dateOfBirth2", $eDOB2) || self::isValidToUpdate($data, "dateOfBirth1", $eDOB1)){
-							$dob = $data['dateOfBirth3']."-".sprintf("%02d", $data['dateOfBirth2'])."-".sprintf("%02d", $data['dateOfBirth1']);
-							$updateStr .= "date_of_birth=\"".$dob."\", ";
+			if($formId == 6){
+				$queryStr = "select password, user_id from tbl_user_login u where u.matrimony_id = '".$matrimonyId."'";
+				$query = $this->db->query($queryStr);
+				$row = $query->result();
+				if(count($row) == 1){
+					$rData = $row[0];
+					if($rData->password == $data["OldPassword"]){
+						if($data["NewPassword"] != $rData->password){
+							if($data["NewPassword"] != "" && $data["NewPassword"] != null && $data["ConfirmNewPassword"] != "" && $data["ConfirmNewPassword"] != null){
+								if($data["NewPassword"] == $data["ConfirmNewPassword"] ){
+									$updateQueryStr = "Update tbl_user_login  set password= '".$data["NewPassword"]."' where matrimony_id ='".$matrimonyId."'; ";
+									$this->db->query($updateQueryStr);
+									$responseCode = "1";
+									$responseMessage = "Successfully updated!.";
+								} else {
+									$responseMessage = "New Password and Confirm New Password Miss Matched!";
+								}
+							} else {
+								$responseMessage = "Provide valid New Password and Confirm New Password";
+							}
+						} else {
+							$responseMessage = "Your password is used in previous!";
+						}
+					} else {
+						$responseMessage = "OldPassword is InCorrect!";
+					}
+				}
+			}
+			else {
+				$queryStr = "select * from tbl_user u where u.matrimony_id = '".$matrimonyId."'";
+				$query = $this->db->query($queryStr);
+				$row = $query->result();
+				if(count($row) == 1){
+					$rData = $row[0];
+					if($formId == 1){
+						$updateStr = "";
+						if(self::isValidToUpdate($data, "profileCreatedFor", $rData->profile_created_by)){
+							$updateStr .= "profile_created_by=\"".$data["profileCreatedFor"]."\", ";
+						}
+						if(self::isValidToUpdate($data, "fullName", $rData->full_name)){
+							$updateStr .= "full_name=\"".$data["fullName"]."\", ";
+						}
+						if(self::isValidToUpdate($data, "Height", $rData->height)){
+							$updateStr .= "height=\"".$data["Height"]."\", ";
+						}
+						if(self::isValidToUpdate($data, "Weight", $rData->weight)){
+							$updateStr .= "weight=\"".$data["Weight"]."\", ";
+						}
+						if(self::isValidToUpdate($data, "maritalStatus", $rData->marital_status)){
+							$updateStr .= "marital_status=\"".$data["maritalStatus"]."\", ";
+						}
+						if(self::isValidToUpdate($data, "motherTongue", $rData->mother_tongue)){
+							$updateStr .= "mother_tongue=\"".$data["motherTongue"]."\", ";
+						}
+						if(self::isValidToUpdate($data, "PhysicalStatus", $rData->physical_status)){
+							$updateStr .= "physical_status=\"".$data["PhysicalStatus"]."\", ";
+						}
+						if(self::isValidToUpdate($data, "BodyType", $rData->body_type)){
+							$updateStr .= "body_type=\"".$data["BodyType"]."\", ";
+						}
+						if(self::isValidToUpdate($data, "EatingHabits", $rData->eating_habits)){
+							$updateStr .= "eating_habits=\"".$data["EatingHabits"]."\", ";
+						}
+						if(self::isValidToUpdate($data, "DrinkingHabits", $rData->drinking_habits)){
+							$updateStr .= "drinking_habits=\"".$data["DrinkingHabits"]."\", ";
+						}
+						if(self::isValidToUpdate($data, "SmokingHabits", $rData->smoking_habits)){
+							$updateStr .= "smoking_habits=\"".$data["SmokingHabits"]."\", ";
+						}
+						$existDOB = $rData->date_of_birth;
+						$existDOBArray = explode("-", $existDOB);
+						if(count($existDOBArray) > 0){
+							$eDOB3 = ltrim($existDOBArray[0], "0");
+							$eDOB2 = ltrim($existDOBArray[1], "0");
+							$eDOB1 = ltrim($existDOBArray[2], "0");
+
+							if(self::isValidToUpdate($data, "dateOfBirth3", $eDOB3) || self::isValidToUpdate($data, "dateOfBirth2", $eDOB2) || self::isValidToUpdate($data, "dateOfBirth1", $eDOB1)){
+								$dob = $data['dateOfBirth3']."-".sprintf("%02d", $data['dateOfBirth2'])."-".sprintf("%02d", $data['dateOfBirth1']);
+								$updateStr .= "date_of_birth=\"".$dob."\", ";
+							}
+						}
+
+						if($updateStr != ""){
+							$updateStr = rtrim($updateStr, ", ");
+							$updateQueryStr = "Update tbl_user  set ".$updateStr." where matrimony_id ='".$matrimonyId."'; ";
+							$this->db->query($updateQueryStr);
+							$responseCode = "1";
+							$responseMessage = "Successfully updated!.";
 						}
 					}
-
-//					print_r($rData);
-//					print_r($data);
-//						echo $updateQueryStr;
-					if($updateStr != ""){
-						$updateStr = rtrim($updateStr, ", ");
-						$updateQueryStr = "Update tbl_user  set ".$updateStr." where matrimony_id ='".$matrimonyId."'; ";
-						$this->db->query($updateQueryStr);
-						$responseCode = "1";
-						$responseMessage = "Successfully updated!.";
+					else if($formId == 4){
+						$user_id = $rData->user_id;
+						$queryStr1 = "select * from tbl_user_education e where e.user_id = '".$user_id."'";
+						$query1 = $this->db->query($queryStr1);
+						$row1 = $query1->result();
+						if(count($row1) == 1){
+							$rData1 = $row1[0];
+							$updateStr = "";
+							if(self::isValidToUpdate($data, "HighestEducation", $rData1->education)){
+								$updateStr .= "education=\"".$data["HighestEducation"]."\", ";
+							}
+							if(self::isValidToUpdate($data, "EducationInDetail", $rData1->edu_details)){
+								$updateStr .= "edu_details=\"".$data["EducationInDetail"]."\", ";
+							}
+							if(self::isValidToUpdate($data, "CollegeOrInstitution", $rData1->edu_collage)){
+								$updateStr .= "edu_collage=\"".$data["CollegeOrInstitution"]."\", ";
+							}
+							if(self::isValidToUpdate($data, "EmployedIn", $rData1->employed_in)){
+								$updateStr .= "employed_in=\"".$data["EmployedIn"]."\", ";
+							}
+							if(self::isValidToUpdate($data, "Occupation", $rData1->occupation)){
+								$updateStr .= "occupation=\"".$data["Occupation"]."\", ";
+							}
+							if(self::isValidToUpdate($data, "OccupationInDetail", $rData1->occu_details)){
+								$updateStr .= "occu_details=\"".$data["OccupationInDetail"]."\", ";
+							}
+							if(self::isValidToUpdate($data, "AnnualIncome", $rData1->annual_income)){
+								$updateStr .= "annual_income=\"".$data["AnnualIncome"]."\", ";
+							}
+							if(self::isValidToUpdate($data, "Organization", $rData1->organization)){
+								$updateStr .= "organization=\"".$data["Organization"]."\", ";
+							}
+							if($updateStr != ""){
+								$updateStr .= "modified_at=\"".$currentDate."\", ";
+								$updateStr = rtrim($updateStr, ", ");
+								$updateQueryStr = "Update tbl_user_education  set ".$updateStr." where user_id ='".$user_id."'; ";
+								$this->db->query($updateQueryStr);
+								$responseCode = "1";
+								$responseMessage = "Successfully updated!.";
+							}
+						}
+						else {
+							$data = array(
+								'user_id' => $user_id,
+								'education' => self::checkEmptyValue($data['HighestEducation']),
+								'edu_collage' => self::checkEmptyValue($data['CollegeOrInstitution']),
+								'edu_details' => self::checkEmptyValue($data['EducationInDetail']),
+								'employed_in' => self::checkEmptyValue($data['EmployedIn']),
+								'occupation' => self::checkEmptyValue($data['Occupation']),
+								'occu_details' => self::checkEmptyValue($data['OccupationInDetail']),
+								'annual_income' => self::checkEmptyValue($data['AnnualIncome']),
+								'organization' => self::checkEmptyValue($data["Organization"]),
+								'modified_at' => $currentDate
+							);
+							$this->db->insert('tbl_user_education', $data);
+							$responseCode = "1";
+							$responseMessage = "Successfully updated!.";
+						}
+					}
+					else if($formId == 5){
+						$user_id = $rData->user_id;
+						$queryStr5 = "select * from tbl_user_family e where e.user_id = '".$user_id."'";
+						$query5 = $this->db->query($queryStr5);
+						$row5 = $query5->result();
+						if(count($row5) == 1){
+							$rData1 = $row5[0];
+							$updateStr = "";
+							if(self::isValidToUpdate($data, "ParentsNo", $rData1->parents_no)){
+								$updateStr .= "parents_no=\"".$data["ParentsNo"]."\", ";
+							}
+							if(self::isValidToUpdate($data, "NativePlace", $rData1->native_place)){
+								$updateStr .= "native_place=\"".$data["NativePlace"]."\", ";
+							}
+							if(self::isValidToUpdate($data, "FamilyValue", $rData1->family_value)){
+								$updateStr .= "family_value=\"".$data["FamilyValue"]."\", ";
+							}
+							if(self::isValidToUpdate($data, "FamilyType", $rData1->family_type)){
+								$updateStr .= "family_type=\"".$data["FamilyType"]."\", ";
+							}
+							if(self::isValidToUpdate($data, "FamilyStatus", $rData1->family_status)){
+								$updateStr .= "family_status=\"".$data["FamilyStatus"]."\", ";
+							}
+							if(self::isValidToUpdate($data, "FathersOccupation", $rData1->father_occupation)){
+								$updateStr .= "father_occupation=\"".$data["FathersOccupation"]."\", ";
+							}
+							if(self::isValidToUpdate($data, "MothersOccupation", $rData1->mother_occupation)){
+								$updateStr .= "mother_occupation=\"".$data["MothersOccupation"]."\", ";
+							}
+							if(self::isValidToUpdate($data, "NoOfBrothers", $rData1->no_of_bro)){
+								$updateStr .= "no_of_bro=\"".$data["NoOfBrothers"]."\", ";
+							}
+							if(self::isValidToUpdate($data, "BrothersMarried", $rData1->bro_married)){
+								$updateStr .= "bro_married=\"".$data["BrothersMarried"]."\", ";
+							}
+							if(self::isValidToUpdate($data, "NoOfSisters", $rData1->no_of_sis)){
+								$updateStr .= "no_of_sis=\"".$data["NoOfSisters"]."\", ";
+							}
+							if(self::isValidToUpdate($data, "SistersMarried", $rData1->sis_married)){
+								$updateStr .= "sis_married=\"".$data["SistersMarried"]."\", ";
+							}
+							if(self::isValidToUpdate($data, "AboutMyFamily", $rData1->about_family)){
+								$updateStr .= "about_family=\"".$data["AboutMyFamily"]."\", ";
+							}
+							if($updateStr != ""){
+								$updateStr .= "modified_at=\"".$currentDate."\", ";
+								$updateStr = rtrim($updateStr, ", ");
+								$updateQueryStr = "Update tbl_user_family  set ".$updateStr." where user_id ='".$user_id."'; ";
+								$this->db->query($updateQueryStr);
+								$responseCode = "1";
+								$responseMessage = "Successfully updated!.";
+							}
+						}
+						else {
+							$data = array(
+								'user_id' => $user_id,
+								'parents_no' => self::checkEmptyValue($data['ParentsNo']),
+								'native_place' => self::checkEmptyValue($data['NativePlace']),
+								'family_value' => self::checkEmptyValue($data['FamilyValue']),
+								'family_type' => self::checkEmptyValue($data['FamilyType']),
+								'family_status' => self::checkEmptyValue($data['FamilyStatus']),
+								'father_occupation' => self::checkEmptyValue($data['FathersOccupation']),
+								'mother_occupation' => self::checkEmptyValue($data['MothersOccupation']),
+								'no_of_bro' => self::checkEmptyValue($data["NoOfBrothers"]),
+								'bro_married' => self::checkEmptyValue($data["BrothersMarried"]),
+								'no_of_sis' => self::checkEmptyValue($data["NoOfSisters"]),
+								'sis_married' => self::checkEmptyValue($data["SistersMarried"]),
+								'about_family' => self::checkEmptyValue($data["AboutMyFamily"]),
+								'modified_at' => $currentDate
+							);
+							$this->db->insert('tbl_user_family', $data);
+							$responseCode = "1";
+							$responseMessage = "Successfully updated!.";
+						}
 					}
 				}
 			}
@@ -112,7 +283,7 @@ class Api_model extends CI_Model
 		if(array_key_exists("matrimony_id", $postDataArray) && $postDataArray['matrimony_id'] != null){
 			$matrimony_id = $postDataArray['matrimony_id'];
 			if($matrimony_id != null && $matrimony_id != ""){
-				$queryStr = "select * from tbl_user u left join tbl_user_login ul on ul.user_id=u.user_id where u.matrimony_id = '".$matrimony_id."'";
+				$queryStr = "select *, ue.*, uf.* from tbl_user u left join tbl_user_login ul on ul.user_id=u.user_id left join tbl_user_education ue on ue.user_id=u.user_id  left join tbl_user_family uf on uf.user_id=u.user_id where u.matrimony_id = '".$matrimony_id."'";
 			}
 		} else {
 			$queryStr = "select u.matrimony_id, u.user_id, u.full_name, u.date_of_birth, u.last_login, u.created_at, u.gender, u.religion, u.caste, ul.mobile_number, ul.email_id from tbl_user u left join tbl_user_login ul on ul.user_id=u.user_id";
