@@ -23,13 +23,18 @@ class Api extends CI_Controller {
 		echo json_encode($array);
 	}
 
+	public function updateUser($formId, $matrimonyId){
+		header('Content-Type: application/json');
+		$array = $this->api_model->updateUser($formId, $matrimonyId, $this->input->post());
+		echo json_encode($array);
+	}
 	public function getUsers(){
 		header('Content-Type: application/json');
 		$row = $this->api_model->getUsers($this->input->post());
 		echo json_encode($row);
 	}
 
-	public function createUser($action){
+	public function createUser(){
 		header('Content-Type: application/json');
 		$this->load->library('form_validation');
 

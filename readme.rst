@@ -40,6 +40,7 @@ create table tbl_user (
 	raasi varchar(255),
 	is_chevvai_dosham varchar(255),
 	chevvai_dosham varchar(255),
+	body_type varchar(255),
 	eating_habits varchar(255),
 	smoking_habits varchar(255),
 	drinking_habits varchar(255),

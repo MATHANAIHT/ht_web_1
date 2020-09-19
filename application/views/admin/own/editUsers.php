@@ -128,8 +128,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<div class="card card-primary card-outline">
 						<div class="card-header" id="EditActionHeader">
 						</div>
+						<?php $user = $users[0]; print_r($user); ?>
+						<?php
+						$date_of_birth = $user->date_of_birth;
+						$dobA = mb_split("-", $date_of_birth);
+							$dobY = "";
+							$dobM = "";
+							$dobD = "";
+						if(count($dobA) == 3){
+							$dobY = $dobA[0];
+							$dobM = $dobA[1];
+							$dobD = $dobA[2];
+						}
+						echo $user->date_of_birth; ?>
 						<div class="card-body">
-							<input type="hidden" name="formId" value="1">
+							<input type="hidd en" name="formId" id="formId" value="1">
 							<div id="edit1">
 								<form name="formId1" id="formId1">
 									<div class="form-group">
@@ -142,13 +155,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<select name="profileCreatedFor" id="profileCreatedFor"
 														class="form-control select2" style="width: 100%;">
 													<option value="">Profile created for</option>
-													<option value="Myself">Myself</option>
-													<option value="Son">Son</option>
-													<option value="Daughter">Daughter</option>
-													<option value="Brother">Brother</option>
-													<option value="Sister">Sister</option>
-													<option value="Relative">Relative</option>
-													<option value="Friend">Friend</option>
+													<option value="Myself" <?php if($user->profile_created_by == "Myself") { echo "selected"; }?> >Myself</option>
+													<option value="Son" <?php if($user->profile_created_by == "Son") { echo "selected"; }?>>Son</option>
+													<option value="Daughter" <?php if($user->profile_created_by == "Daughter") { echo "selected"; }?>>Daughter</option>
+													<option value="Brother" <?php if($user->profile_created_by == "Brother") { echo "selected"; }?>>Brother</option>
+													<option value="Sister" <?php if($user->profile_created_by == "Sister") { echo "selected"; }?>>Sister</option>
+													<option value="Relative" <?php if($user->profile_created_by == "Relative") { echo "selected"; }?>>Relative</option>
+													<option value="Friend" <?php if($user->profile_created_by == "Friend") { echo "selected"; }?>>Friend</option>
 												</select>
 											</div>
 										</div>
@@ -160,16 +173,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 													   style="padding-left: 10px;padding-top: 5px">Name:</label>
 											</div>
 											<div class="col-8">
-												<input type="Name" class="form-control" id="fullName" name="fullName"
-													   class="form-control">
+												<input type="Name" class="form-control" id="fullName" name="fullName" class="form-control" value="<?php echo $user->full_name; ?>">
 											</div>
 										</div>
 									</div>
 									<div class="form-group">
 										<div class="row">
 											<div class="col-4">
-												<label for="Name" style="padding-left: 10px;padding-top: 5px">Date of
-													Birth</label>
+												<label for="Name" style="padding-left: 10px;padding-top: 5px">Date of Birth</label>
 											</div>
 											<div class="col-8">
 												<div class="row">
@@ -180,6 +191,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 														</select>
 													</div>
 													<div class="col-4 text-center">
+
 														<select name="dateOfBirth2" id="dateOfBirth2"
 																class="form-control">
 															<option value="">Month</option>
@@ -217,7 +229,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<select name="Height" id="Height" class="form-control select2"
 														style="width: 100%;">
 													<option value="">Select</option>
-													<?php echo  personHeightOptions(); ?>
+													<?php echo  personHeightOptions($user->height); ?>
 												</select>
 											</div>
 										</div>
@@ -234,7 +246,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 													<option value="">Select</option>
 													<?php
 														for($i=40; $i<150; $i++){
-															echo "<option value=\"$i\">$i Kg</option>";
+															if($user->weight == $i){
+																echo "<option selected value=\"$i\">$i Kg</option>";
+															} else {
+																echo "<option value=\"$i\">$i Kg</option>";
+															}
 														}
 													?>
 												</select>
@@ -251,10 +267,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<select name="maritalStatus" id="maritalStatus"
 														class="form-control select2" style="width: 100%;">
 													<option value="">Select</option>
-													<option value="NeverMarried">Never Married</option>
-													<option value="Widowed">Widowed</option>
-													<option value="Divorced">Divorced</option>
-													<option value="AwaitingDivorce">Awaiting divorce</option>
+													<option value="NeverMarried" <?php if($user->marital_status == "NeverMarried") { echo "selected"; }?>>Never Married</option>
+													<option value="Widowed" <?php if($user->marital_status == "Widowed") { echo "selected"; }?>>Widowed</option>
+													<option value="Divorced" <?php if($user->marital_status == "Divorced") { echo "selected"; }?>>Divorced</option>
+													<option value="AwaitingDivorce" <?php if($user->marital_status == "AwaitingDivorce") { echo "selected"; }?>>Awaiting divorce</option>
 												</select>
 											</div>
 										</div>
@@ -271,7 +287,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 													<option value="">Select</option>
 													<?php
 													for($i=0; $i<count($motherTongueList); $i++){
-														echo "<option value=\"".$motherTongueList[$i]['mother_tongue_id']."\">".$motherTongueList[$i]['mother_tongue_name']."</option>";
+														if($user->mother_tongue == $motherTongueList[$i]['mother_tongue_id']) {
+															echo "<option value=\"".$motherTongueList[$i]['mother_tongue_id']."\" selected>".$motherTongueList[$i]['mother_tongue_name']."</option>";
+														} else {
+															echo "<option value=\"".$motherTongueList[$i]['mother_tongue_id']."\">".$motherTongueList[$i]['mother_tongue_name']."</option>";
+														}
 													}
 													?>
 												</select>
@@ -286,27 +306,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="col-8">
 												<div class="clearfix">
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="BodyType1" name="BodyType" value="Slim">
+														<input type="radio" id="BodyType1" name="BodyType" value="Slim" <?php if($user->body_type == "Slim"){ echo "checked"; } ?> >
 														<label for="BodyType1">
 															Slim&nbsp;&nbsp;
 														</label>
 													</div>
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="BodyType2" name="BodyType"
+														<input type="radio" id="BodyType2" name="BodyType" <?php if($user->body_type == "Athletic"){ echo "checked"; } ?>
 															   value="Athletic">
 														<label for="BodyType2">
 															Athletic&nbsp;&nbsp;
 														</label>
 													</div>
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="BodyType3" name="BodyType"
+														<input type="radio" id="BodyType3" name="BodyType" <?php if($user->body_type == "Average"){ echo "checked"; } ?>
 															   value="Average">
 														<label for="BodyType3">
 															Average&nbsp;&nbsp;
 														</label>
 													</div>
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="BodyType4" name="BodyType"
+														<input type="radio" id="BodyType4" name="BodyType" <?php if($user->body_type == "Heavy"){ echo "checked"; } ?>
 															   value="Heavy">
 														<label for="BodyType4">
 															Heavy
@@ -324,14 +344,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="col-8">
 												<div class="clearfix">
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="PhysicalStatus1" name="PhysicalStatus"
+														<input type="radio" id="PhysicalStatus1" name="PhysicalStatus" <?php if($user->physical_status == "Normal"){ echo "checked"; } ?>
 															   value="Normal">
 														<label for="PhysicalStatus1">
 															Normal&nbsp;&nbsp;
 														</label>
 													</div>
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="PhysicalStatus2" name="PhysicalStatus"
+														<input type="radio" id="PhysicalStatus2" name="PhysicalStatus" <?php if($user->physical_status == "Physically Challenged"){ echo "checked"; } ?>
 															   value="Physically Challenged">
 														<label for="PhysicalStatus2">
 															Physically Challenged
@@ -349,21 +369,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="col-8">
 												<div class="clearfix">
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="EatingHabits1" name="EatingHabits"
+														<input type="radio" id="EatingHabits1" name="EatingHabits" <?php if($user->eating_habits == "Vegetarian"){ echo "checked"; } ?>
 															   value="Vegetarian">
 														<label for="EatingHabits1">
 															Vegetarian&nbsp;&nbsp;
 														</label>
 													</div>
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="EatingHabits2" name="EatingHabits"
+														<input type="radio" id="EatingHabits2" name="EatingHabits" <?php if($user->eating_habits == "Non Vegetarian"){ echo "checked"; } ?>
 															   value="Non Vegetarian">
 														<label for="EatingHabits2">
 															Non Vegetarian&nbsp;&nbsp;
 														</label>
 													</div>
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="EatingHabits3" name="EatingHabits"
+														<input type="radio" id="EatingHabits3" name="EatingHabits" <?php if($user->eating_habits == "Eggetarian"){ echo "checked"; } ?>
 															   value="Eggetarian">
 														<label for="EatingHabits3">
 															Eggetarian
@@ -381,21 +401,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="col-8">
 												<div class="clearfix">
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="DrinkingHabits1" name="DrinkingHabits"
+														<input type="radio" id="DrinkingHabits1" name="DrinkingHabits" <?php if($user->drinking_habits == "No"){ echo "checked"; } ?>
 															   value="No">
 														<label for="DrinkingHabits1">
 															No&nbsp;&nbsp;
 														</label>
 													</div>
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="DrinkingHabits3" name="DrinkingHabits"
+														<input type="radio" id="DrinkingHabits3" name="DrinkingHabits" <?php if($user->drinking_habits == "Yes"){ echo "checked"; } ?>
 															   value="Yes">
 														<label for="DrinkingHabits3">
 															Yes&nbsp;&nbsp;
 														</label>
 													</div>
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="DrinkingHabits2" name="DrinkingHabits"
+														<input type="radio" id="DrinkingHabits2" name="DrinkingHabits" <?php if($user->drinking_habits == "Drinks Socially"){ echo "checked"; } ?>
 															   value="Drinks Socially">
 														<label for="DrinkingHabits2">
 															Drinks Socially
@@ -413,21 +433,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="col-8">
 												<div class="clearfix">
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="SmokingHabits1" name="SmokingHabits"
+														<input type="radio" id="SmokingHabits1" name="SmokingHabits" <?php if($user->smoking_habits == "No"){ echo "checked"; } ?>
 															   value="No">
 														<label for="SmokingHabits1">
 															No&nbsp;&nbsp;
 														</label>
 													</div>
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="SmokingHabits3" name="SmokingHabits"
+														<input type="radio" id="SmokingHabits3" name="SmokingHabits" <?php if($user->smoking_habits == "Yes"){ echo "checked"; } ?>
 															   value="Yes">
 														<label for="SmokingHabits3">
 															Yes&nbsp;&nbsp;
 														</label>
 													</div>
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="SmokingHabits2" name="SmokingHabits"
+														<input type="radio" id="SmokingHabits2" name="SmokingHabits" <?php if($user->smoking_habits == "Occasionally"){ echo "checked"; } ?>
 															   value="Occasionally">
 														<label for="SmokingHabits2">
 															Occasionally
@@ -1126,15 +1146,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											$inches = ($feet * 12) + $inches;
 											return (int) round($inches / 0.393701);
 										}
-										function personHeightOptions(){
+										function personHeightOptions($height){
 											$r = '';
 											for($foot=4;$foot<=7;$foot++){
 												for($inches=0;$inches<=($foot==7? 0 : 11);$inches++){
 													$cm = convert_to_cm($foot, $inches);
 													if($inches==0){
-														$r .= "<option value='$cm'> $foot ft / ".convert_to_cm($foot, $inches)." cm</option>";
+														if($height == $cm)
+															$r .= "<option selected value='$cm'> $foot ft / ".convert_to_cm($foot, $inches)." cm</option>";
+														else
+															$r .= "<option value='$cm'> $foot ft / ".convert_to_cm($foot, $inches)." cm</option>";
 													}else{
-														$r .= "<option value='$cm'> $foot ft $inches ins / ".convert_to_cm($foot, $inches)." cm </option>";
+														if($height == $cm)
+															$r .= "<option selected value='$cm'> $foot ft $inches ins / ".convert_to_cm($foot, $inches)." cm </option>";
+														else
+															$r .= "<option value='$cm'> $foot ft $inches ins / ".convert_to_cm($foot, $inches)." cm </option>";
 													}
 												}
 											}
@@ -1148,12 +1174,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="col-8">
 												<select name="fromPHeight" id="fromPHeight">
 													<option value="">Height</option>
-													<?php echo  personHeightOptions(); ?>
+													<?php echo  personHeightOptions($user->height); ?>
 												</select>
 												To&nbsp;
 												<select name="toPHeight" id="toPHeight">
 													<option value="">Height</option>
-													<?php echo  personHeightOptions(); ?>
+													<?php echo  personHeightOptions($user->height); ?>
 												</select>
 											</div>
 										</div>
@@ -1581,7 +1607,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								</div>
 								<div class="col-2 text-right">
 									<input type="button" class="btn btn-primary" value="Save"
-										   onclick="saveAction()">
+										   onclick="saveAction('<?php echo $user->matrimony_id;?>')">
 								</div>
 							</div>
 						</div>
@@ -1602,8 +1628,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         let y = d.getFullYear();
         let dayArray=new Array("31","28","31","30","31","30","31","31","30","31","30","31");
 
+        let dob = "<?php echo $user->date_of_birth; ?>"
+        let dobA = dob.split("-");
+        let dobY = dobA[0];
+        let dobM = parseInt(dobA[1]);
+        let dobD = parseInt(dobA[2]);
         for (j = y-18; j >1950; j--) {
-            $("#dateOfBirth3").append("<option value=\""+(j)+"\">"+(j)+"</option>")
+            if(dobY == j) {
+                $("#dateOfBirth3").append("<option selected value=\""+(j)+"\">"+(j)+"</option>")
+                $("#dateOfBirth2").val(dobM);
+                onChangeMonth(dobM);
+
+                setTimeout(function () {
+                    $("#dateOfBirth1").val(dobD);
+                }, 500);
+
+			} else {
+                $("#dateOfBirth3").append("<option value=\""+(j)+"\">"+(j)+"</option>")
+            }
         }
 
         function onChangeYear(val){
@@ -1627,21 +1669,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             }
         }
 
-        function onChangeMonth(val){
+        function onChangeMonth(input){
             let setYear = $("#dateOfBirth3").val();
             $("#dateOfBirth1").empty().append("<option value=\"\">Day</option>");
             if(setYear != ""){
-                if(setYear%4==0 && val==2) {
-                    for(var i=1;i<=parseInt((dayArray[val-1]))+1;i++)  {
+                if(setYear%4==0 && input==2) {
+                    for(var i=1;i<=parseInt((dayArray[input-1]))+1;i++)  {
                         $("#dateOfBirth1").append("<option value=\""+i+"\">"+i+"</option>");
                     }
                 }else{
-                    for(var i=1;i<=(dayArray[val-1]);i++)  {
+                    for(var i=1;i<=(dayArray[input-1]);i++)  {
                         $("#dateOfBirth1").append("<option value=\""+i+"\">"+i+"</option>");
                     }
                 }
             }else{
-                for(var i=1;i<=dayArray[val-1];i++)  {
+                for(var i=1;i<=dayArray[input-1];i++)  {
                     $("#dateOfBirth1").append("<option value=\""+i+"\">"+i+"</option>");
                 }
             }
@@ -1726,24 +1768,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 console.log("id -> " + id + " , i -> " + i)
 
                 if (id == i) {
-					$("#edit" + i).show()
-					$("#EditActionHeader").html(headerNames[i-1])
+					$("#edit" + i).show();
+                    $("#formId").val(i);
+                    $("#EditActionHeader").html(headerNames[i-1])
                 }
                 else
                     $("#edit" + i).hide()
             })
         }
 
-        function saveAction(id) {
-            let idList = [1, 2, 3, 4, 5, 6];
-            idList.map(i => {
+        function saveAction(matrimonyId) {
+            var formId = $("#formId").val();
+            $.post("/api/users/update/"+formId+"/"+matrimonyId, $("#formId"+formId).serialize(), function(data, status){
+                alert(JSON.stringify(data))
+            });
+
+            /*idList.map(i => {
                 console.log("id -> " + id + " , i -> " + i)
 
-                if (id == i)
+                if (id == i){
                     $("#edit" + i).show()
+                }
                 else
                     $("#edit" + i).hide()
-            })
+            })*/
         }
 
         function getCasteList() {

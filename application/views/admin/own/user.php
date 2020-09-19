@@ -403,7 +403,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             });
 
             $('#createUser').click(function () {
-                $.post("/api/users/add", $('#addUserForm').serialize(), function(data, status){
+                $.post("/api/users/new", $('#addUserForm').serialize(), function(data, status){
 					if(data["error"] != ""){
 					    let dataType = data["dataType"];
 					    let MESSAGE = data["message"];

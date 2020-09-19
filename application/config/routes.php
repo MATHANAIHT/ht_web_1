@@ -124,7 +124,9 @@ $route['api/education-category'] = 'api/educationCategory';
 $route['api/save-education-category'] = 'api/saveEducationCategory';
 $route['api/occupation-category'] = 'api/occupationCategory';
 $route['api/save-occupation-category'] = 'api/saveOccupationCategory';
-$route['api/users/(:any)'] = 'api/createUser/$1';
+$route['api/users/new'] = 'api/createUser';
+$route['api/users/update/(:any)/(:any)'] = 'api/updateUser/$1/$2';
+
 $route['api/users'] = 'api/getUsers';
 
 $route['404_override'] = '';

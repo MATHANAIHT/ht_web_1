@@ -22,8 +22,102 @@ class Api_model extends CI_Model
 		return $tableNames[$tbl];
 	}
 
+	function isValidToUpdate($dataArray, $index, $existValue){
+		if(array_key_exists($index, $dataArray)){
+			if($dataArray[$index] != "" && $dataArray[$index] != $existValue){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	function updateUser($formId, $matrimonyId, $data){
+		$responseCode = "0";
+		$responseMessage = "No data updated";
+		if($matrimonyId != ""){
+			$queryStr = "select * from tbl_user u where u.matrimony_id = '".$matrimonyId."'";
+			$query = $this->db->query($queryStr);
+			$row = $query->result();
+			if(count($row) == 1){
+				$rData = $row[0];
+				if($formId == 1){
+					$updateStr = "";
+					if(self::isValidToUpdate($data, "profileCreatedFor", $rData->profile_created_by)){
+						$updateStr .= "profile_created_by=\"".$data["profileCreatedFor"]."\", ";
+					}
+					if(self::isValidToUpdate($data, "fullName", $rData->full_name)){
+						$updateStr .= "full_name=\"".$data["fullName"]."\", ";
+					}
+					if(self::isValidToUpdate($data, "Height", $rData->height)){
+						$updateStr .= "height=\"".$data["Height"]."\", ";
+					}
+					if(self::isValidToUpdate($data, "Weight", $rData->weight)){
+						$updateStr .= "weight=\"".$data["Weight"]."\", ";
+					}
+					if(self::isValidToUpdate($data, "maritalStatus", $rData->marital_status)){
+						$updateStr .= "marital_status=\"".$data["maritalStatus"]."\", ";
+					}
+					if(self::isValidToUpdate($data, "motherTongue", $rData->mother_tongue)){
+						$updateStr .= "mother_tongue=\"".$data["motherTongue"]."\", ";
+					}
+					if(self::isValidToUpdate($data, "PhysicalStatus", $rData->physical_status)){
+						$updateStr .= "physical_status=\"".$data["PhysicalStatus"]."\", ";
+					}
+					if(self::isValidToUpdate($data, "BodyType", $rData->body_type)){
+						$updateStr .= "body_type=\"".$data["BodyType"]."\", ";
+					}
+					if(self::isValidToUpdate($data, "EatingHabits", $rData->eating_habits)){
+						$updateStr .= "eating_habits=\"".$data["EatingHabits"]."\", ";
+					}
+					if(self::isValidToUpdate($data, "DrinkingHabits", $rData->drinking_habits)){
+						$updateStr .= "drinking_habits=\"".$data["DrinkingHabits"]."\", ";
+					}
+					if(self::isValidToUpdate($data, "SmokingHabits", $rData->smoking_habits)){
+						$updateStr .= "smoking_habits=\"".$data["SmokingHabits"]."\", ";
+					}
+					$existDOB = $rData->date_of_birth;
+					$existDOBArray = explode("-", $existDOB);
+					if(count($existDOBArray) > 0){
+						$eDOB3 = ltrim($existDOBArray[0], "0");
+						$eDOB2 = ltrim($existDOBArray[1], "0");
+						$eDOB1 = ltrim($existDOBArray[2], "0");
+
+						if(self::isValidToUpdate($data, "dateOfBirth3", $eDOB3) || self::isValidToUpdate($data, "dateOfBirth2", $eDOB2) || self::isValidToUpdate($data, "dateOfBirth1", $eDOB1)){
+							$dob = $data['dateOfBirth3']."-".sprintf("%02d", $data['dateOfBirth2'])."-".sprintf("%02d", $data['dateOfBirth1']);
+							$updateStr .= "date_of_birth=\"".$dob."\", ";
+						}
+					}
+
+//					print_r($rData);
+//					print_r($data);
+//						echo $updateQueryStr;
+					if($updateStr != ""){
+						$updateStr = rtrim($updateStr, ", ");
+						$updateQueryStr = "Update tbl_user  set ".$updateStr." where matrimony_id ='".$matrimonyId."'; ";
+						$this->db->query($updateQueryStr);
+						$responseCode = "1";
+						$responseMessage = "Successfully updated!.";
+					}
+				}
+			}
+		}
+		return array(
+			"responseCode" => $responseCode,
+			"responseMessage" => $responseMessage
+		);
+	}
+
 	function getUsers($postDataArray){
-		$query = $this->db->query("select u.matrimony_id, u.user_id, u.full_name, u.date_of_birth, u.last_login, u.created_at, u.gender, u.religion, u.caste, ul.mobile_number, ul.email_id from tbl_user u left join tbl_user_login ul on ul.user_id=u.user_id");
+		$queryStr = "";
+		if(array_key_exists("matrimony_id", $postDataArray) && $postDataArray['matrimony_id'] != null){
+			$matrimony_id = $postDataArray['matrimony_id'];
+			if($matrimony_id != null && $matrimony_id != ""){
+				$queryStr = "select * from tbl_user u left join tbl_user_login ul on ul.user_id=u.user_id where u.matrimony_id = '".$matrimony_id."'";
+			}
+		} else {
+			$queryStr = "select u.matrimony_id, u.user_id, u.full_name, u.date_of_birth, u.last_login, u.created_at, u.gender, u.religion, u.caste, ul.mobile_number, ul.email_id from tbl_user u left join tbl_user_login ul on ul.user_id=u.user_id";
+		}
+		$query = $this->db->query($queryStr);
 		$row = $query->result();
 		return $row;
 	}

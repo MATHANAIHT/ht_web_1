@@ -6,6 +6,7 @@ class Admin extends CI_Controller {
 	function __construct() {
 		parent::__construct();
 		$this->load->database();
+		$this->load->model('api_model');
 	}
 
 	public function login()
@@ -45,9 +46,25 @@ class Admin extends CI_Controller {
 		$query9 = $this->db->get("tbl_star");;
 		$data['starList'] = $query9->result_array();
 
-		$this->load->view('admin/templates/header', $data);
-		$this->load->view('admin/own/editUsers');
-		$this->load->view('admin/templates/footer', $data);
+		$error = 1;
+		if($id != "") {
+			$postDataArray = array("matrimony_id" => $id);
+			$users = $this->api_model->getUsers($postDataArray);
+			if($users != null && count($users) == 1){
+				$data['users'] = $users;
+				$this->load->view('admin/templates/header', $data);
+				$this->load->view('admin/own/editUsers');
+				$this->load->view('admin/templates/footer', $data);
+				$error = 0;
+			}
+		}
+
+		if($error == 1){
+			echo "Error";
+		}
+
+
+
 	}
 
 	public function listUsers()
