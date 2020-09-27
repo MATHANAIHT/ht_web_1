@@ -128,13 +128,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<div class="card card-primary card-outline">
 						<div class="card-header" id="EditActionHeader">
 						</div>
-						<?php $user = $users[0]; print_r($user); ?>
+						<?php
+							$user = $users[0];
+							print_r($user);
+						?>
 						<?php
 						$date_of_birth = $user->date_of_birth;
 						$dobA = mb_split("-", $date_of_birth);
-							$dobY = "";
-							$dobM = "";
-							$dobD = "";
+						$dobY = "";
+						$dobM = "";
+						$dobD = "";
 						if(count($dobA) == 3){
 							$dobY = $dobA[0];
 							$dobM = $dobA[1];
@@ -245,13 +248,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 														style="width: 100%;">
 													<option value="">Select</option>
 													<?php
-														for($i=40; $i<150; $i++){
-															if($user->weight == $i){
-																echo "<option selected value=\"$i\">$i Kg</option>";
-															} else {
-																echo "<option value=\"$i\">$i Kg</option>";
-															}
+													for($i=40; $i<150; $i++){
+														if($user->weight == $i){
+															echo "<option selected value=\"$i\">$i Kg</option>";
+														} else {
+															echo "<option value=\"$i\">$i Kg</option>";
 														}
+													}
 													?>
 												</select>
 											</div>
@@ -465,16 +468,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<div class="row">
 											<div class="col-4">
 												<label for="Name"
-													   style="padding-left: 10px;padding-top: 5px">Religion</label>
+													   style="padding-left: 10px;padding-top: 5px">Religion <?php echo $user->religion; ?></label>
 											</div>
 											<div class="col-8">
 												<select name="religion" id="religion" class="form-control select2"
 														style="width: 100%;">
 													<option value="">Select</option>
 													<?php
-														for($i=0; $i<count($religionList); $i++){
-															echo "<option value=\"".$religionList[$i]['religion_id']."\">".$religionList[$i]['religion_name']."</option>";
+													for($i=0; $i<count($religionList); $i++){
+														$selected = "";
+														if($user->religion == $religionList[$i]['religion_id']){
+															$selected = "selected";
 														}
+														echo "<option $selected value=\"".$religionList[$i]['religion_id']."\">".$religionList[$i]['religion_name']."</option>";
+													}
 													?>
 												</select>
 											</div>
@@ -515,8 +522,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 													   style="padding-left: 10px; padding-top: 5px">Gothra(m)</label>
 											</div>
 											<div class="col-8">
-												<input type="text" name="Gothram" class="form-control" id="Gothram"
-													   class="form-control">
+												<input value="<?php echo $user->gothra; ?>" type="text" name="Gothram" class="form-control" id="Gothram" class="form-control">
 											</div>
 										</div>
 									</div>
@@ -532,7 +538,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 													<option value="">Select</option>
 													<?php
 													for($i=0; $i<count($rassiList); $i++){
-														echo "<option value=\"".$rassiList[$i]['raasi_id']."\">".$rassiList[$i]['raasi_name']."</option>";
+														$selected = "";
+														if ($user->raasi == $rassiList[$i]['raasi_id']){
+															$selected = "selected";
+														}
+														echo "<option $selected value=\"".$rassiList[$i]['raasi_id']."\">".$rassiList[$i]['raasi_name']."</option>";
 													}
 													?>
 												</select>
@@ -562,22 +572,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="col-8">
 												<div class="form-group clearfix" style="padding-top: 10px">
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="HaveDosham1" name="HaveDosham"
+														<input type="radio" id="HaveDosham1" name="HaveDosham"  <?php if($user->is_chevvai_dosham == "No"){ echo "checked"; } ?>
 															   value="No">
 														<label for="HaveDosham1">
 															No
 														</label>
 													</div>
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="HaveDosham3" name="HaveDosham"
+														<input type="radio" id="HaveDosham3" name="HaveDosham" <?php if($user->is_chevvai_dosham == "Yes"){ echo "checked"; } ?>
 															   value="Yes">
 														<label for="HaveDosham3">
 															Yes
 														</label>
 													</div>
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="HaveDosham2" name="HaveDosham"
-															   value="Don't Know">
+														<input type="radio" id="HaveDosham2" name="HaveDosham" <?php if($user->is_chevvai_dosham == "DontKnow"){ echo "checked"; } ?>
+															   value="DontKnow">
 														<label for="HaveDosham2">
 															Don't Know
 														</label>
@@ -601,7 +611,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 													<option value="">Select</option>
 													<?php
 													for($i=0; $i<count($countryList); $i++){
-														echo "<option value=\"".$countryList[$i]['country_id']."\">".$countryList[$i]['country_name']."</option>";
+														$selected = "";
+														if($user->country == $countryList[$i]['country_id']){
+															$selected = "selected";
+														}
+														echo "<option ".$selected." value=\"".$countryList[$i]['country_id']."\">".$countryList[$i]['country_name']."</option>";
 													}
 													?>
 												</select>
@@ -716,13 +730,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 														style="width: 100%;">
 													<option value="">Select EmployedIn</option>
 													<?php
-														for($i=0; $i<count($employedInList); $i++){
-															$selected = "";
-															if($user->employed_in == $employedInList[$i]['employed_in_id']){
-																$selected = "selected";
-															}
-															echo "<option ".$selected." value=\"".$employedInList[$i]['employed_in_id']."\">".$employedInList[$i]['employed_in_name']."</option>";
+													for($i=0; $i<count($employedInList); $i++){
+														$selected = "";
+														if($user->employed_in == $employedInList[$i]['employed_in_id']){
+															$selected = "selected";
 														}
+														echo "<option ".$selected." value=\"".$employedInList[$i]['employed_in_id']."\">".$employedInList[$i]['employed_in_name']."</option>";
+													}
 													?>
 												</select>
 											</div>
@@ -800,14 +814,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 														class="form-control select2" style="width: 100%;">
 													<option value="">Select AnnualIncome</option>
 													<?php
-														for($i=0; $i<count($annualIncomeList); $i++){
-															$selected = "";
-															if($user->annual_income == $annualIncomeList[$i]['annual_income_id']){
-																$selected = "selected";
-															}
-
-															echo "<option ".$selected." value=\"".$annualIncomeList[$i]['annual_income_id']."\">".$annualIncomeList[$i]['annual_income']."</option>";
+													for($i=0; $i<count($annualIncomeList); $i++){
+														$selected = "";
+														if($user->annual_income == $annualIncomeList[$i]['annual_income_id']){
+															$selected = "selected";
 														}
+
+														echo "<option ".$selected." value=\"".$annualIncomeList[$i]['annual_income_id']."\">".$annualIncomeList[$i]['annual_income']."</option>";
+													}
 													?>
 												</select>
 											</div>
@@ -969,13 +983,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<select name="NoOfBrothers" id="NoOfBrothers" class="form-control select2" style="width: 100%;">
 													<option value="">Select</option>
 													<?php
-														for($i=0; $i<8; $i++){
-															$selected = "";
-															if($i == $user->no_of_bro){
-																$selected = "selected";
-															}
- 															echo "<option ".$selected." value=\"".$i."\">".$i."</option>";
+													for($i=0; $i<8; $i++){
+														$selected = "";
+														if($i == $user->no_of_bro){
+															$selected = "selected";
 														}
+														echo "<option ".$selected." value=\"".$i."\">".$i."</option>";
+													}
 													?>
 													<option value="7+" <?php if($user->no_of_bro == "7+"){ echo "selected"; } ?> >7+</option>
 												</select>
@@ -1107,19 +1121,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<label for="OldPassword" style="padding-left: 10px;">Preferred Age</label>
 											</div>
 											<div class="col-8">
-												From <select style="width:80px;" name="PStartAge" id="PStartAge" >
-													<option value="">From</option>
+												<select style="width:80px;" name="PStartAge" id="PStartAge" >
+													<option value="">From Age</option>
 													<?php
-														for($i=18; $i<71; $i++){
-															echo "<option value=\"".$i."\">".$i."</option>";
+													for($i=18; $i<71; $i++){
+														$selected = "";
+														if($i == $user->p_start_age){
+															$selected = "selected";
 														}
+														echo "<option $selected value=\"".$i."\">".$i."</option>";
+													}
 													?>
 												</select>
-												To <select style="width:80px;" name="PEndAge" id="PEndAge" >
-													<option value="">To</option>
+												&nbsp;-&nbsp;
+												<select style="width:80px;" name="PEndAge" id="PEndAge" >
+													<option value="">To Age</option>
 													<?php
 													for($i=21; $i<71; $i++){
-														echo "<option value=\"".$i."\">".$i."</option>";
+														$selected = "";
+														if($i == $user->p_end_age){
+															$selected = "selected";
+														}
+														echo "<option $selected value=\"".$i."\">".$i."</option>";
 													}
 													?>
 												</select>
@@ -1133,43 +1156,47 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											</div>
 											<div class="col-8">
 												<div class="clearfix" >
-													<div class="icheck-primary d-inline" style="padding-right: 38px">
-														<input type="checkbox" id="PMaritalStatus1" name="PMaritalStatus"
-															   value="Any">
-														<label for="PMaritalStatus1">
-															Any
+													<?php
+														$p_marital_status = $user->p_marital_status;
+														$p_marital_statusArray = array();
+														if($p_marital_status != "" && $p_marital_status != null){
+															$p_marital_statusArray = explode("," , $p_marital_status);
+														}
+													?>
+													<div class="icheck-primary d-inline">
+														<input type="checkbox" id="PMaritalStatus2" name="PMaritalStatus[]"
+															   <?php if(in_array("NeverMarried", $p_marital_statusArray)) { echo "checked"; } ?>
+															   value="NeverMarried">
+														<label for="PMaritalStatus2">
+															Never Married&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 														</label>
 													</div>
 													<div class="icheck-primary d-inline">
-														<input type="checkbox" id="PMaritalStatus2" name="PMaritalStatus"
-															   value="Never Married">
-														<label for="PMaritalStatus2">
-															Never Married
+														<input type="checkbox" id="PMaritalStatus3" name="PMaritalStatus[]"
+															<?php if(in_array("Divorced", $p_marital_statusArray)) { echo "checked"; } ?>
+															   value="Divorced">
+														<label for="PMaritalStatus3">
+															Divorced
 														</label>
 													</div>
 													<br />
 													<div class="icheck-primary d-inline">
-														<input type="checkbox" id="PMaritalStatus3" name="PMaritalStatus"
-															   value="Divorced">
-														<label for="PMaritalStatus3">
-															Divorced&nbsp;
+														<input type="checkbox" id="PMaritalStatus5" name="PMaritalStatus[]"
+															<?php if(in_array("AwaitingDivorce", $p_marital_statusArray)) { echo "checked"; } ?>
+															   value="AwaitingDivorce">
+														<label for="PMaritalStatus5">
+															Awaiting divorce
 														</label>
 													</div>
 													<div class="icheck-primary d-inline">
-														<input type="checkbox" id="PMaritalStatus4" name="PMaritalStatus"
+														<input type="checkbox" id="PMaritalStatus4" name="PMaritalStatus[]"
+															<?php if(in_array("Widowed", $p_marital_statusArray)) { echo "checked"; } ?>
 															   value="Widowed">
 														<label for="PMaritalStatus4">
 															Widowed
 														</label>
 													</div>
-													<br />
-													<div class="icheck-primary d-inline">
-														<input type="checkbox" id="PMaritalStatus5" name="PMaritalStatus"
-															   value="Awaiting divorce">
-														<label for="PMaritalStatus5">
-															Awaiting divorce
-														</label>
-													</div>
+
 												</div>
 											</div>
 										</div>
@@ -1206,14 +1233,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<label for="Height" style="padding-left: 10px;">Height</label>
 											</div>
 											<div class="col-8">
-												<select name="fromPHeight" id="fromPHeight">
-													<option value="">Height</option>
-													<?php echo  personHeightOptions($user->height); ?>
+												<select name="startPHeight" id="startPHeight">
+													<option value="">From Height</option>
+													<?php echo  personHeightOptions($user->p_start_height); ?>
 												</select>
-												To&nbsp;
-												<select name="toPHeight" id="toPHeight">
-													<option value="">Height</option>
-													<?php echo  personHeightOptions($user->height); ?>
+												&nbsp;-&nbsp;
+												<select name="endPHeight" id="endPHeight">
+													<option value="">To Height</option>
+													<?php echo  personHeightOptions($user->p_end_height); ?>
 												</select>
 											</div>
 										</div>
@@ -1227,23 +1254,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<div class="clearfix">
 													<div class="icheck-primary d-inline">
 														<input type="radio" id="PPhysicalStatus1" name="PPhysicalStatus"
+															<?php if($user->p_physical_status == "Normal") { echo "checked"; } ?>
 															   value="Normal">
 														<label for="PPhysicalStatus1">
 															Normal
 														</label>
 													</div>
-													<br />
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="PhysicalStatus2" name="PPhysicalStatus"
-															   value="PPhysically challenged">
-														<label for="PPhysicalStatus2">
+														<input type="radio" id="PPhysicalStatus4" name="PPhysicalStatus"
+															<?php if($user->p_physical_status == "PhysicallyChallenged") { echo "checked"; } ?>
+															   value="PhysicallyChallenged">
+														<label for="PPhysicalStatus4">
 															Physically challenged
 														</label>
 													</div>
-													<br />
 													<div class="icheck-primary d-inline">
 														<input type="radio" id="PPhysicalStatus3" name="PPhysicalStatus"
-															   value="Doesn't matter">
+															<?php if($user->p_physical_status == "DoesNotMatter") { echo "checked"; } ?>
+															   value="DoesNotMatter">
 														<label for="PPhysicalStatus3">
 															Doesn't matter
 														</label>
@@ -1259,17 +1287,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											</div>
 											<div class="col-8">
 												<div class="clearfix">
-
+													<?php
+														$p_eating = $user->p_eating;
+														$p_eatingArray = array();
+														if($p_eating != "" && $p_eating != null){
+															$p_eatingArray = explode("," , $p_eating);
+														}
+													?>
 													<div class="icheck-primary d-inline">
-														<input type="checkbox" id="PEatingHabits1" name="PEatingHabits"
-															   value="Doesn't matter">
+														<input type="checkbox" id="PEatingHabits1" name="PEatingHabits[]"
+															<?php if(in_array("DoesNotMatter", $p_eatingArray)) { echo "checked"; } ?>
+															   value="DoesNotMatter">
 														<label for="PEatingHabits1">
 															Doesn't matter
 														</label>
 													</div>
 													<br />
 													<div class="icheck-primary d-inline">
-														<input type="checkbox" id="PEatingHabits2" name="PEatingHabits"
+														<input type="checkbox" id="PEatingHabits2" name="PEatingHabits[]"
+															<?php if(in_array("Vegetarian", $p_eatingArray)) { echo "checked"; } ?>
 															   value="Vegetarian">
 														<label for="PEatingHabits2">
 															Vegetarian
@@ -1277,15 +1313,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 													</div>
 													<br />
 													<div class="icheck-primary d-inline">
-														<input type="checkbox" id="PEatingHabits3" name="PEatingHabits"
-															   value="Non Vegetarian">
+														<input type="checkbox" id="PEatingHabits3" name="PEatingHabits[]"
+															<?php if(in_array("NonVegetarian", $p_eatingArray)) { echo "checked"; } ?>
+															   value="NonVegetarian">
 														<label for="PEatingHabits3">
 															Non Vegetarian
 														</label>
 													</div>
 													<br />
 													<div class="icheck-primary d-inline">
-														<input type="checkbox" id="PEatingHabits4" name="PEatingHabits"
+														<input type="checkbox" id="PEatingHabits4" name="PEatingHabits[]"
+															<?php if(in_array("Eggetarian", $p_eatingArray)) { echo "checked"; } ?>
 															   value="Eggetarian">
 														<label for="PEatingHabits4">
 															Eggetarian
@@ -1302,33 +1340,44 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											</div>
 											<div class="col-8">
 												<div class="clearfix">
+													<?php
+														$p_drinking = $user->p_drinking;
+														$p_drinkingArray = array();
+														if($p_drinking != "" && $p_drinking != null){
+															$p_drinkingArray = explode("," , $p_drinking);
+														}
+													?>
 													<div class="icheck-primary d-inline">
-														<input type="checkbox" id="PDrinkingHabits1" name="PDrinkingHabits"
-															   value="Doesn't matter">
+														<input type="checkbox" id="PDrinkingHabits1" name="PDrinkingHabits[]"
+															<?php if(in_array("DoesNotMatter", $p_drinkingArray)) { echo "checked"; } ?>
+															   value="DoesNotMatter">
 														<label for="PDrinkingHabits1">
 															Doesn't matter
 														</label>
 													</div>
 													<br />
 													<div class="icheck-primary d-inline">
-														<input type="checkbox" id="PDrinkingHabits2" name="PDrinkingHabits"
-															   value="Never drinks">
+														<input type="checkbox" id="PDrinkingHabits2" name="PDrinkingHabits[]"
+															<?php if(in_array("NeverDrinks", $p_drinkingArray)) { echo "checked"; } ?>
+															   value="NeverDrinks">
 														<label for="PDrinkingHabits2">
 															Never drinks
 														</label>
 													</div>
 													<br />
 													<div class="icheck-primary d-inline">
-														<input type="checkbox" id="PDrinkingHabits3" name="PDrinkingHabits"
-															   value="Drinks socially">
+														<input type="checkbox" id="PDrinkingHabits3" name="PDrinkingHabits[]"
+															<?php if(in_array("DrinksSocially", $p_drinkingArray)) { echo "checked"; } ?>
+															   value="DrinksSocially">
 														<label for="PDrinkingHabits3">
 															Drinks socially
 														</label>
 													</div>
 													<br />
 													<div class="icheck-primary d-inline">
-														<input type="checkbox" id="PDrinkingHabits4" name="PDrinkingHabits"
-															   value="Drinks regularly">
+														<input type="checkbox" id="PDrinkingHabits4" name="PDrinkingHabits[]"
+															<?php if(in_array("DrinksRegularly", $p_drinkingArray)) { echo "checked"; } ?>
+															   value="DrinksRegularly">
 														<label for="PDrinkingHabits4">
 															Drinks regularly
 														</label>
@@ -1344,33 +1393,44 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											</div>
 											<div class="col-8">
 												<div class="clearfix">
+													<?php
+														$p_smoking = $user->p_smoking;
+														$p_smokingArray = array();
+														if($p_smoking != "" && $p_smoking != null){
+															$p_smokingArray = explode("," , $p_smoking);
+														}
+													?>
 													<div class="icheck-primary d-inline">
-														<input type="checkbox" id="PSmokingHabits1" name="PSmokingHabits"
-															   value="Doesn't matter">
+														<input type="checkbox" id="PSmokingHabits1" name="PSmokingHabits[]"
+															<?php if(in_array("DoesNotMatter", $p_smokingArray)) { echo "checked"; } ?>
+															   value="DoesNotMatter">
 														<label for="PSmokingHabits1">
 															Doesn't matter
 														</label>
 													</div>
 													<br>
 													<div class="icheck-primary d-inline">
-														<input type="checkbox" id="PSmokingHabits2" name="PSmokingHabits"
-															   value="Never smokes">
+														<input type="checkbox" id="PSmokingHabits2" name="PSmokingHabits[]"
+															<?php if(in_array("NeverSmokes", $p_smokingArray)) { echo "checked"; } ?>
+															   value="NeverSmokes">
 														<label for="PSmokingHabits2">
 															Never smokes
 														</label>
 													</div>
 													<br>
 													<div class="icheck-primary d-inline">
-														<input type="checkbox" id="SmokingHabits3" name="SmokingHabits"
-															   value="Smokes occasionally">
-														<label for="SmokingHabits3">
+														<input type="checkbox" id="PSmokingHabits3" name="PSmokingHabits[]"
+															<?php if(in_array("SmokesOccasionally", $p_smokingArray)) { echo "checked"; } ?>
+															   value="SmokesOccasionally">
+														<label for="PSmokingHabits3">
 															Smokes occasionally
 														</label>
 													</div>
 													<br>
 													<div class="icheck-primary d-inline">
-														<input type="checkbox" id="PSmokingHabits4" name="PSmokingHabits"
-															   value="Smokes regularly">
+														<input type="checkbox" id="PSmokingHabits4" name="PSmokingHabits[]"
+															<?php if(in_array("SmokesRegularly", $p_smokingArray)) { echo "checked"; } ?>
+															   value="SmokesRegularly">
 														<label for="PSmokingHabits4">
 															Smokes regularly
 														</label>
@@ -1384,14 +1444,35 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="col-4 align-middle">
 												<label for="PMotherTongue" style="padding-left: 10px;">Mother Tongue</label>
 											</div>
-											<div class="col-8">
-												<select name="PMotherTongue" id="PMotherTongue" class="form-control select2" multiple style="width: 100%">
+											<div class="col-2 align-middle">
+												<div class="icheck-success d-inline">
+													<input type="checkbox"
+														   value="YES"
+														<?php if($user->p_mother_tongue_any == "YES") { echo "checked"; } ?>
+														   id="PMotherTongueAny" name="PMotherTongueAny">
+													<label for="PMotherTongueAny">
+														Any
+													</label>
+												</div>
+											</div>
+											<div class="col-6" id="PMotherTongueDiv">
+												<?php
+												$p_mother_tongue = $user->p_mother_tongue;
+												$p_mother_tongueArray = array();
+												if($p_mother_tongue != "" && $p_mother_tongue != null){
+													$p_mother_tongueArray = explode("," , $p_mother_tongue);
+												}
+												?>
+												<select name="PMotherTongue[]" id="PMotherTongue" class="form-control select2" multiple style="width: 100%">
 													<option value="">Select</option>
-													<option value="Any">Any</option>
 													<?php
-														for($i=0; $i<count($motherTongueList); $i++){
-															echo "<option value=\"".$motherTongueList[$i]['mother_tongue_id']."\">".$motherTongueList[$i]['mother_tongue_name']."</option>";
+													for($i=0; $i<count($motherTongueList); $i++){
+														$selected = "";
+														if(in_array($motherTongueList[$i]['mother_tongue_id'], $p_mother_tongueArray)) {
+															$selected = "selected";
 														}
+														echo "<option $selected value=\"".$motherTongueList[$i]['mother_tongue_id']."\">".$motherTongueList[$i]['mother_tongue_name']."</option>";
+													}
 													?>
 												</select>
 											</div>
@@ -1402,13 +1483,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="col-4">
 												<label for="PReligion" style="padding-left: 10px;">Religion</label>
 											</div>
-											<div class="col-8 align-middle">
+											<div class="col-2 align-middle">
+												<div class="icheck-success d-inline">
+													<input type="checkbox"
+														   value="YES"
+														<?php if($user->p_religion_any == "YES") { echo "checked"; } ?>
+														   id="PReligionAny" name="PReligionAny">
+													<label for="PReligionAny">
+														Any
+													</label>
+												</div>
+											</div>
+											<div class="col-6 align-middle" id="PReligionDiv">
 												<select name="PReligion" id="PReligion" class="form-control select2" style="width: 100%">
 													<option value="">Select</option>
-													<option value="Any">Any</option>
 													<?php
 													for($i=0; $i<count($religionList); $i++){
-														echo "<option value=\"".$religionList[$i]['religion_id']."\">".$religionList[$i]['religion_name']."</option>";
+														$selected = "";
+														if($user->p_religion == $religionList[$i]['religion_id']){
+															$selected = "selected";
+														}
+														echo "<option $selected value=\"".$religionList[$i]['religion_id']."\">".$religionList[$i]['religion_name']."</option>";
 													}
 													?>
 												</select>
@@ -1420,8 +1515,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="col-4 align-middle">
 												<label for="PCaste" style="padding-left: 10px;">Caste</label>
 											</div>
-											<div class="col-8">
-												<select name="PCaste" id="PCaste" class="form-control select2" style="width: 100%">
+											<div class="col-2 align-middle" >
+												<div class="icheck-success d-inline">
+													<input type="checkbox"
+														   value="YES"
+														<?php if($user->p_caste_any == "YES") { echo "checked"; } ?>
+														   id="PCasteAny" name="PCasteAny">
+													<label for="PCasteAny">
+														Any
+													</label>
+												</div>
+											</div>
+											<div class="col-6" id="PCasteDiv">
+												<select multiple name="PCaste[]" id="PCaste" class="form-control select2" style="width: 100%">
 													<option value="">Select</option>
 												</select>
 											</div>
@@ -1432,8 +1538,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="col-4 align-middle">
 												<label for="PSubCaste" style="padding-left: 10px;padding-top: 5px;">Sub Caste</label>
 											</div>
-											<div class="col-8">
-												<select name="PSubCaste" id="PSubCaste" class="form-control select2" style="width: 100%">
+											<div class="col-2 align-middle">
+												<div class="icheck-success d-inline">
+													<input type="checkbox"
+														   value="YES"
+														<?php if($user->p_sub_caste_any == "YES") { echo "checked"; } ?>
+														   id="PSubCasteAny" name="PSubCasteAny">
+													<label for="PSubCasteAny">
+														Any
+													</label>
+												</div>
+											</div>
+											<div class="col-6"  id="PSubCasteDiv">
+												<select multiple name="PSubCaste[]" id="PSubCaste" class="form-control select2" style="width: 100%">
 													<option value="">Select</option>
 												</select>
 											</div>
@@ -1447,23 +1564,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="col-8">
 												<div class="clearfix">
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="Dosham1" name="Dosham"
+														<input type="radio" id="PDosham1" name="PDosham"
+															<?php if($user->p_is_chevvai_dosham == "Yes") { echo "checked"; } ?>
 															   value="Yes">
-														<label for="Dosham1">
+														<label for="PDosham1">
 															Yes
 														</label>
 													</div>
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="Dosham2" name="Dosham"
+														<input type="radio" id="PDosham2" name="PDosham"
+															<?php if($user->p_is_chevvai_dosham == "No") { echo "checked"; } ?>
 															   value="No">
-														<label for="Dosham2">
+														<label for="PDosham2">
 															No
 														</label>
 													</div>
 													<div class="icheck-primary d-inline">
-														<input type="radio" id="Dosham3" name="Dosham"
-															   value="Doesn't matter">
-														<label for="Dosham3">
+														<input type="radio" id="PDosham3" name="PDosham"
+															<?php if($user->p_is_chevvai_dosham == "DoesNotMatter") { echo "checked"; } ?>
+															   value="DoesNotMatter">
+														<label for="PDosham3">
 															Doesn't matter
 														</label>
 													</div>
@@ -1476,13 +1596,34 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="col-4 align-middle">
 												<label for="PStar" style="padding-left: 10px;">Star</label>
 											</div>
-											<div class="col-8">
-												<select name="PStar" id="PStar" class="form-control select2" style="width: 100%" multiple>
+											<div class="col-2 align-middle">
+												<div class="icheck-success d-inline">
+													<input type="checkbox"
+														   value="YES"
+														<?php if($user->p_star_any == "YES") { echo "checked"; } ?>
+														   id="PStarAny" name="PStarAny">
+													<label for="PStarAny">
+														Any
+													</label>
+												</div>
+											</div>
+											<div class="col-6" id="PStarDiv">
+												<?php
+													$p_star = $user->p_star;
+													$p_starArray = array();
+													if($p_star != "" && $p_star != null){
+														$p_starArray = explode("," , $p_star);
+													}
+												?>
+												<select name="PStar[]" id="PStar" class="form-control select2" style="width: 100%" multiple>
 													<option value="">Select</option>
-													<option value="Any">Any</option>
 													<?php
 													for($i=0; $i<count($starList); $i++){
-														echo "<option value=\"".$starList[$i]['star_id']."\">".$starList[$i]['star_name']."</option>";
+														$selected = "";
+														if(in_array($starList[$i]['star_id'], $p_starArray)) {
+															$selected = "selected";
+														}
+														echo "<option $selected value=\"".$starList[$i]['star_id']."\">".$starList[$i]['star_name']."</option>";
 													}
 													?>
 												</select>
@@ -1499,7 +1640,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<label for="PEducation" style="padding-left: 10px;">Education</label>
 											</div>
 											<div class="col-8">
-												<select name="PEducation" id="PEducation" class="form-control select2" style="width: 100%" multiple>
+												<select name="PEducation[]" id="PEducation" class="form-control select2" style="width: 100%" multiple>
 													<option value="">Select</option>
 													<option value="Any">Any</option>
 													<?php echo getEducation($educationList, ""); ?>
@@ -1513,7 +1654,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<label for="PEmployedIn" style="padding-left: 10px;">Employed In</label>
 											</div>
 											<div class="col-8">
-												<select name="PEmployedIn" id="PEmployedIn" class="form-control select2" style="width: 100%" multiple>
+												<select name="PEmployedIn[]" id="PEmployedIn" class="form-control select2" style="width: 100%" multiple>
 													<option value="">Select</option>
 													<?php
 													for($i=0; $i<count($employedInList); $i++){
@@ -1530,7 +1671,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<label for="POccupation" style="padding-left: 10px;">Occupation</label>
 											</div>
 											<div class="col-8">
-												<select name="POccupation" id="POccupation" class="form-control select2" style="width: 100%" multiple>
+												<select name="POccupation[]" id="POccupation" class="form-control select2" style="width: 100%" multiple>
 													<option value="">Select</option>
 													<option value="Any">Any</option>
 													<?php echo  getOccupation($occupationList, ""); ?>
@@ -1547,9 +1688,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<select name="PAnnualIncome" id="PAnnualIncome" class="form-control">
 													<option value="">Select</option>
 													<?php
-														for($i=0; $i<count($annualIncomeList); $i++){
-															echo "<option value=\"".$annualIncomeList[$i]['annual_income_id']."\">".$annualIncomeList[$i]['annual_income']."</option>";
-														}
+													for($i=0; $i<count($annualIncomeList); $i++){
+														echo "<option value=\"".$annualIncomeList[$i]['annual_income_id']."\">".$annualIncomeList[$i]['annual_income']."</option>";
+													}
 													?>
 												</select>
 											</div>
@@ -1565,13 +1706,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<label for="PCountryLivingIn" style="padding-left: 10px;">Country Living In</label>
 										</div>
 										<div class="col-8">
-											<select name="PCountryLivingIn" id="PCountryLivingIn" class="form-control" multiple>
+											<select name="PCountryLivingIn[]" id="PCountryLivingIn" class="form-control select2" style="width: 100%" multiple>
 												<option value="">Select</option>
 												<option value="Any">Any</option>
 												<?php
-													for($i=0; $i<count($countryList); $i++){
-														echo "<option value=\"".$countryList[$i]['country_id']."\">".$countryList[$i]['country_name']."</option>";
-													}
+												for($i=0; $i<count($countryList); $i++){
+													echo "<option value=\"".$countryList[$i]['country_id']."\">".$countryList[$i]['country_name']."</option>";
+												}
 												?>
 											</select>
 										</div>
@@ -1583,7 +1724,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<label for="PResidingState" style="padding-left: 10px;">Residing State</label>
 										</div>
 										<div class="col-8">
-											<select name="PResidingState" id="PResidingState" class="form-control">
+											<select name="PResidingState[]" id="PResidingState" class="form-control select2" style="width: 100%" multiple>
 												<option value="">Select</option>
 											</select>
 										</div>
@@ -1595,7 +1736,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<label for="PDistrict" style="padding-left: 10px;">District</label>
 										</div>
 										<div class="col-8">
-											<select name="PDistrict" id="PDistrict" class="form-control">
+											<select name="PDistrict[]" id="PDistrict" class="form-control select2" style="width: 100%" multiple>
 												<option value="">Select</option>
 											</select>
 										</div>
@@ -1607,7 +1748,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<label for="PCitizenship" style="padding-left: 10px;">Citizenship</label>
 										</div>
 										<div class="col-8">
-											<select name="PCitizenship" id="PCitizenship" class="form-control" multiple>
+											<select name="PCitizenship[]" id="PCitizenship" class="form-control select2" style="width: 100%" multiple>
 												<option value="">Select</option>
 												<option value="Any">Any</option>
 												<?php
@@ -1628,7 +1769,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<label for="PWhatIAmLookingFor" style="padding-left: 10px;">What I am looking for</label>
 											</div>
 											<div class="col-8">
-												<textarea name="PWhatIAmLookingFor" id="PWhatIAmLookingFor" class="form-control" rows="5"></textarea>
+												<textarea name="PWhatIAmLookingFor" id="PWhatIAmLookingFor" class="form-control" rows="5"><?php echo $user->p_about_my_partner; ?></textarea>
 											</div>
 										</div>
 									</div>
@@ -1656,11 +1797,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script src="<?php echo base_url("assets/plugins/select2/js/select2.full.min.js"); ?>"></script>
 
 	<script>
-		var headerNames = ["Basic Details", "Religion Information", "Location", "Professional Information", "Family Details", "Change Password", "Basic & Religion Preferences", "Professional Preferences", "Location Preferences", "What I am looking for"]
+        var headerNames = ["Basic Details", "Religion Information", "Location", "Professional Information", "Family Details", "Change Password", "Basic & Religion Preferences", "Professional Preferences", "Location Preferences", "What I am looking for"]
 
         let d = new Date();
         let y = d.getFullYear();
         let dayArray=new Array("31","28","31","30","31","30","31","31","30","31","30","31");
+
+        let country = "<?php echo $user->country; ?>"
+        let state = "<?php echo $user->state; ?>"
+        let city = "<?php echo $user->city; ?>"
+
+        let religion = "<?php echo $user->religion; ?>"
+        let caste = "<?php echo $user->caste; ?>"
+        let sub_caste = "<?php echo $user->sub_caste; ?>"
+        let star = "<?php echo $user->star; ?>"
+        let raasi = "<?php echo $user->raasi; ?>"
+
+        let p_religion_any = "<?php echo $user->p_religion_any; ?>"
+        let p_caste_any = "<?php echo $user->p_caste_any; ?>"
+        let p_sub_caste_any = "<?php echo $user->p_sub_caste_any; ?>"
 
         let dob = "<?php echo $user->date_of_birth; ?>"
         let dobA = dob.split("-");
@@ -1677,7 +1832,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     $("#dateOfBirth1").val(dobD);
                 }, 500);
 
-			} else {
+            } else {
                 $("#dateOfBirth3").append("<option value=\""+(j)+"\">"+(j)+"</option>")
             }
         }
@@ -1725,8 +1880,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         $(function () {
             editAction(1);
-
             onChangeMonth(1);
+            getStateList(country, state);
+            getCityList(state, city);
+            getCasteList(religion, caste, "caste", "")
+            getSubCasteList(caste, sub_caste, "SubCaste", "");
+
+            getStarList(raasi, star);
 
             $('#dateOfBirth3').change(function() {
                 onChangeYear($('#dateOfBirth3').val())
@@ -1737,61 +1897,129 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             });
 
             $('#religion').change(function() {
-                getCasteList();
+                getCasteList($('#religion').val(), "", "caste", "");
+            });
+
+            $('#PReligion').change(function() {
+                getCasteList($('#PReligion').val(), "", "PCaste", "");
+            });
+
+            $('#PCaste').change(function() {
+                getSubCasteList($('#PCaste').val().toString(), $("#PSubCaste").val().toString(), "PSubCaste", "");
             });
 
             $('#caste').change(function() {
-                getSubCasteList();
+                getSubCasteList($('#caste').val(), "", "SubCaste", "");
             });
 
             $('#Raasi').change(function() {
-                getStarList();
+                getStarList($('#Raasi').val(), "");
             });
 
             $('#country').change(function() {
-                getStateList();
+                getStateList($('#country').val(), "");
             });
 
             $('#state').change(function() {
-                getCityList();
+                getCityList($('#state').val(), "");
             });
 
             $('.select2').select2();
 
+
+
+            $('#PMotherTongueAny').click(function() {
+                if(this.checked){
+                    $('#PMotherTongue').val([])
+                    $('#PMotherTongueDiv').hide()
+				} else {
+                    $('#PMotherTongueDiv').show()
+                }
+            });
+
+            $('#PReligionAny').click(function() {
+                if(this.checked){
+                    $('#PReligion').val()
+                    $('#PReligionDiv').hide();
+                    getCasteList("", "", "PCaste", "All");
+                    $("#PSubCaste").empty().append("<option value=\"\">Select</option>");
+                } else {
+                    $("#PSubCaste").empty().append("<option value=\"\">Select</option>");
+                    $("#PCaste").empty().append("<option value=\"\">Select</option>");
+                    getCasteList($("#PReligion").val(), "", "PCaste", "");
+                    $('#PReligionDiv').show()
+                }
+            });
+
+            $('#PCasteAny').click(function() {
+                if(this.checked){
+                    $('#PCaste').val([])
+                    $('#PCasteDiv').hide()
+                    getSubCasteList("", "", "PSubCaste", "All");
+                } else {
+                    getCasteList($("#PReligion").val(), "", "PCaste", "All");
+                    $('#PCasteDiv').show()
+                }
+            });
+
+            $('#PSubCasteAny').click(function() {
+                if(this.checked){
+                    $('#PSubCaste').val([])
+                    $('#PSubCasteDiv').hide()
+                } else {
+                    getSubCasteList($("#PCaste").val().toString(), "", "PSubCaste", "");
+                    $('#PSubCasteDiv').show()
+                }
+            });
+
+            $('#PStarAny').click(function() {
+                if(this.checked){
+                    $('#PStar').val([])
+                    $('#PStarDiv').hide()
+                } else {
+                    $('#PStarDiv').show()
+                }
+            });
+
+
         });
 
-        function getCityList() {
-            $.get("/api/city", {state : $('#state').val()}, function(data, status){
+        function getCityList(state, city) {
+            $.get("/api/city", {state : state}, function(data, status){
                 $("#city").empty().append("<option value=\"\">Select</option>");
                 data.map(function (d,i) {
-                    $("#city").append("<option value=\""+d.city_id+"\">"+d.city_name+"</option>");
+                    if(city == d.city_id){
+                        $("#city").append("<option selected value=\""+d.city_id+"\">"+d.city_name+"</option>");
+                    } else {
+                        $("#city").append("<option value=\""+d.city_id+"\">"+d.city_name+"</option>");
+                    }
                 });
             });
         }
 
-        function getStateList() {
-            $.get("/api/state", {country : $('#country').val()}, function(data, status){
+        function getStateList(country, state) {
+            $.get("/api/state", {country : country}, function(data, status){
                 $("#state").empty().append("<option value=\"\">Select</option>");
                 data.map(function (d,i) {
-                    $("#state").append("<option value=\""+d.state_id+"\">"+d.state_name+"</option>");
+                    if(state == d.state_id){
+                        $("#state").append("<option selected value=\""+d.state_id+"\">"+d.state_name+"</option>");
+                    } else {
+                        $("#state").append("<option value=\""+d.state_id+"\">"+d.state_name+"</option>");
+                    }
                 });
             });
         }
 
-        function getSubCasteList() {
-            $.get("/api/subCaste", { caste : $('#caste').val()}, function(data, status){
-                $("#SubCaste").empty().append("<option value=\"\">Select</option>");
-                data.map(function (d,i) {
-                    $("#SubCaste").append("<option value=\""+d.sub_caste_id+"\">"+d.sub_caste_name+"</option>");
-                });
-            });
-        }
 
-        function getStarList() {
-            $.get("/api/star", { raasi : $('#Raasi').val()}, function(data, status){
+        function getStarList(raasi, star) {
+            $.get("/api/star", { raasi : raasi}, function(data, status){
                 $("#Star").empty().append("<option value=\"\">Select</option>");
                 data.map(function (d,i) {
-                    $("#Star").append("<option value=\""+d.star_id+"\">"+d.star_name+"</option>");
+                    var selected = "";
+                    if(star == d.star_id){
+                        selected = "selected";
+                    }
+                    $("#Star").append("<option "+selected+" value=\""+d.star_id+"\">"+d.star_name+"</option>");
                 });
             });
         }
@@ -1802,9 +2030,50 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 console.log("id -> " + id + " , i -> " + i)
 
                 if (id == i) {
-					$("#edit" + i).show();
+                    $("#edit" + i).show();
                     $("#formId").val(i);
                     $("#EditActionHeader").html(headerNames[i-1])
+					if(id == 7){
+                        let p_religion_any = "<?php echo $user->p_religion_any; ?>"
+                        if(p_religion_any == "YES"){
+                            $("#PReligionDiv").hide();
+                        }
+
+                        let p_caste_any = "<?php echo $user->p_caste_any; ?>"
+                        if(p_caste_any == "YES"){
+                            $("#PCasteDiv").hide();
+                        }
+
+                        let p_sub_caste_any = "<?php echo $user->p_sub_caste_any; ?>"
+                        if(p_sub_caste_any == "YES"){
+                            $("#PSubCasteDiv").hide();
+                        }
+
+                        let p_mother_tongue_any = "<?php echo $user->p_mother_tongue_any; ?>"
+                        if(p_mother_tongue_any == "YES"){
+                            $("#PMotherTongueDiv").hide();
+                        }
+
+                        let p_star_any = "<?php echo $user->p_star_any; ?>"
+                        if(p_star_any == "YES"){
+                            $("#PStarDiv").hide();
+                        }
+
+                        if(p_religion_any == "NO"){
+                            getCasteList($("#PReligion").val(), "<?php echo $user->p_caste; ?>", "PCaste", "");
+						}
+                        else if(p_religion_any == "YES" && p_caste_any == "NO"){
+                            getCasteList("", "<?php echo $user->p_caste; ?>", "PCaste", "All");
+                        }
+                        if(p_caste_any == "NO"){
+                            getSubCasteList("<?php echo $user->p_caste; ?>", "<?php echo $user->p_sub_caste; ?>", "PSubCaste", "");
+                        } else if(p_caste_any == "YES" && p_sub_caste_any == "NO") {
+                            getSubCasteList("<?php echo $user->p_caste; ?>", "<?php echo $user->p_sub_caste; ?>", "PSubCaste", "All");
+                        }
+
+
+
+                    }
                 }
                 else
                     $("#edit" + i).hide()
@@ -1814,21 +2083,52 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         function saveAction(matrimonyId) {
             var formId = $("#formId").val();
             $.post("/api/users/update/"+formId+"/"+matrimonyId, $("#formId"+formId).serialize(), function(data, status){
-                alert(JSON.stringify(data))
-                // alert(data)
+                // alert(JSON.stringify(data))
+                alert(data)
             });
         }
 
-        function getCasteList() {
-            var religion = $('#religion').val();
-            if(religion != ""){
-                $("#caste").empty().append("<option value=\"\">Select</option>");
-                $.get("/api/caste", {religion : religion}, function(data, status){
+        function getCasteList(religion, caste, casteId, dataId) {
+                $("#"+casteId).empty().append("<option disabled value=\"\">Select</option>");
+                $.get("/api/caste", {religion : religion, dataId : dataId}, function(data, status){
                     data.map(function (d,i) {
-                        $("#caste").append("<option value=\""+d.caste_id+"\">"+d.caste_name+"</option>");
+                        var selected = "";
+                        if(casteId == "caste"){
+                            if(caste == d.caste_id){
+                                selected = "selected";
+                            }
+						} else {
+                            if(caste != ""){
+                                var casteArray = caste.split(",")
+								if(casteArray.includes(d.caste_id))
+                                    selected = "selected";
+                            }
+						}
+                        $("#"+casteId).append("<option "+selected+" value=\""+d.caste_id+"\">"+d.caste_name+"</option>");
                     });
                 });
-            }
+        }
+
+
+        function getSubCasteList(caste, subCaste, subCasteId, dataId) {
+            $.get("/api/subCaste", { caste : caste, dataId: dataId}, function(data, status){
+                $("#"+subCasteId).empty().append("<option disabled value=\"\">Select</option>");
+                data.map(function (d,i) {
+                    var selected = "";
+                    if(subCasteId == "SubCaste"){
+                        if(subCaste == d.sub_caste_id){
+                            selected = "selected";
+                        }
+					} else {
+                        if(subCaste != ""){
+                            var subCasteArray = subCaste.split(",")
+                            if(subCasteArray.includes(d.sub_caste_id))
+                                selected = "selected";
+                        }
+					}
+                    $("#"+subCasteId).append("<option "+selected+" value=\""+d.sub_caste_id+"\">"+d.sub_caste_name+"</option>");
+                });
+            });
         }
 
 	</script>

@@ -30,6 +30,17 @@ class Api_model extends CI_Model
 		}
 		return false;
 	}
+	function isValidToUpdateArray($dataArray, $index, $existValue){
+		if(array_key_exists($index, $dataArray)){
+			if($dataArray[$index] != "" && $dataArray[$index] != null && count($dataArray[$index]) > 0){
+				$string = join(',', $dataArray[$index]);
+				if($string != $existValue){
+					return $string;
+				}
+			}
+		}
+		return "";
+	}
 
 	function checkEmptyValue($data){
 		if($data != ""){
@@ -127,6 +138,56 @@ class Api_model extends CI_Model
 							}
 						}
 
+						if($updateStr != ""){
+							$updateStr = rtrim($updateStr, ", ");
+							$updateQueryStr = "Update tbl_user  set ".$updateStr." where matrimony_id ='".$matrimonyId."'; ";
+							$this->db->query($updateQueryStr);
+							$responseCode = "1";
+							$responseMessage = "Successfully updated!.";
+						}
+					}
+					if($formId == 2){
+						$updateStr = "";
+						if(self::isValidToUpdate($data, "HaveDosham", $rData->is_chevvai_dosham)){
+							$updateStr .= "is_chevvai_dosham=\"".$data["HaveDosham"]."\", ";
+						}
+						if(self::isValidToUpdate($data, "Star", $rData->star)){
+							$updateStr .= "star=\"".$data["Star"]."\", ";
+						}
+						if(self::isValidToUpdate($data, "Raasi", $rData->raasi)){
+							$updateStr .= "raasi=\"".$data["Raasi"]."\", ";
+						}
+						if(self::isValidToUpdate($data, "Gothram", $rData->gothra)){
+							$updateStr .= "gothra=\"".$data["Gothram"]."\", ";
+						}
+						if(self::isValidToUpdate($data, "SubCaste", $rData->sub_caste)){
+							$updateStr .= "sub_caste=\"".$data["SubCaste"]."\", ";
+						}
+						if(self::isValidToUpdate($data, "caste", $rData->caste)){
+							$updateStr .= "caste=\"".$data["caste"]."\", ";
+						}
+						if(self::isValidToUpdate($data, "religion", $rData->religion)){
+							$updateStr .= "religion=\"".$data["religion"]."\", ";
+						}
+						if($updateStr != ""){
+							$updateStr = rtrim($updateStr, ", ");
+							$updateQueryStr = "Update tbl_user  set ".$updateStr." where matrimony_id ='".$matrimonyId."'; ";
+							$this->db->query($updateQueryStr);
+							$responseCode = "1";
+							$responseMessage = "Successfully updated!.";
+						}
+					}
+					else if($formId == 3){
+						$updateStr = "";
+						if(self::isValidToUpdate($data, "country", $rData->country)){
+							$updateStr .= "country=\"".$data["country"]."\", ";
+						}
+						if(self::isValidToUpdate($data, "state", $rData->state)){
+							$updateStr .= "state=\"".$data["state"]."\", ";
+						}
+						if(self::isValidToUpdate($data, "city", $rData->city)){
+							$updateStr .= "city=\"".$data["city"]."\", ";
+						}
 						if($updateStr != ""){
 							$updateStr = rtrim($updateStr, ", ");
 							$updateQueryStr = "Update tbl_user  set ".$updateStr." where matrimony_id ='".$matrimonyId."'; ";
@@ -269,6 +330,129 @@ class Api_model extends CI_Model
 							$responseMessage = "Successfully updated!.";
 						}
 					}
+					else if($formId == 7 || $formId == 8 || $formId == 9 || $formId == 10){
+						print_r($data);
+						$user_id = $rData->user_id;
+						$queryStr10 = "select * from tbl_user_partner e where e.user_id = '".$user_id."'";
+						$query10 = $this->db->query($queryStr10);
+						$row10 = $query10->result();
+						if(count($row10) == 1){
+							$rData10 = $row10[0];
+							$updateStr = "";
+							if(self::isValidToUpdate($data, "PReligion", $rData10->p_religion)){
+								$updateStr .= "p_religion=\"".$data["PReligion"]."\", ";
+							}
+							if(self::isValidToUpdate($data, "PPhysicalStatus", $rData10->p_physical_status)){
+								$updateStr .= "p_physical_status=\"".$data["PPhysicalStatus"]."\", ";
+							}
+							if(self::isValidToUpdate($data, "PDosham", $rData10->p_is_chevvai_dosham)){
+								$updateStr .= "p_is_chevvai_dosham=\"".$data["PDosham"]."\", ";
+							}
+							if(self::isValidToUpdate($data, "PWhatIAmLookingFor", $rData10->p_about_my_partner)){
+								$updateStr .= "p_about_my_partner=\"".$data["PWhatIAmLookingFor"]."\", ";
+							}
+							if(self::isValidToUpdate($data, "PStartAge", $rData10->p_start_age)){
+								$updateStr .= "p_start_age=\"".$data["PStartAge"]."\", ";
+							}
+							if(self::isValidToUpdate($data, "PEndAge", $rData10->p_end_age)){
+								$updateStr .= "p_end_age=\"".$data["PEndAge"]."\", ";
+							}
+							if(self::isValidToUpdate($data, "startPHeight", $rData10->p_start_height)){
+								$updateStr .= "p_start_height=\"".$data["startPHeight"]."\", ";
+							}
+							if(self::isValidToUpdate($data, "endPHeight", $rData10->p_end_height)){
+								$updateStr .= "p_end_height=\"".$data["endPHeight"]."\", ";
+							}
+							$PMaritalStatus = self::isValidToUpdateArray($data, "PMaritalStatus", $rData10->p_marital_status);
+							if(strlen($PMaritalStatus) > 1){
+								$updateStr .= "p_marital_status=\"".$PMaritalStatus."\", ";
+							}
+							$PSmokingHabits = self::isValidToUpdateArray($data, "PSmokingHabits", $rData10->p_smoking);
+							if(strlen($PSmokingHabits) > 1){
+								$updateStr .= "p_smoking=\"".$PSmokingHabits."\", ";
+							}
+							$PDrinkingHabits = self::isValidToUpdateArray($data, "PDrinkingHabits", $rData10->p_drinking);
+							if(strlen($PDrinkingHabits) > 1){
+								$updateStr .= "p_drinking=\"".$PDrinkingHabits."\", ";
+							}
+							$PEatingHabits = self::isValidToUpdateArray($data, "PEatingHabits", $rData10->p_eating);
+							if(strlen($PEatingHabits) > 1){
+								$updateStr .= "p_eating=\"".$PEatingHabits."\", ";
+							}
+							$PStar = self::isValidToUpdateArray($data, "PStar", $rData10->p_star);
+							if(strlen($PStar) > 1){
+								$updateStr .= "p_star=\"".$PStar."\", ";
+							}
+							$PMotherTongue = self::isValidToUpdateArray($data, "PMotherTongue", $rData10->p_mother_tongue);
+							if(strlen($PMotherTongue) > 1){
+								$updateStr .= "p_mother_tongue=\"".$PMotherTongue."\", ";
+							}
+							$PCaste = self::isValidToUpdateArray($data, "PCaste", $rData10->p_caste);
+							if(strlen($PCaste) > 1){
+								$updateStr .= "p_caste=\"".$PCaste."\", ";
+							}
+							$PSubCaste = self::isValidToUpdateArray($data, "PSubCaste", $rData10->p_sub_caste);
+							if(strlen($PSubCaste) > 1){
+								$updateStr .= "p_sub_caste=\"".$PSubCaste."\", ";
+							}
+
+							if($formId == 7){
+								$index = "PMotherTongueAny";
+								if(array_key_exists($index, $data)){
+									if($data[$index] != "" && $data[$index] != null && $data[$index] != $rData10->p_mother_tongue_any){
+										$updateStr .= "p_mother_tongue_any=\"".$data[$index]."\", p_mother_tongue='', ";
+									}
+								} else if($rData10->p_mother_tongue_any == "YES"){
+									$updateStr .= "p_mother_tongue_any=\"NO\", ";
+								}
+
+								$index = "PReligionAny";
+								if(array_key_exists($index, $data)){
+									if($data[$index] != "" && $data[$index] != null && $data[$index] != $rData10->p_religion_any){
+										$updateStr .= "p_religion_any=\"".$data[$index]."\", p_religion='', ";
+									}
+								} else if($rData10->p_religion_any == "YES"){
+									$updateStr .= "p_religion_any=\"NO\", ";
+								}
+
+								$index = "PCasteAny";
+								if(array_key_exists($index, $data)){
+									if($data[$index] != "" && $data[$index] != null && $data[$index] != $rData10->p_caste_any){
+										$updateStr .= "p_caste_any=\"".$data[$index]."\", p_caste='', ";
+									}
+								} else if($rData10->p_caste_any == "YES"){
+									$updateStr .= "p_caste_any=\"NO\", ";
+								}
+
+								$index = "PSubCasteAny";
+								if(array_key_exists($index, $data)){
+									if($data[$index] != "" && $data[$index] != null && $data[$index] != $rData10->p_sub_caste_any){
+										$updateStr .= "p_sub_caste_any=\"".$data[$index]."\", p_sub_caste='', ";
+									}
+								} else if($rData10->p_sub_caste_any == "YES"){
+									$updateStr .= "p_sub_caste_any=\"NO\", ";
+								}
+
+								$index = "PStarAny";
+								if(array_key_exists($index, $data)){
+									if($data[$index] != "" && $data[$index] != null && $data[$index] != $rData10->p_star_any){
+										$updateStr .= "p_star_any=\"".$data[$index]."\", p_star='', ";
+									}
+								} else if($rData10->p_star_any == "YES"){
+									$updateStr .= "p_star_any=\"NO\", ";
+								}
+							}
+
+							if($updateStr != ""){
+								$updateStr .= "modified_at=\"".$currentDate."\", ";
+								$updateStr = rtrim($updateStr, ", ");
+								$updateQueryStr = "Update tbl_user_partner  set ".$updateStr." where user_id ='".$user_id."'; ";
+								$this->db->query($updateQueryStr);
+								$responseCode = "1";
+								$responseMessage = "Successfully updated!.";
+							}
+						}
+					}
 				}
 			}
 		}
@@ -283,7 +467,7 @@ class Api_model extends CI_Model
 		if(array_key_exists("matrimony_id", $postDataArray) && $postDataArray['matrimony_id'] != null){
 			$matrimony_id = $postDataArray['matrimony_id'];
 			if($matrimony_id != null && $matrimony_id != ""){
-				$queryStr = "select *, ue.*, uf.* from tbl_user u left join tbl_user_login ul on ul.user_id=u.user_id left join tbl_user_education ue on ue.user_id=u.user_id  left join tbl_user_family uf on uf.user_id=u.user_id where u.matrimony_id = '".$matrimony_id."'";
+				$queryStr = "select *, ue.*, uf.*, up.* from tbl_user u left join tbl_user_login ul on ul.user_id=u.user_id left join tbl_user_education ue on ue.user_id=u.user_id  left join tbl_user_family uf on uf.user_id=u.user_id left join tbl_user_partner up on up.user_id=u.user_id where u.matrimony_id = '".$matrimony_id."'";
 			}
 		} else {
 			$queryStr = "select u.matrimony_id, u.user_id, u.full_name, u.date_of_birth, u.last_login, u.created_at, u.gender, u.religion, u.caste, ul.mobile_number, ul.email_id from tbl_user u left join tbl_user_login ul on ul.user_id=u.user_id";
@@ -297,6 +481,9 @@ class Api_model extends CI_Model
 		$dataType = "error";
 		$message = "Please try again later.";
 
+		date_default_timezone_set("Asia/Calcutta");
+		$currentDate = date('Y-m-d H:i:s');
+
 		$dob = new DateTime();
 		$dob->setDate($postDataArray['dateOfBirth3'], $postDataArray['dateOfBirth2'], $postDataArray['dateOfBirth1']);
 		$data = array(
@@ -308,6 +495,7 @@ class Api_model extends CI_Model
 			'religion' => $postDataArray['religion'],
 			'caste' => $postDataArray['caste'],
 			'mother_tongue' => $postDataArray['motherTongue'],
+			'created_at' => $currentDate
 		);
 		$this->db->insert('tbl_user', $data);
 		$userId = $this->db->insert_id();
@@ -327,6 +515,15 @@ class Api_model extends CI_Model
 				'country' => $postDataArray['country'],
 			);
 			$this->db->insert('tbl_user_login', $data1);
+
+			$data = array(
+				'user_id' => $userId,
+				'modified_at' => $currentDate
+			);
+			$this->db->insert('tbl_user_partner', $data);
+			$this->db->insert('tbl_user_family', $data);
+			$this->db->insert('tbl_user_education', $data);
+
 			$dataType = "succcess";
 			$message = "Success";
 		}
@@ -574,7 +771,13 @@ class Api_model extends CI_Model
 		$tbl = $this->getTables("subCaste");
 		$tblName = $tbl["name"];
 		if($caste != ""){
-			$query = $this->db->get_where($tblName, array('caste_id' => $caste));
+			if(strpos($caste, ',') !== false){
+				$query = $this->db->query("select * from $tblName where caste_id in (".$caste.")");
+			} else {
+				$query = $this->db->get_where($tblName, array('caste_id' => $caste));
+			}
+		} else if($dataId == "All") {
+			$query = $this->db->get_where($tblName);
 		} else if($dataId != "") {
 			$query = $this->db->get_where($tblName, array($tbl["id"] => $dataId));
 		}
@@ -755,10 +958,10 @@ class Api_model extends CI_Model
 		$tblName = $tbl["name"];
 		if($religion != ""){
 			$query = $this->db->get_where($tblName, array('religion_id' => $religion));
-		} else if($dataId != "") {
-			$query = $this->db->get_where($tblName, array($tbl["id"] => $dataId));
 		}  else if($dataId == "All"){
 			$query = $this->db->get($tblName);
+		} else if($dataId != "") {
+			$query = $this->db->get_where($tblName, array($tbl["id"] => $dataId));
 		}
 		$row = $query->result();
 		return $row;

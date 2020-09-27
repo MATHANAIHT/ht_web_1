@@ -24,9 +24,10 @@ class Api extends CI_Controller {
 	}
 
 	public function updateUser($formId, $matrimonyId){
-		header('Content-Type: application/json');
+//		header('Content-Type: application/json');
 		$array = $this->api_model->updateUser($formId, $matrimonyId, $this->input->post());
-		echo json_encode($array);
+		print_r($array);
+//		echo json_encode($array);
 	}
 	public function getUsers(){
 		header('Content-Type: application/json');

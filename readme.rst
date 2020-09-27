@@ -102,14 +102,19 @@ create table tbl_user_education (
 	FOREIGN KEY (employed_in) REFERENCES tbl_employed_in(employed_in_id),
 	FOREIGN KEY (annual_income) REFERENCES tbl_annual_income(annual_income_id)
 );
+drop table tbl_user_partner;
 
 create table tbl_user_partner (
 	user_id bigint(20) NOT NULL PRIMARY KEY,
 	p_marital_status varchar(255),
-	p_age_range varchar(255),
-	p_height_range varchar(255),
+	p_start_age varchar(255),
+	p_end_age varchar(255),
+	p_start_height varchar(255),
+	p_end_height varchar(255),
 	p_physical_status varchar(255),
 	p_mother_tongue varchar(255),
+	p_religion varchar(255),
+	p_caste varchar(255),
 	p_sub_caste varchar(255),
 	p_star varchar(255),
 	p_is_chevvai_dosham varchar(255),
@@ -121,9 +126,15 @@ create table tbl_user_partner (
 	p_living_in varchar(255),
 	p_food varchar(255),
 	p_smoking varchar(255),
+	p_eating varchar(255),
 	p_drinking varchar(255),
 	p_annual_income varchar(255),
 	p_about_my_partner varchar(255),
+	p_mother_tongue_any varchar(255) NOT NULL DEFAULT ('NO'),
+	p_religion_any varchar(255) NOT NULL DEFAULT ('NO'),
+	p_caste_any varchar(255) NOT NULL DEFAULT ('NO'),
+	p_sub_caste_any varchar(255) NOT NULL DEFAULT ('NO'),
+	p_star_any varchar(255) NOT NULL DEFAULT ('NO'),
 	modified_at timestamp,
 	FOREIGN KEY (user_id) REFERENCES tbl_user(user_id)
 );
