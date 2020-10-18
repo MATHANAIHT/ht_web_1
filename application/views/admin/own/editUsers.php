@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 <link rel="stylesheet" href="<?php echo base_url("assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css"); ?>">
 <link rel="stylesheet" href="<?php echo base_url("assets/plugins/select2/css/select2.min.css"); ?>">
-<link rel="stylesheet" href="<?php echo base_url("assets/select2-bootstrap4-theme/select2-bootstrap4.min.css"); ?>">
+<link rel="stylesheet" href="<?php echo base_url("assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css"); ?>">
 <style>
 	.select2-container .select2-selection--single{
 		height: auto;
@@ -130,7 +130,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</div>
 						<?php
 							$user = $users[0];
-							print_r($user);
+//							print_r($user);
 						?>
 						<?php
 						$date_of_birth = $user->date_of_birth;
@@ -142,8 +142,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							$dobY = $dobA[0];
 							$dobM = $dobA[1];
 							$dobD = $dobA[2];
-						}
-						echo $user->date_of_birth; ?>
+						} ?>
 						<div class="card-body">
 							<input type="hidd en" name="formId" id="formId" value="1">
 							<div id="edit1">
@@ -664,14 +663,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="col-8">
 												<?php
 
-												function getEducation($educationList, $selectedId){
+												function getEducation($educationList, $selectedId, $type){
 													$r = "";
 													$headerEduArray = array();
 													for($i=0; $i<count($educationList); $i++){
 														$selected = "";
-														if($selectedId != "" && $selectedId != null && $selectedId==$educationList[$i]['education_id']){
-															$selected = "selected";
+														if($selectedId != "" && $selectedId != null && $type == 1){
+															if($selectedId==$educationList[$i]['education_id']){
+																$selected = "selected";
+															}
+														} else if($selectedId != "" && $selectedId != null && $type == 2) {
+															if(in_array($educationList[$i]['education_id'], $selectedId)) {
+																$selected = "selected";
+															}
 														}
+
 
 														if(in_array( $educationList[$i]['education_category_name'], $headerEduArray)){
 															$r.="<option ".$selected." value=\"".$educationList[$i]['education_id']."\">".$educationList[$i]['education_name']."</option>";
@@ -688,7 +694,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<select name="HighestEducation" id="HighestEducation"
 														class="form-control select2" style="width: 100%;">
 													<option value="">Select Education</option>
-													<?php echo getEducation($educationList, $user->education); ?>
+													<?php echo getEducation($educationList, $user->education, "1"); ?>
 												</select>
 											</div>
 										</div>
@@ -750,13 +756,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											</div>
 											<div class="col-8">
 												<?php
-												function getOccupation($occupationList, $selectedId){
+												function getOccupation($occupationList, $selectedId, $type){
 													$headerOccuArray = array();
 													$r = "";
 													for($i=0; $i<count($occupationList); $i++){
 														$selected = "";
-														if($selectedId != "" && $selectedId != null && $selectedId == $occupationList[$i]['occupation_id']){
-															$selected = "selected";
+														if($type == 1 && $selectedId != "" && $selectedId != null){
+															if($selectedId == $occupationList[$i]['occupation_id']){
+																$selected = "selected";
+															}
+														} else if($type == 2 && $selectedId != "" && $selectedId != null){
+															if(in_array($occupationList[$i]['occupation_id'], $selectedId)) {
+																$selected = "selected";
+															}
 														}
 
 														if(in_array( $occupationList[$i]['occupation_category_name'], $headerOccuArray)){
@@ -773,7 +785,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<select name="Occupation" id="Occupation" class="form-control select2"
 														style="width: 100%;">
 													<option value="">Select Occupation</option>
-													<?php echo getOccupation($occupationList, $user->occupation); ?>
+													<?php echo getOccupation($occupationList, $user->occupation, "1"); ?>
 												</select>
 											</div>
 										</div>
@@ -939,7 +951,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="col-8">
 												<select name="FathersOccupation" id="FathersOccupation" class="form-control select2" style="width: 100%;">
 													<option value="">Select</option>
-													<?php echo getOccupation($occupationList, $user->father_occupation); ?>
+													<?php echo getOccupation($occupationList, $user->father_occupation, "1"); ?>
 												</select>
 											</div>
 										</div>
@@ -953,7 +965,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="col-8">
 												<select name="MothersOccupation" id="MothersOccupation" class="form-control select2" style="width: 100%;">
 													<option value="">Select</option>
-													<?php echo getOccupation($occupationList, $user->mother_occupation); ?>
+													<?php echo getOccupation($occupationList, $user->mother_occupation, "1"); ?>
 												</select>
 											</div>
 										</div>
@@ -1634,16 +1646,34 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							</div>
 							<div id="edit8">
 								<form name="formId8" id="formId8">
+
 									<div class="form-group">
 										<div class="row">
 											<div class="col-4 align-middle">
 												<label for="PEducation" style="padding-left: 10px;">Education</label>
 											</div>
-											<div class="col-8">
-												<select name="PEducation[]" id="PEducation" class="form-control select2" style="width: 100%" multiple>
+											<div class="col-2 align-middle">
+												<div class="icheck-success d-inline">
+													<input type="checkbox"
+														   value="YES"
+														<?php if($user->p_education_any == "YES") { echo "checked"; } ?>
+														   id="PEducationAny" name="PEducationAny">
+													<label for="PEducationAny">
+														Any
+													</label>
+												</div>
+											</div>
+											<div class="col-6" id="PEducationDiv">
+												<?php
+												$p_education = $user->p_edu;
+												$p_educationArray = array();
+												if($p_education != "" && $p_education != null){
+													$p_educationArray = explode("," , $p_education);
+												}
+												?>
+												<select name="PEducation[]" id="PEducation" class="form-control select2" multiple style="width: 100%">
 													<option value="">Select</option>
-													<option value="Any">Any</option>
-													<?php echo getEducation($educationList, ""); ?>
+													<?php echo getEducation($educationList, $p_educationArray, 2); ?>
 												</select>
 											</div>
 										</div>
@@ -1654,12 +1684,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<label for="PEmployedIn" style="padding-left: 10px;">Employed In</label>
 											</div>
 											<div class="col-8">
+												<?php
+													$p_employed_in = $user->p_employed_in;
+													$p_employed_inArray = array();
+													if($p_employed_in != "" && $p_employed_in != null){
+														$p_employed_inArray = explode("," , $p_employed_in);
+													}
+												?>
 												<select name="PEmployedIn[]" id="PEmployedIn" class="form-control select2" style="width: 100%" multiple>
 													<option value="">Select</option>
 													<?php
-													for($i=0; $i<count($employedInList); $i++){
-														echo "<option value=\"".$employedInList[$i]['employed_in_id']."\">".$employedInList[$i]['employed_in_name']."</option>";
-													}
+														for($i=0; $i<count($employedInList); $i++){
+															$selected = "";
+															if(in_array($employedInList[$i]['employed_in_id'], $p_employed_inArray)) {
+																$selected = "selected";
+															}
+															echo "<option $selected value=\"".$employedInList[$i]['employed_in_id']."\">".$employedInList[$i]['employed_in_name']."</option>";
+														}
 													?>
 												</select>
 											</div>
@@ -1670,11 +1711,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="col-4 align-middle">
 												<label for="POccupation" style="padding-left: 10px;">Occupation</label>
 											</div>
-											<div class="col-8">
+											<div class="col-2 align-middle">
+												<div class="icheck-success d-inline">
+													<input type="checkbox"
+														   value="YES"
+														<?php if($user->p_occupation_any == "YES") { echo "checked"; } ?>
+														   id="POccupationAny" name="POccupationAny">
+													<label for="POccupationAny">
+														Any
+													</label>
+												</div>
+											</div>
+											<div class="col-6" id="POccupationDiv">
+												<?php
+													$p_occupation = $user->p_occu;
+													$p_occupationArray = array();
+													if($p_occupation != "" && $p_occupation != null){
+														$p_occupationArray = explode("," , $p_occupation);
+													}
+												?>
 												<select name="POccupation[]" id="POccupation" class="form-control select2" style="width: 100%" multiple>
 													<option value="">Select</option>
-													<option value="Any">Any</option>
-													<?php echo  getOccupation($occupationList, ""); ?>
+													<?php echo  getOccupation($occupationList, $p_occupationArray, 2);?>
 												</select>
 											</div>
 										</div>
@@ -1682,16 +1740,42 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group">
 										<div class="row">
 											<div class="col-4 align-middle">
-												<label for="PAnnualIncome" style="padding-left: 10px;">Annual Income</label>
+												<label for="PAnnualIncomeStart" style="padding-left: 10px;">Annual Income</label>
 											</div>
 											<div class="col-8">
-												<select name="PAnnualIncome" id="PAnnualIncome" class="form-control">
+												<select name="PAnnualIncomeStart" id="PAnnualIncomeStart" class="form-control">
 													<option value="">Select</option>
+													<option value="Any">Any</option>
+													<option value="">Less than Rs. 1 Lakh</option>
 													<?php
-													for($i=0; $i<count($annualIncomeList); $i++){
-														echo "<option value=\"".$annualIncomeList[$i]['annual_income_id']."\">".$annualIncomeList[$i]['annual_income']."</option>";
+														for($i=1; $i<91; $i++){
+															if($i<10)
+																echo "<option value=\"".$i."\">Rs. ".$i." Lakh</option>";
+															else if($i%2 == 0 && $i <= 20)
+																echo "<option value=\"".$i."\">Rs. ".$i." Lakh</option>";
+															else if($i%10 == 0)
+																echo "<option value=\"".$i."\">Rs. ".$i." Lakh</option>";
+
+														}
+													?>
+													<option value="">Rs. 1 Crore</option>
+													<option value="">Rs. 1 Crore & Above</option>
+												</select>
+												<select name="PAnnualIncomeEnd" id="PAnnualIncomeEnd" class="form-control">
+													<option value="">Select</option>
+													<option value="Any">Any</option>
+													<?php
+													for($i=1; $i<91; $i++){
+														if($i<10)
+															echo "<option value=\"".$i."\">Rs. ".$i." Lakh</option>";
+														else if($i%2 == 0 && $i <= 20)
+															echo "<option value=\"".$i."\">Rs. ".$i." Lakh</option>";
+														else if($i%10 == 0)
+															echo "<option value=\"".$i."\">Rs. ".$i." Lakh</option>";
+
 													}
 													?>
+													<option value="">Rs. 1 Crore</option>
 												</select>
 											</div>
 										</div>
@@ -1699,67 +1783,95 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								</form>
 							</div>
 							<div id="edit9">
-								<form name="formId9" id="formId9"></form>
-								<div class="form-group">
-									<div class="row">
-										<div class="col-4 align-middle">
-											<label for="PCountryLivingIn" style="padding-left: 10px;">Country Living In</label>
-										</div>
-										<div class="col-8">
-											<select name="PCountryLivingIn[]" id="PCountryLivingIn" class="form-control select2" style="width: 100%" multiple>
-												<option value="">Select</option>
-												<option value="Any">Any</option>
+								<form name="formId9" id="formId9">
+									<div class="form-group">
+										<div class="row">
+											<div class="col-4 align-middle">
+												<label for="PCountryLivingIn" style="padding-left: 10px;">Country Living In</label>
+											</div>
+											<div class="col-2 align-middle" >
+												<div class="icheck-success d-inline">
+													<input type="checkbox"
+														   value="YES"
+														<?php if($user->p_country_any == "YES") { echo "checked"; } ?>
+														   id="PCountryLivingInAny" name="PCountryLivingInAny">
+													<label for="PCountryLivingInAny">
+														Any
+													</label>
+												</div>
+											</div>
+											<div class="col-6" id="PCountryLivingInDiv">
 												<?php
-												for($i=0; $i<count($countryList); $i++){
-													echo "<option value=\"".$countryList[$i]['country_id']."\">".$countryList[$i]['country_name']."</option>";
+												$p_living_in = $user->p_living_in;
+												$p_living_inArray = array();
+												if($p_living_in != "" && $p_living_in != null){
+													$p_living_inArray = explode("," , $p_living_in);
 												}
 												?>
-											</select>
+
+												<select multiple name="PCountryLivingIn[]" id="PCountryLivingIn" class="form-control select2" style="width: 100%">
+													<option value="">Select</option>
+													<?php
+														for($i=0; $i<count($countryList); $i++){
+															$selected = "";
+															if(in_array($countryList[$i]['country_id'], $p_living_inArray)) {
+																$selected = "selected";
+															}
+
+															echo "<option $selected value=\"".$countryList[$i]['country_id']."\">".$countryList[$i]['country_name']."</option>";
+														}
+													?>
+												</select>
+											</div>
 										</div>
 									</div>
-								</div>
-								<div class="form-group">
-									<div class="row">
-										<div class="col-4 align-middle">
-											<label for="PResidingState" style="padding-left: 10px;">Residing State</label>
-										</div>
-										<div class="col-8">
-											<select name="PResidingState[]" id="PResidingState" class="form-control select2" style="width: 100%" multiple>
-												<option value="">Select</option>
-											</select>
-										</div>
-									</div>
-								</div>
-								<div class="form-group">
-									<div class="row">
-										<div class="col-4 align-middle">
-											<label for="PDistrict" style="padding-left: 10px;">District</label>
-										</div>
-										<div class="col-8">
-											<select name="PDistrict[]" id="PDistrict" class="form-control select2" style="width: 100%" multiple>
-												<option value="">Select</option>
-											</select>
-										</div>
-									</div>
-								</div>
-								<div class="form-group">
-									<div class="row">
-										<div class="col-4 align-middle">
-											<label for="PCitizenship" style="padding-left: 10px;">Citizenship</label>
-										</div>
-										<div class="col-8">
-											<select name="PCitizenship[]" id="PCitizenship" class="form-control select2" style="width: 100%" multiple>
-												<option value="">Select</option>
-												<option value="Any">Any</option>
-												<?php
-												for($i=0; $i<count($countryList); $i++){
-													echo "<option value=\"".$countryList[$i]['country_id']."\">".$countryList[$i]['country_name']."</option>";
-												}
-												?>
-											</select>
+									<div class="form-group">
+										<div class="row">
+											<div class="col-4 align-middle">
+												<label for="PResidingState" style="padding-left: 10px;">Residing State</label>
+											</div>
+											<div class="col-2 align-middle" >
+												<div class="icheck-success d-inline">
+													<input type="checkbox"
+														   value="YES"
+														<?php if($user->p_state_any == "YES") { echo "checked"; } ?>
+														   id="PResidingStateAny" name="PResidingStateAny">
+													<label for="PResidingStateAny">
+														Any
+													</label>
+												</div>
+											</div>
+											<div class="col-6" id="PResidingStateDiv">
+												<select multiple name="PResidingState[]" id="PResidingState" class="form-control select2" style="width: 100%">
+													<option value="">Select</option>
+												</select>
+											</div>
 										</div>
 									</div>
-								</div>
+									<div class="form-group">
+										<div class="row">
+											<div class="col-4 align-middle">
+												<label for="PCity" style="padding-left: 10px;">Residing City</label>
+											</div>
+											<div class="col-2 align-middle" >
+												<div class="icheck-success d-inline">
+													<input type="checkbox"
+														   value="YES"
+														<?php if($user->p_city_any == "YES") { echo "checked"; } ?>
+														   id="PCityAny" name="PCityAny">
+													<label for="PCityAny">
+														Any
+													</label>
+												</div>
+											</div>
+											<div class="col-6" id="PCityDiv">
+												<select multiple name="PCity[]" id="PCity" class="form-control select2" style="width: 100%">
+													<option value="">Select</option>
+												</select>
+											</div>
+										</div>
+									</div>
+								</form>
 							</div>
 							<div id="edit10">
 								<form name="formId10" id="formId10">
@@ -1816,6 +1928,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         let p_religion_any = "<?php echo $user->p_religion_any; ?>"
         let p_caste_any = "<?php echo $user->p_caste_any; ?>"
         let p_sub_caste_any = "<?php echo $user->p_sub_caste_any; ?>"
+
+        let p_city_any = "<?php echo $user->p_city_any; ?>"
+        let p_state_any = "<?php echo $user->p_state_any; ?>"
+        let p_country_any = "<?php echo $user->p_country_any; ?>";
+
 
         let dob = "<?php echo $user->date_of_birth; ?>"
         let dobA = dob.split("-");
@@ -1879,14 +1996,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         }
 
         $(function () {
-            editAction(1);
+            editAction(9);
             onChangeMonth(1);
-            getStateList(country, state);
-            getCityList(state, city);
+            getStateList(country, state, "1", "state", "");
+            // alert(state +" - " + city+ " - "+ "1"+", "+"city"+", "+"")
+            getCityList(state, city, "1", "city", "");
             getCasteList(religion, caste, "caste", "")
             getSubCasteList(caste, sub_caste, "SubCaste", "");
-
             getStarList(raasi, star);
+
+            // Partner
+            getStateList("<?php echo $user->p_living_in; ?>", "<?php echo $user->p_state; ?>", "2", "PResidingState", "All");
+            getCityList("<?php echo $user->p_state; ?>", "<?php echo $user->p_city; ?>", "2", "PCity", "All");
+            //alert("<?php //echo $user->p_state; ?>//" +" - " + "<?php //echo $user->p_city; ?>//"+ " - "+ "2"+", "+"PCity"+", "+"All")
 
             $('#dateOfBirth3').change(function() {
                 onChangeYear($('#dateOfBirth3').val())
@@ -1908,6 +2030,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 getSubCasteList($('#PCaste').val().toString(), $("#PSubCaste").val().toString(), "PSubCaste", "");
             });
 
+            $('#PResidingState').change(function() {
+                getCityList($("#PResidingState").val().toString(), $("#PCity").val().toString(), "2", "PCity", "");
+			});
+
             $('#caste').change(function() {
                 getSubCasteList($('#caste').val(), "", "SubCaste", "");
             });
@@ -1917,16 +2043,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             });
 
             $('#country').change(function() {
-                getStateList($('#country').val(), "");
+                getStateList($('#country').val(), "",  "1", "state", "");
             });
 
             $('#state').change(function() {
-                getCityList($('#state').val(), "");
+                getCityList($('#state').val(), "", "1", "city", "");
             });
 
             $('.select2').select2();
-
-
 
             $('#PMotherTongueAny').click(function() {
                 if(this.checked){
@@ -1934,6 +2058,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     $('#PMotherTongueDiv').hide()
 				} else {
                     $('#PMotherTongueDiv').show()
+                }
+            });
+
+            $('#POccupationAny').click(function() {
+                if(this.checked){
+                    $('#POccupation').val([])
+                    $('#POccupationDiv').hide()
+				} else {
+                    $('#POccupationDiv').show()
+                }
+            });
+
+            $('#PEducationAny').click(function() {
+                if(this.checked){
+                    $('#PEducation').val([])
+                    $('#PEducationDiv').hide()
+				} else {
+                    $('#PEducationDiv').show()
                 }
             });
 
@@ -1948,6 +2090,34 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     $("#PCaste").empty().append("<option value=\"\">Select</option>");
                     getCasteList($("#PReligion").val(), "", "PCaste", "");
                     $('#PReligionDiv').show()
+                }
+            });
+
+            $('#PCountryLivingInAny').click(function() {
+                if(this.checked){
+                    $('#PCountryLivingInDiv').hide()
+                    getStateList("", $("#PResidingState").val(), "2", "PResidingState", "All");
+				} else {
+                    getStateList($("#PCountryLivingIn").val(), $("#PResidingState").val(), "2", "PResidingState", "All");
+                    $('#PCountryLivingInDiv').show()
+                }
+            });
+
+            $('#PResidingStateAny').click(function() {
+                if(this.checked){
+                    $('#PResidingStateDiv').hide()
+                    getCityList($("#PResidingState").val().toString(), $("#PCity").val().toString(), "2", "PCity", "All");
+				} else {
+                    getCityList($("#PResidingState").val().toString(), $("#PCity").val().toString(), "2", "PCity", "All");
+                    $('#PResidingStateDiv').show()
+                }
+            });
+
+            $('#PCityAny').click(function() {
+                if(this.checked){
+                    $('#PCityDiv').hide()
+				} else {
+                    $('#PCityDiv').show()
                 }
             });
 
@@ -1981,35 +2151,64 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 }
             });
 
+            $('#PCountryLivingIn').change(function() {
+                getStateList($("#PCountryLivingIn").val().toString(), $("#PResidingState").val().toString(), "2", "PResidingState", "All");
+            });
+
+            $('#PResidingState').change(function() {
+                getCityList($("#PResidingState").val().toString(), $("#PResidingState").val().toString(), "2", "PCity", "All");
+            });
 
         });
 
-        function getCityList(state, city) {
-            $.get("/api/city", {state : state}, function(data, status){
-                $("#city").empty().append("<option value=\"\">Select</option>");
+        function getCityList(state, city, type, cityId, dataId) {
+
+            $.get("/api/city", {state : state, dataId: dataId}, function(data, status){
+                $("#"+cityId).empty().append("<option value=\"\">Select</option>");
                 data.map(function (d,i) {
-                    if(city == d.city_id){
-                        $("#city").append("<option selected value=\""+d.city_id+"\">"+d.city_name+"</option>");
-                    } else {
-                        $("#city").append("<option value=\""+d.city_id+"\">"+d.city_name+"</option>");
+                    if(type == 1){
+                        if(city == d.city_id){
+                            $("#"+cityId).append("<option selected value=\""+d.city_id+"\">"+d.city_name+"</option>");
+                        } else {
+                            $("#"+cityId).append("<option value=\""+d.city_id+"\">"+d.city_name+"</option>");
+                        }
+                    } else if(type == 2){
+                        var selected = "";
+                        if(city != ""){
+                            var cityArray = city.split(",")
+                            if(cityArray.length > 0 && cityArray.includes(d.city_id))
+                                selected = "selected";
+                        }
+                        $("#"+cityId).append("<option "+selected+" value=\""+d.city_id+"\">"+d.city_name+"</option>");
                     }
                 });
             });
         }
 
-        function getStateList(country, state) {
-            $.get("/api/state", {country : country}, function(data, status){
-                $("#state").empty().append("<option value=\"\">Select</option>");
+        function getStateList(country, state, type, stateId, dataId) {
+            $.get("/api/state", {country : country, dataId: dataId}, function(data, status){
+                $("#"+stateId).empty().append("<option value=\"\">Select</option>");
                 data.map(function (d,i) {
-                    if(state == d.state_id){
-                        $("#state").append("<option selected value=\""+d.state_id+"\">"+d.state_name+"</option>");
-                    } else {
-                        $("#state").append("<option value=\""+d.state_id+"\">"+d.state_name+"</option>");
-                    }
+                    if(type == 1){
+                        if(state == d.state_id){
+                            $("#"+stateId).append("<option selected value=\""+d.state_id+"\">"+d.state_name+"</option>");
+                        } else {
+                            $("#"+stateId).append("<option value=\""+d.state_id+"\">"+d.state_name+"</option>");
+                        }
+					} else if(type == 2){
+                        var selected = "";
+                        if(state != ""){
+                            var stateArray = state.split(",")
+                            if(stateArray.length > 0 && stateArray.includes(d.state_id))
+                                selected = "selected";
+						}
+                        $("#"+stateId).append("<option "+selected+" value=\""+d.state_id+"\">"+d.state_name+"</option>");
+
+
+					}
                 });
             });
         }
-
 
         function getStarList(raasi, star) {
             $.get("/api/star", { raasi : raasi}, function(data, status){
@@ -2027,17 +2226,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         function editAction(id) {
             let idList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
             idList.map(i => {
-                console.log("id -> " + id + " , i -> " + i)
-
-                if (id == i) {
+				if (id == i) {
                     $("#edit" + i).show();
                     $("#formId").val(i);
                     $("#EditActionHeader").html(headerNames[i-1])
+
 					if(id == 7){
                         let p_religion_any = "<?php echo $user->p_religion_any; ?>"
                         if(p_religion_any == "YES"){
                             $("#PReligionDiv").hide();
-                        }
+						}
 
                         let p_caste_any = "<?php echo $user->p_caste_any; ?>"
                         if(p_caste_any == "YES"){
@@ -2070,10 +2268,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         } else if(p_caste_any == "YES" && p_sub_caste_any == "NO") {
                             getSubCasteList("<?php echo $user->p_caste; ?>", "<?php echo $user->p_sub_caste; ?>", "PSubCaste", "All");
                         }
-
-
-
                     }
+					else if(id == 8){
+									let p_education_any = "<?php echo $user->p_education_any; ?>"
+									if(p_education_any == "YES"){
+										$("#PEducationDiv").hide();
+									}
+
+									let p_occupation_any = "<?php echo $user->p_occupation_any; ?>"
+									if(p_occupation_any == "YES"){
+										$("#POccupationDiv").hide();
+									}
+								}
+					else if(id == 9){
+                        if(p_country_any == "YES"){
+                            $("#PCountryLivingInDiv").hide();
+                        }
+                        if(p_state_any == "YES"){
+                            $("#PResidingStateDiv").hide();
+                        }
+                        if(p_city_any == "YES"){
+                            $("#PCityDiv").hide();
+                        }
+					}
                 }
                 else
                     $("#edit" + i).hide()
@@ -2109,8 +2326,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 });
         }
 
-
-        function getSubCasteList(caste, subCaste, subCasteId, dataId) {
+		function getSubCasteList(caste, subCaste, subCasteId, dataId) {
             $.get("/api/subCaste", { caste : caste, dataId: dataId}, function(data, status){
                 $("#"+subCasteId).empty().append("<option disabled value=\"\">Select</option>");
                 data.map(function (d,i) {

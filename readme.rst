@@ -135,10 +135,29 @@ create table tbl_user_partner (
 	p_caste_any varchar(255) NOT NULL DEFAULT ('NO'),
 	p_sub_caste_any varchar(255) NOT NULL DEFAULT ('NO'),
 	p_star_any varchar(255) NOT NULL DEFAULT ('NO'),
+	p_occupation_any varchar(255) NOT NULL DEFAULT ('NO'),
+	p_education_any varchar(255) NOT NULL DEFAULT ('NO'),
+	p_state_any varchar(255) NOT NULL DEFAULT ('NO'),
+	p_city_any varchar(255) NOT NULL DEFAULT ('NO'),
+	p_state varchar(255),
+	p_city varchar(255),
 	modified_at timestamp,
 	FOREIGN KEY (user_id) REFERENCES tbl_user(user_id)
 );
 
+alter table tbl_user_partner add column p_education_any varchar(255) NOT NULL DEFAULT ('NO');
+alter table tbl_user_partner add column p_occupation_any varchar(255) NOT NULL DEFAULT ('NO'),
+
+alter table tbl_user_partner add column p_state_any varchar(255) NOT NULL DEFAULT ('NO');
+alter table tbl_user_partner add column p_city_any varchar(255) NOT NULL DEFAULT ('NO');
+alter table tbl_user_partner add column p_state varchar(255);
+alter table tbl_user_partner add column p_city varchar(255);
+
+
+alter table tbl_user add column p_state varchar(255);
+alter table tbl_user add column p_city varchar(255);
+alter table tbl_user add column p_state_any varchar(255) NOT NULL DEFAULT ('NO');
+alter table tbl_user add column p_city_any varchar(255) NOT NULL DEFAULT ('NO');
 *******************************************************************
 END User Table
 *******************************************************************

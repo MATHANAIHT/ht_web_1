@@ -364,37 +364,42 @@ class Api_model extends CI_Model
 								$updateStr .= "p_end_height=\"".$data["endPHeight"]."\", ";
 							}
 							$PMaritalStatus = self::isValidToUpdateArray($data, "PMaritalStatus", $rData10->p_marital_status);
-							if(strlen($PMaritalStatus) > 1){
+							if(strlen($PMaritalStatus) >= 1){
 								$updateStr .= "p_marital_status=\"".$PMaritalStatus."\", ";
 							}
 							$PSmokingHabits = self::isValidToUpdateArray($data, "PSmokingHabits", $rData10->p_smoking);
-							if(strlen($PSmokingHabits) > 1){
+							if(strlen($PSmokingHabits) >= 1){
 								$updateStr .= "p_smoking=\"".$PSmokingHabits."\", ";
 							}
 							$PDrinkingHabits = self::isValidToUpdateArray($data, "PDrinkingHabits", $rData10->p_drinking);
-							if(strlen($PDrinkingHabits) > 1){
+							if(strlen($PDrinkingHabits) >= 1){
 								$updateStr .= "p_drinking=\"".$PDrinkingHabits."\", ";
 							}
 							$PEatingHabits = self::isValidToUpdateArray($data, "PEatingHabits", $rData10->p_eating);
-							if(strlen($PEatingHabits) > 1){
+							if(strlen($PEatingHabits) >= 1){
 								$updateStr .= "p_eating=\"".$PEatingHabits."\", ";
 							}
 							$PStar = self::isValidToUpdateArray($data, "PStar", $rData10->p_star);
-							if(strlen($PStar) > 1){
+							if(strlen($PStar) >= 1){
 								$updateStr .= "p_star=\"".$PStar."\", ";
 							}
 							$PMotherTongue = self::isValidToUpdateArray($data, "PMotherTongue", $rData10->p_mother_tongue);
-							if(strlen($PMotherTongue) > 1){
+							if(strlen($PMotherTongue) >= 1){
 								$updateStr .= "p_mother_tongue=\"".$PMotherTongue."\", ";
 							}
 							$PCaste = self::isValidToUpdateArray($data, "PCaste", $rData10->p_caste);
-							if(strlen($PCaste) > 1){
+							if(strlen($PCaste) >= 1){
 								$updateStr .= "p_caste=\"".$PCaste."\", ";
 							}
 							$PSubCaste = self::isValidToUpdateArray($data, "PSubCaste", $rData10->p_sub_caste);
-							if(strlen($PSubCaste) > 1){
+							if(strlen($PSubCaste) >= 1){
 								$updateStr .= "p_sub_caste=\"".$PSubCaste."\", ";
 							}
+							$PEmployedIn = self::isValidToUpdateArray($data, "PEmployedIn", $rData10->p_employed_in);
+							if(strlen($PEmployedIn) >= 1){
+								$updateStr .= "p_employed_in=\"".$PEmployedIn."\", ";
+							}
+							echo "PEmployedIn".$PEmployedIn;
 
 							if($formId == 7){
 								$index = "PMotherTongueAny";
@@ -441,6 +446,72 @@ class Api_model extends CI_Model
 								} else if($rData10->p_star_any == "YES"){
 									$updateStr .= "p_star_any=\"NO\", ";
 								}
+							} elseif ($formId == 8){
+								$POccupation = self::isValidToUpdateArray($data, "POccupation", $rData10->p_occu);
+								if(strlen($POccupation) >= 1){
+									$updateStr .= "p_occu=\"".$POccupation."\", ";
+								}
+								$index = "POccupationAny";
+								if(array_key_exists($index, $data)){
+									if($data[$index] != "" && $data[$index] != null && $data[$index] != $rData10->p_occupation_any){
+										$updateStr .= "p_occupation_any=\"".$data[$index]."\", p_occu='', ";
+									}
+								} else if($rData10->p_occupation_any == "YES"){
+									$updateStr .= "p_occupation_any=\"NO\", ";
+								}
+
+								$PEducation = self::isValidToUpdateArray($data, "PEducation", $rData10->p_edu);
+								if(strlen($PEducation) >= 1){
+									$updateStr .= "p_edu=\"".$PEducation."\", ";
+								}
+								$index = "PEducationAny";
+								if(array_key_exists($index, $data)){
+									if($data[$index] != "" && $data[$index] != null && $data[$index] != $rData10->p_education_any){
+										$updateStr .= "p_education_any=\"".$data[$index]."\", p_edu='', ";
+									}
+								} else if($rData10->p_education_any == "YES"){
+									$updateStr .= "p_education_any=\"NO\", ";
+								}
+							}  elseif ($formId == 9) {
+								$PCountryLivingIn = self::isValidToUpdateArray($data, "PCountryLivingIn", $rData10->p_living_in);
+								if(strlen($PCountryLivingIn) >= 1){
+									$updateStr .= "p_living_in=\"".$PCountryLivingIn."\", ";
+								}
+								$index = "PCountryLivingInAny";
+								if(array_key_exists($index, $data)){
+									if($data[$index] != "" && $data[$index] != null && $data[$index] != $rData10->p_country_any){
+										$updateStr .= "p_country_any=\"".$data[$index]."\", p_living_in='', ";
+									}
+								} else if($rData10->p_country_any == "YES"){
+									$updateStr .= "p_country_any=\"NO\", ";
+								}
+
+								$PResidingState = self::isValidToUpdateArray($data, "PResidingState", $rData10->p_state);
+								if(strlen($PResidingState) >= 1){
+									$updateStr .= "p_state=\"".$PResidingState."\", ";
+								}
+								$index = "PResidingStateAny";
+								if(array_key_exists($index, $data)){
+									if($data[$index] != "" && $data[$index] != null && $data[$index] != $rData10->p_state_any){
+										$updateStr .= "p_state_any=\"".$data[$index]."\", p_state='', ";
+									}
+								} else if($rData10->p_state_any == "YES"){
+									$updateStr .= "p_state_any=\"NO\", ";
+								}
+
+								$PCity = self::isValidToUpdateArray($data, "PCity", $rData10->p_city);
+								if(strlen($PCity) >= 1){
+									$updateStr .= "p_city=\"".$PCity."\", ";
+								}
+								$index = "PCityAny";
+								if(array_key_exists($index, $data)){
+									if($data[$index] != "" && $data[$index] != null && $data[$index] != $rData10->p_city_any){
+										$updateStr .= "p_city_any=\"".$data[$index]."\", p_city='', ";
+									}
+								} else if($rData10->p_city_any == "YES"){
+									$updateStr .= "p_city_any=\"NO\", ";
+								}
+
 							}
 
 							if($updateStr != ""){
@@ -707,17 +778,7 @@ class Api_model extends CI_Model
 		return "error";
 	}
 
-	function getCity($dataId, $state){
-		$tbl = $this->getTables("city");
-		$tblName = $tbl["name"];
-		if($state != ""){
-			$query = $this->db->get_where($tblName, array('state_id' => $state));
-		} else if($dataId != "") {
-			$query = $this->db->get_where($tblName, array($tbl["id"] => $dataId));
-		}
-		$row = $query->result();
-		return $row;
-	}
+
 
 	function saveCity($action, $editId, $state, $country, $cityName){
 		$tbl = $this->getTables("city");
@@ -1017,7 +1078,29 @@ class Api_model extends CI_Model
 		$tbl = $this->getTables("state");
 		$tblName = $tbl["name"];
 		if($country != ""){
-			$query = $this->db->get_where($tblName, array('country_id' => $country));
+			if(strpos($country, ',') !== false){
+				$query = $this->db->query("select * from ".$tblName." where country_id in (".$country.")");
+			} else {
+				$query = $this->db->get_where($tblName, array('country_id' => $country));
+			}
+		} else if($dataId == "All"){
+			$query = $this->db->get($tblName);
+		} else if($dataId != "") {
+			$query = $this->db->get_where($tblName, array($tbl["id"] => $dataId));
+		}
+		$row = $query->result();
+		return $row;
+	}
+
+	function getCity($dataId, $state){
+		$tbl = $this->getTables("city");
+		$tblName = $tbl["name"];
+		if($state != ""){
+			if(strpos($state, ',') !== false){
+				$query = $this->db->query("select * from ".$tblName." where state_id in (".$state.")");
+			} else {
+				$query = $this->db->get_where($tblName, array('state_id' => $state));
+			}
 		} else if($dataId == "All"){
 			$query = $this->db->get($tblName);
 		} else if($dataId != "") {
