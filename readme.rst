@@ -1,4 +1,4 @@
-php -S localhost:8000
+php -S localhost:8006
 
 sudo apachectl start
 
@@ -128,7 +128,8 @@ create table tbl_user_partner (
 	p_smoking varchar(255),
 	p_eating varchar(255),
 	p_drinking varchar(255),
-	p_annual_income varchar(255),
+	p_annual_income_start varchar(255),
+	p_annual_income_end varchar(255),
 	p_about_my_partner varchar(255),
 	p_mother_tongue_any varchar(255) NOT NULL DEFAULT ('NO'),
 	p_religion_any varchar(255) NOT NULL DEFAULT ('NO'),
@@ -152,6 +153,8 @@ alter table tbl_user_partner add column p_state_any varchar(255) NOT NULL DEFAUL
 alter table tbl_user_partner add column p_city_any varchar(255) NOT NULL DEFAULT ('NO');
 alter table tbl_user_partner add column p_state varchar(255);
 alter table tbl_user_partner add column p_city varchar(255);
+alter table tbl_user_partner add column p_annual_income_start varchar(255);
+alter table tbl_user_partner add column p_annual_income_end varchar(255);
 
 
 alter table tbl_user add column p_state varchar(255);

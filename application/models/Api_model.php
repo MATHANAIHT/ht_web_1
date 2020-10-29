@@ -339,114 +339,141 @@ class Api_model extends CI_Model
 						if(count($row10) == 1){
 							$rData10 = $row10[0];
 							$updateStr = "";
-							if(self::isValidToUpdate($data, "PReligion", $rData10->p_religion)){
-								$updateStr .= "p_religion=\"".$data["PReligion"]."\", ";
-							}
-							if(self::isValidToUpdate($data, "PPhysicalStatus", $rData10->p_physical_status)){
-								$updateStr .= "p_physical_status=\"".$data["PPhysicalStatus"]."\", ";
-							}
-							if(self::isValidToUpdate($data, "PDosham", $rData10->p_is_chevvai_dosham)){
-								$updateStr .= "p_is_chevvai_dosham=\"".$data["PDosham"]."\", ";
-							}
-							if(self::isValidToUpdate($data, "PWhatIAmLookingFor", $rData10->p_about_my_partner)){
-								$updateStr .= "p_about_my_partner=\"".$data["PWhatIAmLookingFor"]."\", ";
-							}
-							if(self::isValidToUpdate($data, "PStartAge", $rData10->p_start_age)){
-								$updateStr .= "p_start_age=\"".$data["PStartAge"]."\", ";
-							}
-							if(self::isValidToUpdate($data, "PEndAge", $rData10->p_end_age)){
-								$updateStr .= "p_end_age=\"".$data["PEndAge"]."\", ";
-							}
-							if(self::isValidToUpdate($data, "startPHeight", $rData10->p_start_height)){
-								$updateStr .= "p_start_height=\"".$data["startPHeight"]."\", ";
-							}
-							if(self::isValidToUpdate($data, "endPHeight", $rData10->p_end_height)){
-								$updateStr .= "p_end_height=\"".$data["endPHeight"]."\", ";
-							}
-							$PMaritalStatus = self::isValidToUpdateArray($data, "PMaritalStatus", $rData10->p_marital_status);
-							if(strlen($PMaritalStatus) >= 1){
-								$updateStr .= "p_marital_status=\"".$PMaritalStatus."\", ";
-							}
-							$PSmokingHabits = self::isValidToUpdateArray($data, "PSmokingHabits", $rData10->p_smoking);
-							if(strlen($PSmokingHabits) >= 1){
-								$updateStr .= "p_smoking=\"".$PSmokingHabits."\", ";
-							}
-							$PDrinkingHabits = self::isValidToUpdateArray($data, "PDrinkingHabits", $rData10->p_drinking);
-							if(strlen($PDrinkingHabits) >= 1){
-								$updateStr .= "p_drinking=\"".$PDrinkingHabits."\", ";
-							}
-							$PEatingHabits = self::isValidToUpdateArray($data, "PEatingHabits", $rData10->p_eating);
-							if(strlen($PEatingHabits) >= 1){
-								$updateStr .= "p_eating=\"".$PEatingHabits."\", ";
-							}
-							$PStar = self::isValidToUpdateArray($data, "PStar", $rData10->p_star);
-							if(strlen($PStar) >= 1){
-								$updateStr .= "p_star=\"".$PStar."\", ";
-							}
-							$PMotherTongue = self::isValidToUpdateArray($data, "PMotherTongue", $rData10->p_mother_tongue);
-							if(strlen($PMotherTongue) >= 1){
-								$updateStr .= "p_mother_tongue=\"".$PMotherTongue."\", ";
-							}
-							$PCaste = self::isValidToUpdateArray($data, "PCaste", $rData10->p_caste);
-							if(strlen($PCaste) >= 1){
-								$updateStr .= "p_caste=\"".$PCaste."\", ";
-							}
-							$PSubCaste = self::isValidToUpdateArray($data, "PSubCaste", $rData10->p_sub_caste);
-							if(strlen($PSubCaste) >= 1){
-								$updateStr .= "p_sub_caste=\"".$PSubCaste."\", ";
-							}
-							$PEmployedIn = self::isValidToUpdateArray($data, "PEmployedIn", $rData10->p_employed_in);
-							if(strlen($PEmployedIn) >= 1){
-								$updateStr .= "p_employed_in=\"".$PEmployedIn."\", ";
-							}
-							echo "PEmployedIn".$PEmployedIn;
-
 							if($formId == 7){
+
+								//PAge
+								if(self::isValidToUpdate($data, "PStartAge", $rData10->p_start_age)){
+									$updateStr .= "p_start_age=\"".$data["PStartAge"]."\", ";
+								}
+								if(self::isValidToUpdate($data, "PEndAge", $rData10->p_end_age)){
+									$updateStr .= "p_end_age=\"".$data["PEndAge"]."\", ";
+								}
+
+								//PMaritalStatus
+								$PMaritalStatus = self::isValidToUpdateArray($data, "PMaritalStatus", $rData10->p_marital_status);
+								if(strlen($PMaritalStatus) >= 1){
+									$updateStr .= "p_marital_status=\"".$PMaritalStatus."\", ";
+								}
+
+								// Height
+								if(self::isValidToUpdate($data, "startPHeight", $rData10->p_start_height)){
+									$updateStr .= "p_start_height=\"".$data["startPHeight"]."\", ";
+								}
+								if(self::isValidToUpdate($data, "endPHeight", $rData10->p_end_height)){
+									$updateStr .= "p_end_height=\"".$data["endPHeight"]."\", ";
+								}
+
+								//PPhysicalStatus
+								if(self::isValidToUpdate($data, "PPhysicalStatus", $rData10->p_physical_status)){
+									$updateStr .= "p_physical_status=\"".$data["PPhysicalStatus"]."\", ";
+								}
+
+								//PEatingHabits
+								$PEatingHabits = self::isValidToUpdateArray($data, "PEatingHabits", $rData10->p_eating);
+								if(strlen($PEatingHabits) >= 1){
+									$updateStr .= "p_eating=\"".$PEatingHabits."\", ";
+								}
+
+								//PDrinkingHabits
+								$PDrinkingHabits = self::isValidToUpdateArray($data, "PDrinkingHabits", $rData10->p_drinking);
+								if(strlen($PDrinkingHabits) >= 1){
+									$updateStr .= "p_drinking=\"".$PDrinkingHabits."\", ";
+								}
+
+								//PSmokingHabits
+								$PSmokingHabits = self::isValidToUpdateArray($data, "PSmokingHabits", $rData10->p_smoking);
+								if(strlen($PSmokingHabits) >= 1){
+									$updateStr .= "p_smoking=\"".$PSmokingHabits."\", ";
+								}
+
+								// Mother Tongue
+								$PMotherTongue = self::isValidToUpdateArray($data, "PMotherTongue", $rData10->p_mother_tongue);
+								if(strlen($PMotherTongue) >= 1){
+									$updateStr .= "p_mother_tongue=\"".$PMotherTongue."\", ";
+								}
 								$index = "PMotherTongueAny";
 								if(array_key_exists($index, $data)){
 									if($data[$index] != "" && $data[$index] != null && $data[$index] != $rData10->p_mother_tongue_any){
 										$updateStr .= "p_mother_tongue_any=\"".$data[$index]."\", p_mother_tongue='', ";
 									}
-								} else if($rData10->p_mother_tongue_any == "YES"){
+								}
+								else if($rData10->p_mother_tongue_any == "YES"){
 									$updateStr .= "p_mother_tongue_any=\"NO\", ";
 								}
 
+								// Religion
+								if(self::isValidToUpdate($data, "PReligion", $rData10->p_religion)){
+									$updateStr .= "p_religion=\"".$data["PReligion"]."\", ";
+								}
 								$index = "PReligionAny";
 								if(array_key_exists($index, $data)){
 									if($data[$index] != "" && $data[$index] != null && $data[$index] != $rData10->p_religion_any){
 										$updateStr .= "p_religion_any=\"".$data[$index]."\", p_religion='', ";
 									}
-								} else if($rData10->p_religion_any == "YES"){
+								}
+								else if($rData10->p_religion_any == "YES"){
 									$updateStr .= "p_religion_any=\"NO\", ";
 								}
 
+								// Caste
+								$PCaste = self::isValidToUpdateArray($data, "PCaste", $rData10->p_caste);
+								if(strlen($PCaste) >= 1){
+									$updateStr .= "p_caste=\"".$PCaste."\", ";
+								}
 								$index = "PCasteAny";
 								if(array_key_exists($index, $data)){
 									if($data[$index] != "" && $data[$index] != null && $data[$index] != $rData10->p_caste_any){
 										$updateStr .= "p_caste_any=\"".$data[$index]."\", p_caste='', ";
 									}
-								} else if($rData10->p_caste_any == "YES"){
+								}
+								else if($rData10->p_caste_any == "YES"){
 									$updateStr .= "p_caste_any=\"NO\", ";
 								}
 
+								// Sub Caste
+								$PSubCaste = self::isValidToUpdateArray($data, "PSubCaste", $rData10->p_sub_caste);
+								if(strlen($PSubCaste) >= 1){
+									$updateStr .= "p_sub_caste=\"".$PSubCaste."\", ";
+								}
 								$index = "PSubCasteAny";
 								if(array_key_exists($index, $data)){
 									if($data[$index] != "" && $data[$index] != null && $data[$index] != $rData10->p_sub_caste_any){
 										$updateStr .= "p_sub_caste_any=\"".$data[$index]."\", p_sub_caste='', ";
 									}
-								} else if($rData10->p_sub_caste_any == "YES"){
+								}
+								else if($rData10->p_sub_caste_any == "YES"){
 									$updateStr .= "p_sub_caste_any=\"NO\", ";
 								}
 
+								//PDosham
+								if(self::isValidToUpdate($data, "PDosham", $rData10->p_is_chevvai_dosham)){
+									$updateStr .= "p_is_chevvai_dosham=\"".$data["PDosham"]."\", ";
+								}
+
+								// Star
+								$PStar = self::isValidToUpdateArray($data, "PStar", $rData10->p_star);
+								if(strlen($PStar) >= 1){
+									$updateStr .= "p_star=\"".$PStar."\", ";
+								}
 								$index = "PStarAny";
 								if(array_key_exists($index, $data)){
 									if($data[$index] != "" && $data[$index] != null && $data[$index] != $rData10->p_star_any){
 										$updateStr .= "p_star_any=\"".$data[$index]."\", p_star='', ";
 									}
-								} else if($rData10->p_star_any == "YES"){
+								}
+								else if($rData10->p_star_any == "YES"){
 									$updateStr .= "p_star_any=\"NO\", ";
 								}
-							} elseif ($formId == 8){
+
+							}
+							elseif ($formId == 8){
+								// PEmployedIn
+								$PEmployedIn = self::isValidToUpdateArray($data, "PEmployedIn", $rData10->p_employed_in);
+								if(strlen($PEmployedIn) >= 1){
+									$updateStr .= "p_employed_in=\"".$PEmployedIn."\", ";
+								}
+
+								// POccupation
 								$POccupation = self::isValidToUpdateArray($data, "POccupation", $rData10->p_occu);
 								if(strlen($POccupation) >= 1){
 									$updateStr .= "p_occu=\"".$POccupation."\", ";
@@ -456,10 +483,12 @@ class Api_model extends CI_Model
 									if($data[$index] != "" && $data[$index] != null && $data[$index] != $rData10->p_occupation_any){
 										$updateStr .= "p_occupation_any=\"".$data[$index]."\", p_occu='', ";
 									}
-								} else if($rData10->p_occupation_any == "YES"){
+								}
+								else if($rData10->p_occupation_any == "YES"){
 									$updateStr .= "p_occupation_any=\"NO\", ";
 								}
 
+								// PEducation
 								$PEducation = self::isValidToUpdateArray($data, "PEducation", $rData10->p_edu);
 								if(strlen($PEducation) >= 1){
 									$updateStr .= "p_edu=\"".$PEducation."\", ";
@@ -469,10 +498,24 @@ class Api_model extends CI_Model
 									if($data[$index] != "" && $data[$index] != null && $data[$index] != $rData10->p_education_any){
 										$updateStr .= "p_education_any=\"".$data[$index]."\", p_edu='', ";
 									}
-								} else if($rData10->p_education_any == "YES"){
+								}
+								else if($rData10->p_education_any == "YES"){
 									$updateStr .= "p_education_any=\"NO\", ";
 								}
-							}  elseif ($formId == 9) {
+
+								$startIncomeArray = array("Any", "LessThan1Lakh", "50LakhsAndAbove");
+								// PAnnualIncome
+								if(self::isValidToUpdate($data, "PAnnualIncomeStart", $rData10->p_annual_income_start)){
+									$updateStr .= "p_annual_income_start=\"".$data["PAnnualIncomeStart"]."\", ";
+								}
+								if(self::isValidToUpdate($data, "PAnnualIncomeEnd", $rData10->p_annual_income_end)){
+									$updateStr .= "p_annual_income_end=\"".$data["PAnnualIncomeEnd"]."\", ";
+								}
+								if(in_array($data["PAnnualIncomeStart"], $startIncomeArray) || in_array($rData10->p_annual_income_start, $startIncomeArray)){
+									$updateStr .= "p_annual_income_end=\"\", ";
+								}
+							}
+							elseif ($formId == 9) {
 								$PCountryLivingIn = self::isValidToUpdateArray($data, "PCountryLivingIn", $rData10->p_living_in);
 								if(strlen($PCountryLivingIn) >= 1){
 									$updateStr .= "p_living_in=\"".$PCountryLivingIn."\", ";
@@ -512,6 +555,11 @@ class Api_model extends CI_Model
 									$updateStr .= "p_city_any=\"NO\", ";
 								}
 
+							}
+							elseif ($formId == 10) {
+								if(self::isValidToUpdate($data, "PWhatIAmLookingFor", $rData10->p_about_my_partner)){
+									$updateStr .= "p_about_my_partner=\"".$data["PWhatIAmLookingFor"]."\", ";
+								}
 							}
 
 							if($updateStr != ""){

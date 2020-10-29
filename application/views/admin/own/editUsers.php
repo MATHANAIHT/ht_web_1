@@ -144,7 +144,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							$dobD = $dobA[2];
 						} ?>
 						<div class="card-body">
-							<input type="hidd en" name="formId" id="formId" value="1">
+							<input type="hidden" name="formId" id="formId" value="1">
 							<div id="edit1">
 								<form name="formId1" id="formId1">
 									<div class="form-group">
@@ -1456,17 +1456,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="col-4 align-middle">
 												<label for="PMotherTongue" style="padding-left: 10px;">Mother Tongue</label>
 											</div>
-											<div class="col-2 align-middle">
-												<div class="icheck-success d-inline">
-													<input type="checkbox"
-														   value="YES"
-														<?php if($user->p_mother_tongue_any == "YES") { echo "checked"; } ?>
-														   id="PMotherTongueAny" name="PMotherTongueAny">
-													<label for="PMotherTongueAny">
-														Any
-													</label>
-												</div>
-											</div>
 											<div class="col-6" id="PMotherTongueDiv">
 												<?php
 												$p_mother_tongue = $user->p_mother_tongue;
@@ -1488,23 +1477,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 													?>
 												</select>
 											</div>
+											<div class="col-2 align-middle">
+												<div class="icheck-success d-inline">
+													<input type="checkbox"
+														   value="YES"
+														<?php if($user->p_mother_tongue_any == "YES") { echo "checked"; } ?>
+														   id="PMotherTongueAny" name="PMotherTongueAny">
+													<label for="PMotherTongueAny">
+														Any
+													</label>
+												</div>
+											</div>
 										</div>
 									</div>
 									<div class="form-group">
 										<div class="row">
 											<div class="col-4">
 												<label for="PReligion" style="padding-left: 10px;">Religion</label>
-											</div>
-											<div class="col-2 align-middle">
-												<div class="icheck-success d-inline">
-													<input type="checkbox"
-														   value="YES"
-														<?php if($user->p_religion_any == "YES") { echo "checked"; } ?>
-														   id="PReligionAny" name="PReligionAny">
-													<label for="PReligionAny">
-														Any
-													</label>
-												</div>
 											</div>
 											<div class="col-6 align-middle" id="PReligionDiv">
 												<select name="PReligion" id="PReligion" class="form-control select2" style="width: 100%">
@@ -1520,12 +1509,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 													?>
 												</select>
 											</div>
+											<div class="col-2 align-middle">
+												<div class="icheck-success d-inline">
+													<input type="checkbox"
+														   value="YES"
+														<?php if($user->p_religion_any == "YES") { echo "checked"; } ?>
+														   id="PReligionAny" name="PReligionAny">
+													<label for="PReligionAny">
+														Any
+													</label>
+												</div>
+											</div>
 										</div>
 									</div>
 									<div class="form-group">
 										<div class="row">
 											<div class="col-4 align-middle">
 												<label for="PCaste" style="padding-left: 10px;">Caste</label>
+											</div>
+											<div class="col-6" id="PCasteDiv">
+												<select multiple name="PCaste[]" id="PCaste" class="form-control select2" style="width: 100%">
+													<option value="">Select</option>
+												</select>
 											</div>
 											<div class="col-2 align-middle" >
 												<div class="icheck-success d-inline">
@@ -1538,17 +1543,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 													</label>
 												</div>
 											</div>
-											<div class="col-6" id="PCasteDiv">
-												<select multiple name="PCaste[]" id="PCaste" class="form-control select2" style="width: 100%">
-													<option value="">Select</option>
-												</select>
-											</div>
 										</div>
 									</div>
 									<div class="form-group">
 										<div class="row">
 											<div class="col-4 align-middle">
 												<label for="PSubCaste" style="padding-left: 10px;padding-top: 5px;">Sub Caste</label>
+											</div>
+											<div class="col-6"  id="PSubCasteDiv">
+												<select multiple name="PSubCaste[]" id="PSubCaste" class="form-control select2" style="width: 100%">
+													<option value="">Select</option>
+												</select>
 											</div>
 											<div class="col-2 align-middle">
 												<div class="icheck-success d-inline">
@@ -1560,11 +1565,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 														Any
 													</label>
 												</div>
-											</div>
-											<div class="col-6"  id="PSubCasteDiv">
-												<select multiple name="PSubCaste[]" id="PSubCaste" class="form-control select2" style="width: 100%">
-													<option value="">Select</option>
-												</select>
 											</div>
 										</div>
 									</div>
@@ -1608,17 +1608,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="col-4 align-middle">
 												<label for="PStar" style="padding-left: 10px;">Star</label>
 											</div>
-											<div class="col-2 align-middle">
-												<div class="icheck-success d-inline">
-													<input type="checkbox"
-														   value="YES"
-														<?php if($user->p_star_any == "YES") { echo "checked"; } ?>
-														   id="PStarAny" name="PStarAny">
-													<label for="PStarAny">
-														Any
-													</label>
-												</div>
-											</div>
 											<div class="col-6" id="PStarDiv">
 												<?php
 													$p_star = $user->p_star;
@@ -1640,6 +1629,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 													?>
 												</select>
 											</div>
+											<div class="col-2 align-middle">
+												<div class="icheck-success d-inline">
+													<input type="checkbox"
+														   value="YES"
+														<?php if($user->p_star_any == "YES") { echo "checked"; } ?>
+														   id="PStarAny" name="PStarAny">
+													<label for="PStarAny">
+														Any
+													</label>
+												</div>
+											</div>
 										</div>
 									</div>
 								</form>
@@ -1651,17 +1651,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<div class="row">
 											<div class="col-4 align-middle">
 												<label for="PEducation" style="padding-left: 10px;">Education</label>
-											</div>
-											<div class="col-2 align-middle">
-												<div class="icheck-success d-inline">
-													<input type="checkbox"
-														   value="YES"
-														<?php if($user->p_education_any == "YES") { echo "checked"; } ?>
-														   id="PEducationAny" name="PEducationAny">
-													<label for="PEducationAny">
-														Any
-													</label>
-												</div>
 											</div>
 											<div class="col-6" id="PEducationDiv">
 												<?php
@@ -1676,6 +1665,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 													<?php echo getEducation($educationList, $p_educationArray, 2); ?>
 												</select>
 											</div>
+											<div class="col-2 align-middle">
+												<div class="icheck-success d-inline">
+													<input type="checkbox"
+														   value="YES"
+														<?php if($user->p_education_any == "YES") { echo "checked"; } ?>
+														   id="PEducationAny" name="PEducationAny">
+													<label for="PEducationAny">
+														Any
+													</label>
+												</div>
+											</div>
+
 										</div>
 									</div>
 									<div class="form-group">
@@ -1711,17 +1712,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="col-4 align-middle">
 												<label for="POccupation" style="padding-left: 10px;">Occupation</label>
 											</div>
-											<div class="col-2 align-middle">
-												<div class="icheck-success d-inline">
-													<input type="checkbox"
-														   value="YES"
-														<?php if($user->p_occupation_any == "YES") { echo "checked"; } ?>
-														   id="POccupationAny" name="POccupationAny">
-													<label for="POccupationAny">
-														Any
-													</label>
-												</div>
-											</div>
 											<div class="col-6" id="POccupationDiv">
 												<?php
 													$p_occupation = $user->p_occu;
@@ -1735,6 +1725,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 													<?php echo  getOccupation($occupationList, $p_occupationArray, 2);?>
 												</select>
 											</div>
+											<div class="col-2 align-middle">
+												<div class="icheck-success d-inline">
+													<input type="checkbox"
+														   value="YES"
+														<?php if($user->p_occupation_any == "YES") { echo "checked"; } ?>
+														   id="POccupationAny" name="POccupationAny">
+													<label for="POccupationAny">
+														Any
+													</label>
+												</div>
+											</div>
 										</div>
 									</div>
 									<div class="form-group">
@@ -1742,41 +1743,48 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<div class="col-4 align-middle">
 												<label for="PAnnualIncomeStart" style="padding-left: 10px;">Annual Income</label>
 											</div>
-											<div class="col-8">
-												<select name="PAnnualIncomeStart" id="PAnnualIncomeStart" class="form-control">
-													<option value="">Select</option>
-													<option value="Any">Any</option>
-													<option value="">Less than Rs. 1 Lakh</option>
-													<?php
-														for($i=1; $i<91; $i++){
-															if($i<10)
-																echo "<option value=\"".$i."\">Rs. ".$i." Lakh</option>";
-															else if($i%2 == 0 && $i <= 20)
-																echo "<option value=\"".$i."\">Rs. ".$i." Lakh</option>";
-															else if($i%10 == 0)
-																echo "<option value=\"".$i."\">Rs. ".$i." Lakh</option>";
-
+											<div class="col-8 row">
+												<div class="col-md-6 col-sm-12">
+													<?php /*echo $user->p_annual_income_start . "ddduhasud";  print_r($user); */?>
+													<select name="PAnnualIncomeStart" id="PAnnualIncomeStart" class="form-control select2">
+														<option value="">Select</option>
+														<option value="Any" <?php if($user->p_annual_income_start == "Any") { echo "selected"; } ?> >Any</option>
+														<option value="LessThan1Lakh" <?php if($user->p_annual_income_start == "LessThan1Lakh") { echo "selected"; } ?>>Less than Rs. 1 Lakh</option>
+														<?php
+														for($i=1; $i<51; $i++){
+															if($i<10 || ($i%2 == 0 && $i <= 20) || ($i%10 == 0)) {
+																$selected = "";
+																if($user->p_annual_income_start == $i) {
+																	$selected = "selected";
+																}
+																echo "<option $selected value=\"".$i."\">Rs. ".$i." Lakh</option>";
+															}
 														}
-													?>
-													<option value="">Rs. 1 Crore</option>
-													<option value="">Rs. 1 Crore & Above</option>
-												</select>
-												<select name="PAnnualIncomeEnd" id="PAnnualIncomeEnd" class="form-control">
-													<option value="">Select</option>
-													<option value="Any">Any</option>
-													<?php
-													for($i=1; $i<91; $i++){
-														if($i<10)
-															echo "<option value=\"".$i."\">Rs. ".$i." Lakh</option>";
-														else if($i%2 == 0 && $i <= 20)
-															echo "<option value=\"".$i."\">Rs. ".$i." Lakh</option>";
-														else if($i%10 == 0)
-															echo "<option value=\"".$i."\">Rs. ".$i." Lakh</option>";
-
-													}
-													?>
-													<option value="">Rs. 1 Crore</option>
-												</select>
+														?>
+														<option value="50LakhsAndAbove" <?php if($user->p_annual_income_start == "50LakhsAndAbove") { echo "selected"; } ?>>Rs. 50 Lakhs & Above</option>
+													</select>
+												</div>
+												<div class="col-md-6 col-sm-12" id="PAnnualIncomeEndDiv">
+													<select name="PAnnualIncomeEnd" id="PAnnualIncomeEnd" class="form-control select2">
+														<option value="">Select</option>
+														<option value="Any" <?php if($user->p_annual_income_end == "Any") { echo "selected"; } ?> >Any</option>
+														<?php
+														$sLoop = 2;
+														if($user->p_annual_income_start != "" && $user->p_annual_income_start != null && $user->p_annual_income_start != "Any" && $user->p_annual_income_start != "LessThan1Lakh" && $user->p_annual_income_start != "50LakhsAndAbove"){
+															$sLoop = $user->p_annual_income_start + 1;
+														}
+														for($i=$sLoop; $i<51; $i++){
+															if($i<10 || ($i%2 == 0 && $i <= 20) || ($i%10 == 0)) {
+																$selected = "";
+																if($user->p_annual_income_end == $i) {
+																	$selected = "selected";
+																}
+																echo "<option $selected value=\"".$i."\">Rs. ".$i." Lakh</option>";
+															}
+														}
+														?>
+													</select>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -1788,17 +1796,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<div class="row">
 											<div class="col-4 align-middle">
 												<label for="PCountryLivingIn" style="padding-left: 10px;">Country Living In</label>
-											</div>
-											<div class="col-2 align-middle" >
-												<div class="icheck-success d-inline">
-													<input type="checkbox"
-														   value="YES"
-														<?php if($user->p_country_any == "YES") { echo "checked"; } ?>
-														   id="PCountryLivingInAny" name="PCountryLivingInAny">
-													<label for="PCountryLivingInAny">
-														Any
-													</label>
-												</div>
 											</div>
 											<div class="col-6" id="PCountryLivingInDiv">
 												<?php
@@ -1812,16 +1809,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<select multiple name="PCountryLivingIn[]" id="PCountryLivingIn" class="form-control select2" style="width: 100%">
 													<option value="">Select</option>
 													<?php
-														for($i=0; $i<count($countryList); $i++){
-															$selected = "";
-															if(in_array($countryList[$i]['country_id'], $p_living_inArray)) {
-																$selected = "selected";
-															}
-
-															echo "<option $selected value=\"".$countryList[$i]['country_id']."\">".$countryList[$i]['country_name']."</option>";
+													for($i=0; $i<count($countryList); $i++){
+														$selected = "";
+														if(in_array($countryList[$i]['country_id'], $p_living_inArray)) {
+															$selected = "selected";
 														}
+
+														echo "<option $selected value=\"".$countryList[$i]['country_id']."\">".$countryList[$i]['country_name']."</option>";
+													}
 													?>
 												</select>
+											</div>
+											<div class="col-2 align-middle" >
+												<div class="icheck-success d-inline">
+													<input type="checkbox"
+														   value="YES"
+														<?php if($user->p_country_any == "YES") { echo "checked"; } ?>
+														   id="PCountryLivingInAny" name="PCountryLivingInAny">
+													<label for="PCountryLivingInAny">
+														Any
+													</label>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -1829,6 +1837,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<div class="row">
 											<div class="col-4 align-middle">
 												<label for="PResidingState" style="padding-left: 10px;">Residing State</label>
+											</div>
+											<div class="col-6" id="PResidingStateDiv">
+												<select multiple name="PResidingState[]" id="PResidingState" class="form-control select2" style="width: 100%">
+													<option value="">Select</option>
+												</select>
 											</div>
 											<div class="col-2 align-middle" >
 												<div class="icheck-success d-inline">
@@ -1841,17 +1854,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 													</label>
 												</div>
 											</div>
-											<div class="col-6" id="PResidingStateDiv">
-												<select multiple name="PResidingState[]" id="PResidingState" class="form-control select2" style="width: 100%">
-													<option value="">Select</option>
-												</select>
-											</div>
 										</div>
 									</div>
 									<div class="form-group">
 										<div class="row">
 											<div class="col-4 align-middle">
 												<label for="PCity" style="padding-left: 10px;">Residing City</label>
+											</div>
+											<div class="col-6" id="PCityDiv">
+												<select multiple name="PCity[]" id="PCity" class="form-control select2" style="width: 100%">
+													<option value="">Select</option>
+												</select>
 											</div>
 											<div class="col-2 align-middle" >
 												<div class="icheck-success d-inline">
@@ -1863,11 +1876,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 														Any
 													</label>
 												</div>
-											</div>
-											<div class="col-6" id="PCityDiv">
-												<select multiple name="PCity[]" id="PCity" class="form-control select2" style="width: 100%">
-													<option value="">Select</option>
-												</select>
 											</div>
 										</div>
 									</div>
@@ -1996,7 +2004,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         }
 
         $(function () {
-            editAction(9);
+            editAction(1);
             onChangeMonth(1);
             getStateList(country, state, "1", "state", "");
             // alert(state +" - " + city+ " - "+ "1"+", "+"city"+", "+"")
@@ -2159,6 +2167,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 getCityList($("#PResidingState").val().toString(), $("#PResidingState").val().toString(), "2", "PCity", "All");
             });
 
+            $('#PAnnualIncomeStart').change(function() {
+                let PAnnualIncomeStart = $('#PAnnualIncomeStart').val()
+                if(PAnnualIncomeStart == "Any" || PAnnualIncomeStart == "LessThan1Lakh" || PAnnualIncomeStart == "50LakhsAndAbove"){
+                    $("#PAnnualIncomeEndDiv").hide()
+                    $("#PAnnualIncomeEnd").val("")
+				} else {
+                    $("#PAnnualIncomeEnd").empty().append("<option value=\"\">Select</option>").append("<option value=\"Any\">Any</option>");
+					for(var k= (parseInt(PAnnualIncomeStart) + 1); k < 51; k++) {
+                        if (k < 10) {
+                            $("#PAnnualIncomeEnd").append("<option value=\""+k+"\">Rs. "+k+" Lakh</option>");
+                        }
+                        else if (k % 2 == 0 && k <= 20) {
+                            $("#PAnnualIncomeEnd").append("<option value=\""+k+"\">Rs. "+k+" Lakh</option>");
+                        } else if (k % 10 == 0) {
+                            $("#PAnnualIncomeEnd").append("<option value=\""+k+"\">Rs. "+k+" Lakh</option>");
+                        }
+                    }
+                    $("#PAnnualIncomeEndDiv").show()
+				}
+            });
+
+            $('#PAnnualIncomeEnd').change(function() {
+                console.log($('#PAnnualIncomeEnd').val())
+            });
         });
 
         function getCityList(state, city, type, cityId, dataId) {
