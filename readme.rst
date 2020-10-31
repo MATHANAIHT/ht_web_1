@@ -1,4 +1,4 @@
-php -S localhost:8006
+php -S localhost:8000
 
 sudo apachectl start
 
