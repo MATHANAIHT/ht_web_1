@@ -49,6 +49,14 @@ class Api_model extends CI_Model
 		return null;
 	}
 
+	function updateProfilePhoto($user_id, $fileName){
+		$data = array(
+			'user_id' => $user_id,
+			'image' => $fileName
+		);
+		$this->db->insert('tbl_user_gallery', $data);
+	}
+
 	function updateUser($formId, $matrimonyId, $data){
 		$responseCode = "0";
 		$responseMessage = "No data updated";
@@ -581,6 +589,14 @@ class Api_model extends CI_Model
 		);
 	}
 
+	function getGalleryList($user_id){
+		if($user_id != ""){
+			$QueryStr = "Select * from tbl_user_gallery where user_id= '".$user_id."'";
+			$query = $this->db->query($QueryStr);
+			$row = $query->result();
+			return $row;
+		}
+	}
 	function getUsers($postDataArray){
 		$queryStr = "";
 		if(array_key_exists("matrimony_id", $postDataArray) && $postDataArray['matrimony_id'] != null){

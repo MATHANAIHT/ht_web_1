@@ -4,9 +4,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <link rel="stylesheet" href="<?php echo base_url("assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css"); ?>">
 <link rel="stylesheet" href="<?php echo base_url("assets/plugins/select2/css/select2.min.css"); ?>">
 <link rel="stylesheet" href="<?php echo base_url("assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css"); ?>">
-<link rel="stylesheet" href="<?php echo base_url("assets/dropzone/dropzone.min.css"); ?>">
-<link rel="stylesheet" href="<?php echo base_url("assets/dropzone/basic.min.css"); ?>">
-
+<script src="<?php echo base_url("assets/dropzone/dropzone.js"); ?>"></script>
+<link rel="stylesheet" href="<?php echo base_url("assets/dropzone/dropzone.css"); ?>">
+<script>
+    Dropzone.options.formId11 = {
+        acceptedFiles: 'image/*',
+        maxFilesize: 1 // MB
+    };
+</script>
 <style>
 	.select2-container .select2-selection--single{
 		height: auto;
@@ -1904,19 +1909,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								</form>
 							</div>
 							<div id="edit11">
-								<form name="formId11" id="formId11">
 									<div class="form-group">
 										<div class="row">
 											<div class="col-12">
-												<form action="/file-upload" class="dropzone">
-													<div class="fallback">
-														<input name="file" type="file" multiple />
-													</div>
+												<form name="formId11" id="formId11" action="<?= base_url('api/uploads') ?>" class="dropzone" >
+													<input type="hidden" name="matrimony" value="<?php echo $user->matrimony_id;?>" />
 												</form>
+												<br />
+												<?php for($k = 0; $k<count($gallery); $k++){ ?>
+													<img src="<?php echo base_url("uploads/profile/".$user->matrimony_id."/".$gallery[$k]->image); ?>" alt="" style="width: 150px; height: 150px; margin:10px 10px 10px 0px;">
+												<?php } ?>
 											</div>
 										</div>
 									</div>
-								</form>
 							</div>
 						</div>
 						<div class="card-footer">
@@ -1936,12 +1941,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</div>
 		<!-- /.content -->
 	</div>
+
+
+
 	<!-- /.content-wrapper -->
 	<script src="<?php echo base_url("assets/plugins/select2/js/select2.full.min.js"); ?>"></script>
-
-	<script src="<?php echo base_url("assets/dropzone/dropzone.min.js"); ?>"></script>
-	<script src="<?php echo base_url("assets/dropzone/dropzone-amd-module.min.js"); ?>"></script>
-
 	<script>
         var headerNames = ["Basic Details", "Religion Information", "Location", "Professional Information", "Family Details", "Change Password", "Basic & Religion Preferences", "Professional Preferences", "Location Preferences", "What I am looking for", "Gallery"]
 
@@ -2404,6 +2408,31 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 });
             });
         }
+
+        /*Dropzone.autoDiscover = false;
+        $(".dropzone").dropzone({
+            init: function() {
+                myDropzone = this;
+                $.ajax({
+                    url: 'upload.php',
+                    type: 'post',
+                    data: {request: 2},
+                    dataType: 'json',
+                    success: function(response){
+
+                        $.each(response, function(key,value) {
+                            var mockFile = { name: value.name, size: value.size };
+
+                            myDropzone.emit("addedfile", mockFile);
+                            myDropzone.emit("thumbnail", mockFile, value.path);
+                            myDropzone.emit("complete", mockFile);
+
+                        });
+
+                    }
+                });
+            }
+        });*/
 
 	</script>
 

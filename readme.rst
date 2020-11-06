@@ -49,6 +49,7 @@ create table tbl_user (
 	fav_music varchar(255),
 	fav_food varchar(255),
 	sports varchar(255),
+	image varchar(255),
 	last_login timestamp,
 	created_at timestamp DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY (religion) REFERENCES tbl_religion(religion_id),
@@ -102,6 +103,18 @@ create table tbl_user_education (
 	FOREIGN KEY (employed_in) REFERENCES tbl_employed_in(employed_in_id),
 	FOREIGN KEY (annual_income) REFERENCES tbl_annual_income(annual_income_id)
 );
+
+create table tbl_user_gallery (
+	id bigint(20) NOT NULL PRIMARY KEY auto_increment,
+	user_id bigint(20) NOT NULL,
+	image varchar(255),
+	is_primary varchar(255) NOT NULL DEFAULT ('0'),
+	status varchar(255) NOT NULL DEFAULT ('NO'),
+	approved_by varchar(255),
+	approved_at timestamp,
+	created_at timestamp DEFAULT CURRENT_TIMESTAMP
+);
+
 drop table tbl_user_partner;
 
 create table tbl_user_partner (
@@ -161,6 +174,8 @@ alter table tbl_user add column p_state varchar(255);
 alter table tbl_user add column p_city varchar(255);
 alter table tbl_user add column p_state_any varchar(255) NOT NULL DEFAULT ('NO');
 alter table tbl_user add column p_city_any varchar(255) NOT NULL DEFAULT ('NO');
+alter table tbl_user add column image varchar(255);
+
 *******************************************************************
 END User Table
 *******************************************************************

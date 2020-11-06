@@ -7,6 +7,49 @@ class Api extends CI_Controller {
 		parent::__construct();
 		$this->load->database();
 		$this->load->model('api_model');
+
+		$this->load->library('form_validation');
+		$this->load->library('upload');
+		$this->load->helper('url', 'form');
+	}
+
+	public function uploads(){
+		$matrimony = $this->input->post('matrimony');
+		$responseMessage = "";
+		if($matrimony != "") {
+			$queryStr = "select user_id from tbl_user_login u where u.matrimony_id = '".$matrimony."'";
+			$query = $this->db->query($queryStr);
+			$row = $query->result();
+			if(count($row) == 1){
+				$rData = $row[0];
+				$user_id = $rData->user_id;
+
+				$extraPath = "uploads/profile/";
+				$extraPath .= $matrimony."/";
+				if (!file_exists($extraPath)) {
+					mkdir($extraPath, 0777, true);
+				}
+				$config['upload_path'] = $extraPath;
+				$config['file_ext_tolower'] = true;
+				$config['allowed_types'] = 'jpg|jpeg|png';
+				$config['max_size'] = 2000;
+				$config['max_width'] = 1500;
+				$config['max_height'] = 1500;
+				$config['file_name'] = uniqid();
+				$this->load->library('upload', $config);
+				$this->upload->initialize($config);
+				if (!$this->upload->do_upload('file')) {
+					$responseMessage = $this->upload->display_errors();
+				} else {
+					$this->api_model->updateProfilePhoto($user_id, $this->upload->data('file_name'));
+					$responseMessage = $this->upload->data('file_name');
+				}
+			}
+		}
+		$array = array(
+			'responseMessage' => $responseMessage
+		);
+		echo json_encode($array);
 	}
 
 	public function delete(){

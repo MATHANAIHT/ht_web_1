@@ -52,6 +52,7 @@ class Admin extends CI_Controller {
 			$users = $this->api_model->getUsers($postDataArray);
 			if($users != null && count($users) == 1){
 				$data['users'] = $users;
+				$data['gallery'] = $this->api_model->getGalleryList($users[0]->user_id);
 				$this->load->view('admin/templates/header', $data);
 				$this->load->view('admin/own/editUsers');
 				$this->load->view('admin/templates/footer', $data);
