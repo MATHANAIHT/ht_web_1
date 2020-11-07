@@ -13,6 +13,42 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     };
 </script>
 <style>
+	.dropbtn {
+		background-color: #4CAF50;
+		color: white;
+		padding: 16px;
+		font-size: 16px;
+		border: none;
+	}
+
+	.dropdown {
+		position: relative;
+		display: inline-block;
+	}
+
+	.dropdown-content {
+		display: none;
+		position: absolute;
+		background-color: #f1f1f1;
+		min-width: 100px;
+		box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+		z-index: 1;
+	}
+
+	.dropdown-content a {
+		color: black;
+		padding: 6px 6px;
+		text-decoration: none;
+		display: block;
+	}
+
+	.dropdown-content a:hover {background-color: #ddd;}
+
+	.dropdown:hover .dropdown-content {display: block;}
+
+	.dropdown:hover .dropbtn {background-color: #3e8e41;}
+</style>
+<style>
 	.select2-container .select2-selection--single{
 		height: auto;
 	}
@@ -1917,7 +1953,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												</form>
 												<br />
 												<?php for($k = 0; $k<count($gallery); $k++){ ?>
-													<img src="<?php echo base_url("uploads/profile/".$user->matrimony_id."/".$gallery[$k]->image); ?>" alt="" style="width: 150px; height: 150px; margin:10px 10px 10px 0px;">
+													<div  style="position: relative; width: 150px; height: 150px; margin:10px 10px 10px 0px;  display: inline-block;">
+														<img src="<?php echo base_url("profile/".$user->matrimony_id."/".$gallery[$k]->image); ?>" alt="" style="width: 150px; height: 150px;">
+														<div class="dropdown" style="position: absolute; margin-left: -20px; margin-top: -5px;  width:25px; height:25px; background-color: #fff; text-align: center;  vertical-align: center" >
+															<span class="fa fa-xs fa-edit"></span>
+															<div class="dropdown-content">
+																<a href="#" style="color: blue" onclick="managePhoto('<?php echo $gallery[$k]->image; ?>', 'MainPhoto')">Main Photo</a>
+																<a href="#" style="color: red" onclick="managePhoto('<?php echo $gallery[$k]->image; ?>', 'delete')">Delete</a>
+															</div>
+														</div>
+
+													</div>
 												<?php } ?>
 											</div>
 										</div>
@@ -2434,5 +2480,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             }
         });*/
 
+        function managePhoto(img, action) {
+			var mId = '<?php echo $user->matrimony_id;?>';
+			$.post('/api/photos', {matrimony: mId, photo: img, action: action},  function(data, status){
+                alert(data)
+            })
+        }
 	</script>
 

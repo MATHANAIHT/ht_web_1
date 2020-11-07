@@ -92,6 +92,7 @@ $route['admin/users/edit/(:any)'] = 'admin/editUsers/$1';
 $route['api_controller'] = 'api';
 $route['api/login'] = 'api/login';
 $route['api/uploads'] = 'api/uploads';
+$route['api/photos'] = 'api/photos';
 $route['api/user-type'] = 'api/userType';
 $route['api/admin-user'] = 'api/adminUser';
 $route['api/delete'] = 'api/delete';

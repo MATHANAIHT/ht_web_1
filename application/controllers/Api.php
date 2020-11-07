@@ -24,7 +24,7 @@ class Api extends CI_Controller {
 				$rData = $row[0];
 				$user_id = $rData->user_id;
 
-				$extraPath = "uploads/profile/";
+				$extraPath = "profile/";
 				$extraPath .= $matrimony."/";
 				if (!file_exists($extraPath)) {
 					mkdir($extraPath, 0777, true);
@@ -49,6 +49,14 @@ class Api extends CI_Controller {
 		$array = array(
 			'responseMessage' => $responseMessage
 		);
+		echo json_encode($array);
+	}
+
+	public function photos(){
+		$matrimony = $this->input->post('matrimony');
+		$photo = $this->input->post('photo');
+		$action = $this->input->post('action');
+		$array = $this->api_model->actionForPhoto($action, $matrimony, $photo);
 		echo json_encode($array);
 	}
 

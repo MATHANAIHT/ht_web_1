@@ -49,6 +49,74 @@ class Api_model extends CI_Model
 		return null;
 	}
 
+	function getMessageArray($code, $message){
+		return array(
+			'responseCode' => $code,
+			'responseMessage' => $message
+		);
+	}
+
+	function actionForPhoto($action, $matrimony, $photo){
+		$queryStr = "select user_id from tbl_user_login u where u.matrimony_id = '".$matrimony."'";
+		$query = $this->db->query($queryStr);
+		$row = $query->result();
+		if(count($row) == 1){
+			$rData = $row[0];
+			$user_id = $rData->user_id;
+			if($action == "delete" && $user_id != "" && $photo!=""){
+				$QueryStr = "Select image from tbl_user_gallery where user_id= '".$user_id."' and image = '".$photo."' and is_primary = '1'";
+				$query1 = $this->db->query($QueryStr);
+				$row1 = $query1->result();
+				if(count($row1) > 0){
+					return self::getMessageArray("error", 'Main photo can not perform delete.');
+				} else {
+					$updateQueryStr = "delete from tbl_user_gallery where image = '".$photo."' and user_id ='".$user_id."'; ";
+					$this->db->query($updateQueryStr);
+					$extraPath = "profile/";
+					$extraPath .= $matrimony."/".$photo;
+					if (file_exists($extraPath)) {
+						unlink($extraPath);
+					}
+					return self::getMessageArray("success", 'Photo successfully deleted.');
+				}
+			}
+			else if($action == "MainPhoto" && $user_id != "" && $photo!="") {
+				$QueryStr = "Select image from tbl_user_gallery where user_id= '".$user_id."' and image = '".$photo."' and status='Approved'; ";
+				$query1 = $this->db->query($QueryStr);
+				$row1 = $query1->result();
+				if(count($row1) > 0){
+					$updateQueryStr = "Update tbl_user_gallery  set is_primary = '0' where user_id ='".$user_id."'; ";
+					$this->db->query($updateQueryStr);
+					$updateQueryStr = "Update tbl_user_gallery  set is_primary = '1' where image = '".$photo."' and user_id ='".$user_id."' and status='Approved'; ";
+					$this->db->query($updateQueryStr);
+					return self::getMessageArray("success", 'Main photo setup successfully');
+				} else {
+					return self::getMessageArray("error", 'Your photo not approved so can not make Main Photo.');
+				}
+			}
+			else if($action == "Approve" && $user_id != "" && $photo!="") {
+				$QueryStr = "Select image from tbl_user_gallery where user_id= '".$user_id."' and image = '".$photo."' and is_primary = '1'";
+				$query1 = $this->db->query($QueryStr);
+				$row1 = $query1->result();
+				$isPrimary = "";
+				if(count($row1) == 0){
+					$isPrimary = ", is_primary = '1'";
+				}
+				$currentDate = date('Y-m-d H:i:s');
+				$updateQueryStr = "Update tbl_user_gallery  set status = 'Approved', approved_at='".$currentDate."' ".$isPrimary." where image = '".$photo."' and user_id ='".$user_id."'; ";
+				$this->db->query($updateQueryStr);
+				return self::getMessageArray("success", 'Approved successfully');
+			}
+			else if($action == "Rejected" && $user_id != "" && $photo!="") {
+				$currentDate = date('Y-m-d H:i:s');
+				$updateQueryStr = "Update tbl_user_gallery  set status = 'Rejected', approved_at='".$currentDate."' where image = '".$photo."' and user_id ='".$user_id."'; ";
+				$this->db->query($updateQueryStr);
+				return self::getMessageArray("success", 'Rejected successfully');
+			}
+		}
+		return self::getMessageArray("error", 'Invalid request!');
+	}
+
 	function updateProfilePhoto($user_id, $fileName){
 		$data = array(
 			'user_id' => $user_id,
