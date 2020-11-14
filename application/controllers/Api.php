@@ -60,6 +60,12 @@ class Api extends CI_Controller {
 		echo json_encode($array);
 	}
 
+	public function gallery(){
+		header('Content-Type: application/json');
+		$row = $this->api_model->getGalleryList("");
+		echo json_encode($row);
+	}
+
 	public function delete(){
 		header('Content-Type: application/json');
 		$id = $this->input->get('id');

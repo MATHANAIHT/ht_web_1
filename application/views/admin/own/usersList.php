@@ -34,12 +34,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<table id="usersTable" class="table table-bordered table-striped">
 								<thead>
 								<tr>
-									<th>Matrimony ID</th>
+									<th>ID</th>
 									<th>Name</th>
 									<th>Gender</th>
 									<th>D.O.B</th>
 									<th>Email</th>
 									<th>Mobile</th>
+									<th>Status</th>
 									<th>Create At</th>
 									<th>Last Login</th>
 									<th>Edit</th>
@@ -125,6 +126,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     d.date_of_birth,
                     d.email_id,
                     d.mobile_number,
+                    d.profile_status,
                     d.created_at,
                     d.last_login,
                     "<td><a href='/admin/users/edit/"+d.matrimony_id+"' target='_blank'>Edit</a></td>",

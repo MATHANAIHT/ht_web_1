@@ -86,6 +86,7 @@ $route['admin/annual-income'] = 'admin/annualIncome';
 $route['admin/employed-in'] = 'admin/employedIn';
 $route['admin/users'] = 'admin/users';
 $route['admin/users/list'] = 'admin/listUsers';
+$route['admin/users/gallery'] = 'admin/listGallerys';
 $route['admin/users/edit/(:any)'] = 'admin/editUsers/$1';
 
 // For API Call
@@ -93,6 +94,7 @@ $route['api_controller'] = 'api';
 $route['api/login'] = 'api/login';
 $route['api/uploads'] = 'api/uploads';
 $route['api/photos'] = 'api/photos';
+$route['api/gallery'] = 'api/gallery';
 $route['api/user-type'] = 'api/userType';
 $route['api/admin-user'] = 'api/adminUser';
 $route['api/delete'] = 'api/delete';

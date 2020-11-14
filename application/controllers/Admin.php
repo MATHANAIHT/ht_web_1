@@ -68,6 +68,14 @@ class Admin extends CI_Controller {
 
 	}
 
+	public function listGallerys()
+	{
+		$data['title'] = ucfirst("User's Gallery List");
+		$this->load->view('admin/templates/header', $data);
+		$this->load->view('admin/own/galleryList');
+		$this->load->view('admin/templates/footer', $data);
+	}
+
 	public function listUsers()
 	{
 		$data['title'] = ucfirst("User's List");

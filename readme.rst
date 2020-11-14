@@ -51,6 +51,9 @@ create table tbl_user (
 	sports varchar(255),
 	image varchar(255),
 	last_login timestamp,
+	create_by varchar(255) NOT NULL DEFAULT ('USER'),
+	create_by_id varchar(255),
+	profile_status varchar(255) NOT NULL DEFAULT ('UnVerified'),
 	created_at timestamp DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY (religion) REFERENCES tbl_religion(religion_id),
 	FOREIGN KEY (caste) REFERENCES tbl_caste(caste_id),
@@ -175,6 +178,10 @@ alter table tbl_user add column p_city varchar(255);
 alter table tbl_user add column p_state_any varchar(255) NOT NULL DEFAULT ('NO');
 alter table tbl_user add column p_city_any varchar(255) NOT NULL DEFAULT ('NO');
 alter table tbl_user add column image varchar(255);
+
+alter table tbl_user add column create_by varchar(255) NOT NULL DEFAULT ('USER');
+alter table tbl_user add column create_by_id varchar(255);
+alter table tbl_user add column profile_status varchar(255) NOT NULL DEFAULT ('UnVerified'); UnVerified, Activated, DeActivated, Deleted
 
 *******************************************************************
 END User Table

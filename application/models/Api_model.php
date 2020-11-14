@@ -95,7 +95,7 @@ class Api_model extends CI_Model
 				}
 			}
 			else if($action == "Approve" && $user_id != "" && $photo!="") {
-				$QueryStr = "Select image from tbl_user_gallery where user_id= '".$user_id."' and image = '".$photo."' and is_primary = '1'";
+				$QueryStr = "Select image from tbl_user_gallery where user_id= '".$user_id."' and is_primary = '1'";
 				$query1 = $this->db->query($QueryStr);
 				$row1 = $query1->result();
 				$isPrimary = "";
@@ -658,13 +658,22 @@ class Api_model extends CI_Model
 	}
 
 	function getGalleryList($user_id){
+		$appendStr = "";
 		if($user_id != ""){
-			$QueryStr = "Select * from tbl_user_gallery where user_id= '".$user_id."'";
+			$appendStr .= " ug.user_id= \"".$user_id."\", ";
+		}
+		if($appendStr != ""){
+			$appendStr = rtrim($appendStr, ", ");
+			$appendStr = " where ". $appendStr;
+		}
+		$QueryStr = "Select ug.*, u.matrimony_id from tbl_user_gallery ug left join tbl_user u on u.user_id=ug.user_id ".$appendStr. " order by created_at desc; ";
+		if($QueryStr != ""){
 			$query = $this->db->query($QueryStr);
 			$row = $query->result();
 			return $row;
 		}
 	}
+
 	function getUsers($postDataArray){
 		$queryStr = "";
 		if(array_key_exists("matrimony_id", $postDataArray) && $postDataArray['matrimony_id'] != null){
@@ -673,7 +682,7 @@ class Api_model extends CI_Model
 				$queryStr = "select *, ue.*, uf.*, up.* from tbl_user u left join tbl_user_login ul on ul.user_id=u.user_id left join tbl_user_education ue on ue.user_id=u.user_id  left join tbl_user_family uf on uf.user_id=u.user_id left join tbl_user_partner up on up.user_id=u.user_id where u.matrimony_id = '".$matrimony_id."'";
 			}
 		} else {
-			$queryStr = "select u.matrimony_id, u.user_id, u.full_name, u.date_of_birth, u.last_login, u.created_at, u.gender, u.religion, u.caste, ul.mobile_number, ul.email_id from tbl_user u left join tbl_user_login ul on ul.user_id=u.user_id";
+			$queryStr = "select u.matrimony_id, u.user_id, u.full_name, u.date_of_birth, u.last_login, u.created_at, u.gender, u.religion, u.caste, ul.mobile_number, ul.email_id, u.profile_status from tbl_user u left join tbl_user_login ul on ul.user_id=u.user_id";
 		}
 		$query = $this->db->query($queryStr);
 		$row = $query->result();
