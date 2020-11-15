@@ -13,6 +13,14 @@ class Api extends CI_Controller {
 		$this->load->helper('url', 'form');
 	}
 
+	public function profile(){
+		header('Content-Type: application/json');
+		$matrimony = $this->input->post('matrimony');
+		$action = $this->input->post('action');
+		$array = $this->api_model->actionForProfile($action, $matrimony);
+		echo json_encode($array);
+	}
+
 	public function uploads(){
 		$matrimony = $this->input->post('matrimony');
 		$responseMessage = "";
@@ -53,6 +61,7 @@ class Api extends CI_Controller {
 	}
 
 	public function photos(){
+		header('Content-Type: application/json');
 		$matrimony = $this->input->post('matrimony');
 		$photo = $this->input->post('photo');
 		$action = $this->input->post('action');

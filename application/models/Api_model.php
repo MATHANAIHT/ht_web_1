@@ -49,13 +49,39 @@ class Api_model extends CI_Model
 		return null;
 	}
 
-	function getMessageArray($code, $message){
+	function getMessageArray($code, $message, $title){
 		return array(
+			'title' => $title,
 			'responseCode' => $code,
 			'responseMessage' => $message
 		);
 	}
 
+	function actionForProfile($action, $matrimony){
+		$queryStr = "select user_id from tbl_user_login u where u.matrimony_id = '".$matrimony."'";
+		$query = $this->db->query($queryStr);
+		$row = $query->result();
+		if(count($row) == 1){
+			$rData = $row[0];
+			$user_id = $rData->user_id;
+			$updateStr = "";
+
+			if($action == "Activate" && $user_id != ""){
+				$updateStr = "Activated";
+			} else if($action == "Deactivate" && $user_id != ""){
+				$updateStr = "Deactivated";
+			} else if($action == "Delete" && $user_id != ""){
+				$updateStr = "Deleted";
+			}
+
+			if($updateStr != ""){
+				$updateQueryStr = "Update tbl_user set profile_status = '".$updateStr."' where user_id ='".$user_id."'; ";
+				$this->db->query($updateQueryStr);
+				return self::getMessageArray("success", 'Profile successfully ' . $updateStr . '.', $action." Profile" );
+			}
+		}
+		return self::getMessageArray("error", 'Invalid request or Contact admin to perform this action.', $action." Profile");
+	}
 	function actionForPhoto($action, $matrimony, $photo){
 		$queryStr = "select user_id from tbl_user_login u where u.matrimony_id = '".$matrimony."'";
 		$query = $this->db->query($queryStr);
@@ -68,7 +94,7 @@ class Api_model extends CI_Model
 				$query1 = $this->db->query($QueryStr);
 				$row1 = $query1->result();
 				if(count($row1) > 0){
-					return self::getMessageArray("error", 'Main photo can not perform delete.');
+					return self::getMessageArray("error", 'Main photo can not perform delete.', "Delete Photo");
 				} else {
 					$updateQueryStr = "delete from tbl_user_gallery where image = '".$photo."' and user_id ='".$user_id."'; ";
 					$this->db->query($updateQueryStr);
@@ -77,7 +103,7 @@ class Api_model extends CI_Model
 					if (file_exists($extraPath)) {
 						unlink($extraPath);
 					}
-					return self::getMessageArray("success", 'Photo successfully deleted.');
+					return self::getMessageArray("success", 'Photo successfully deleted.', "Delete Photo");
 				}
 			}
 			else if($action == "MainPhoto" && $user_id != "" && $photo!="") {
@@ -89,9 +115,9 @@ class Api_model extends CI_Model
 					$this->db->query($updateQueryStr);
 					$updateQueryStr = "Update tbl_user_gallery  set is_primary = '1' where image = '".$photo."' and user_id ='".$user_id."' and status='Approved'; ";
 					$this->db->query($updateQueryStr);
-					return self::getMessageArray("success", 'Main photo setup successfully');
+					return self::getMessageArray("success", 'Main photo setup successfully', "Set Main Photo");
 				} else {
-					return self::getMessageArray("error", 'Your photo not approved so can not make Main Photo.');
+					return self::getMessageArray("error", 'Your photo not approved so can not make Main Photo.', "Set Main Photo");
 				}
 			}
 			else if($action == "Approve" && $user_id != "" && $photo!="") {
@@ -105,16 +131,16 @@ class Api_model extends CI_Model
 				$currentDate = date('Y-m-d H:i:s');
 				$updateQueryStr = "Update tbl_user_gallery  set status = 'Approved', approved_at='".$currentDate."' ".$isPrimary." where image = '".$photo."' and user_id ='".$user_id."'; ";
 				$this->db->query($updateQueryStr);
-				return self::getMessageArray("success", 'Approved successfully');
+				return self::getMessageArray("success", 'Approved successfully', "Photo Approval");
 			}
 			else if($action == "Rejected" && $user_id != "" && $photo!="") {
 				$currentDate = date('Y-m-d H:i:s');
 				$updateQueryStr = "Update tbl_user_gallery  set status = 'Rejected', approved_at='".$currentDate."' where image = '".$photo."' and user_id ='".$user_id."'; ";
 				$this->db->query($updateQueryStr);
-				return self::getMessageArray("success", 'Rejected successfully');
+				return self::getMessageArray("success", 'Rejected successfully', "Photo Approval");
 			}
 		}
-		return self::getMessageArray("error", 'Invalid request!');
+		return self::getMessageArray("error", 'Invalid request!', "Photo ".$action);
 	}
 
 	function updateProfilePhoto($user_id, $fileName){

@@ -159,7 +159,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     function managePhoto(img, action, matrimony_id) {
         $.post('/api/photos', {matrimony: matrimony_id, photo: img, action: action},  function(data, status){
-            alert(data)
+			if(data.responseCode == "success") {
+                toastr.success(data.responseMessage)
+            } else {
+                toastr.error(data.responseMessage)
+            }
         })
     }
 

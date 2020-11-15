@@ -4,6 +4,42 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+<style>
+	.dropbtn {
+		background-color: #4CAF50;
+		color: white;
+		padding: 16px;
+		font-size: 16px;
+		border: none;
+	}
+
+	.dropdown {
+		position: relative;
+		display: inline-block;
+	}
+
+	.dropdown-content {
+		display: none;
+		position: absolute;
+		background-color: #f1f1f1;
+		min-width: 100px;
+		box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+		z-index: 1;
+	}
+
+	.dropdown-content a {
+		color: black;
+		padding: 6px 6px;
+		text-decoration: none;
+		display: block;
+	}
+
+	.dropdown-content a:hover {background-color: #ddd;}
+
+	.dropdown:hover .dropdown-content {display: block;}
+
+	.dropdown:hover .dropbtn {background-color: #3e8e41;}
+</style>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 	<!-- Content Header (Page header) -->
@@ -34,6 +70,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<table id="usersTable" class="table table-bordered table-striped">
 								<thead>
 								<tr>
+									<th>Action</th>
 									<th>ID</th>
 									<th>Name</th>
 									<th>Gender</th>
@@ -43,8 +80,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>Status</th>
 									<th>Create At</th>
 									<th>Last Login</th>
-									<th>Edit</th>
-									<th>Delete</th>
 								</tr>
 								</thead>
 								<tbody></tbody>
@@ -115,11 +150,31 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         });
     }
 
+    function manageProfile(mId, action) {
+        $.post('/api/profile', {matrimony: mId, action: action},  function(data, status){
+            if(data.responseCode == "success") {
+                toastr.success(data.responseMessage)
+			} else {
+                toastr.error(data.responseMessage)
+			}
+        })
+    }
     function getUsersList(usersTable) {
         $.get("/api/users", {"dataId" : "All"}, function(data, status){
             usersTable.clear().draw();
             data.map(function (d,i) {
+                let dropDown = '<div class="dropdown">' +
+                    '<span class="fa fa-xs fa-edit"></span>' +
+                    '<div class="dropdown-content">' +
+                    '<a href="/admin/users/edit/'+d.matrimony_id+'" style="color: blue" target="_blank" >Edit</a>' +
+                    '<a href="#" style="color: blue" onclick="manageProfile(\''+d.matrimony_id+'\', \'Activate\')">Activate</a>' +
+                    '<a href="#" style="color: blue" onclick="manageProfile(\''+d.matrimony_id+'\', \'Deactivate\')">DeActivate</a>' +
+                    '<a href="#" style="color: red" onclick="manageProfile(\''+d.matrimony_id+'\', \'Delete\')">Delete</a>' +
+                    '</div>' +
+                    '</div>';
+
                 usersTable.row.add( [
+                    dropDown,
                     d.matrimony_id,
                     d.full_name,
                     d.gender,
@@ -128,10 +183,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     d.mobile_number,
                     d.profile_status,
                     d.created_at,
-                    d.last_login,
-                    "<td><a href='/admin/users/edit/"+d.matrimony_id+"' target='_blank'>Edit</a></td>",
-                    "<td><button rowId='"+d.matrimony_id+"'>Delete</button></td>",
-                ] ).draw( false );
+                    d.last_login
+				] ).draw( false );
             });
         });
     }
