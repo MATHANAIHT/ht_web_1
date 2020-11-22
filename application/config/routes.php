@@ -133,6 +133,7 @@ $route['api/users/new'] = 'api/createUser';
 $route['api/users/update/(:any)/(:any)'] = 'api/updateUser/$1/$2';
 
 $route['api/users'] = 'api/getUsers';
+$route['api/search'] = 'api/search';
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

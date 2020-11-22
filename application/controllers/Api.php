@@ -97,7 +97,13 @@ class Api extends CI_Controller {
 	}
 	public function getUsers(){
 		header('Content-Type: application/json');
-		$row = $this->api_model->getUsers($this->input->post());
+		$row = $this->api_model->getUsers($this->input->get());
+		echo json_encode($row);
+	}
+
+	public function search(){
+		header('Content-Type: application/json');
+		$row = $this->api_model->searchUser($this->input->post());
 		echo json_encode($row);
 	}
 

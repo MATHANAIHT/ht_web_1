@@ -1,9 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-?>
+<link rel="stylesheet" href="<?php echo base_url("assets/plugins/select2/css/select2.min.css"); ?>">
+<link rel="stylesheet" href="<?php echo base_url("assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css"); ?>">
 <style>
 	.dropbtn {
 		background-color: #4CAF50;
@@ -40,6 +39,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	.dropdown:hover .dropbtn {background-color: #3e8e41;}
 </style>
+
+<style>
+	.select2-container .select2-selection--single{
+		height: auto;
+	}
+	.select2-container--default .select2-selection--single .select2-selection__arrow b {
+		margin-top : 4px
+	}
+</style>
+
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 	<!-- Content Header (Page header) -->
@@ -67,23 +76,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="col-lg-12">
 					<div class="card">
 						<div class="card-body">
-							<table id="usersTable" class="table table-bordered table-striped">
-								<thead>
-								<tr>
-									<th>Action</th>
-									<th>ID</th>
-									<th>Name</th>
-									<th>Gender</th>
-									<th>D.O.B</th>
-									<th>Email</th>
-									<th>Mobile</th>
-									<th>Status</th>
-									<th>Create At</th>
-									<th>Last Login</th>
-								</tr>
-								</thead>
-								<tbody></tbody>
-							</table>
+							<div class="row">
+								<div class="col-12 text-right">
+									<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default">
+										Apply Filter
+									</button>
+									<br /><br />
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-12">
+									<table id="usersTable" class="table table-bordered table-striped">
+										<thead>
+										<tr>
+											<th>Action</th>
+											<th>ID</th>
+											<th>Name</th>
+											<th>Gender</th>
+											<th>D.O.B</th>
+											<th>Age</th>
+											<th>Email</th>
+											<th>Mobile</th>
+											<th>Status</th>
+											<th>Create At</th>
+											<th>Last Login</th>
+										</tr>
+										</thead>
+										<tbody></tbody>
+									</table>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -92,8 +114,200 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</div><!-- /.container-fluid -->
 	</div>
 	<!-- /.content -->
+
+	<div class="modal fade" id="modal-default">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Search</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="card card-default card-tabs">
+						<div class="card-header p-0 pt-1">
+							<ul class="nav nav-tabs" id="custom-tabs-two-tab" role="tablist">
+								<li class="nav-item">
+									<a class="nav-link active" id="custom-tabs-two-home-tab" data-toggle="pill" href="#custom-tabs-two-home" role="tab" aria-controls="custom-tabs-two-home" aria-selected="true">Basic Search</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" id="custom-tabs-two-profile-tab" data-toggle="pill" href="#custom-tabs-two-profile" role="tab" aria-controls="custom-tabs-two-profile" aria-selected="false">Advanced Search</a>
+								</li>
+							</ul>
+						</div>
+						<div class="card-body">
+							<form id="filterForm">
+								<input type="text" name="dataId" id="dataId"value="A1ll">
+								<div class="tab-content" id="custom-tabs-two-tabContent">
+									<div class="tab-pane fade show active" id="custom-tabs-two-home" role="tabpanel" aria-labelledby="custom-tabs-two-home-tab">
+										<div class="form-group">
+											<div class="row">
+												<div class="col-6">
+													<input type="text" name="matrimony_id" placeholder="Search By Matrimony Id" class="form-control">
+												</div>
+												<div class="col-6">
+													<input type="text" name="searchByName" placeholder="Search By Name" class="form-control">
+												</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="row">
+												<div class="col-6">
+													<input type="text" name="searchByMobile" placeholder="Search By Mobile" class="form-control">
+												</div>
+												<div class="col-6">
+													<input type="text" name="searchByEmail" placeholder="Search By Email" class="form-control">
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="tab-pane fade" id="custom-tabs-two-profile" role="tabpanel" aria-labelledby="custom-tabs-two-profile-tab">
+										<div class="form-group">
+											<div class="row">
+												<div class="col-4">
+													<select name="profileStatus" id="profileStatus" class="form-control select2" style="width: 100%;">
+														<option value="">Profile Status</option>
+														<option value="UnVerified">UnVerified</option>
+														<option value="Activated">Activated</option>
+														<option value="Deactivated">Deactivated</option>
+														<option value="Deleted">Deleted</option>
+													</select>
+												</div>
+												<div class="col-4">
+													<select name="gender" id="gender" class="form-control select2" style="width: 100%;">
+														<option value="">Gender</option>
+														<option value="Male">Male</option>
+														<option value="FeMale">FeMale</option>
+													</select>
+												</div>
+												<div class="col-4">
+													<select name="lastLoginAt" id="lastLoginAt" class="form-control select2" style="width: 100%;">
+														<option value="">Last Login At</option>
+														<option value="1Day">1 Day</option>
+														<option value="1Week">1 Week</option>
+														<option value="1Month">1 Month</option>
+														<option value="3Month">3 Month</option>
+														<option value="6Month">6 Month</option>
+														<option value="1Year">1 Year</option>
+														<option value="MoreThan1Year">More than 1 Year</option>
+														<option value="NeverLoggedIn">Never Logged In</option>
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="row">
+												<div class="col-4">
+													<select name="fromAge" id="fromAge" class="form-control select2" style="width: 100%;">
+														<option value="">From Age</option>
+														<?php
+														for($i=18; $i<71; $i++){
+															$selected = "";
+															echo "<option $selected value=\"".$i."\">".$i."</option>";
+														}
+														?>
+													</select>
+												</div>
+												<div class="col-4">
+													<select name="endAge" id="endAge" class="form-control select2" style="width: 100%;">
+														<option value="">End Age</option>
+														<?php
+														for($i=18; $i<71; $i++){
+															$selected = "";
+															echo "<option $selected value=\"".$i."\">".$i."</option>";
+														}
+														?>
+													</select>
+												</div>
+												<div class="col-4">
+													<select name="profileCreatedAt" id="profileCreatedAt" class="form-control select2" style="width: 100%;">
+														<option value="">Profile Created At</option>
+														<option value="1Day">1 Day</option>
+														<option value="1Week">1 Week</option>
+														<option value="1Month">1 Month</option>
+														<option value="3Month">3 Month</option>
+														<option value="6Month">6 Month</option>
+														<option value="1Year">1 Year</option>
+														<option value="MoreThan1Year">More than 1 Year</option>
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="row">
+												<div class="col-4">
+													<?php
+													function convert_to_cm($feet, $inches = 0) {
+														$inches = ($feet * 12) + $inches;
+														return (int) round($inches / 0.393701);
+													}
+													function personHeightOptions($height){
+														$r = '';
+														for($foot=4;$foot<=7;$foot++){
+															for($inches=0;$inches<=($foot==7? 0 : 11);$inches++){
+																$cm = convert_to_cm($foot, $inches);
+																if($inches==0){
+																	if($height == $cm)
+																		$r .= "<option selected value='$cm'> $foot ft / ".convert_to_cm($foot, $inches)." cm</option>";
+																	else
+																		$r .= "<option value='$cm'> $foot ft / ".convert_to_cm($foot, $inches)." cm</option>";
+																}else{
+																	if($height == $cm)
+																		$r .= "<option selected value='$cm'> $foot ft $inches ins / ".convert_to_cm($foot, $inches)." cm </option>";
+																	else
+																		$r .= "<option value='$cm'> $foot ft $inches ins / ".convert_to_cm($foot, $inches)." cm </option>";
+																}
+															}
+														}
+														return $r;
+													}
+													?>
+													<select name="fromHeight" id="fromHeight" class="form-control select2" style="width: 100%;">
+														<option value="">From Height</option>
+
+														<?php echo  personHeightOptions(""); ?>
+													</select>
+												</div>
+												<div class="col-4">
+													<select name="endHeight" id="endHeight" class="form-control select2" style="width: 100%;">
+														<option value="">End Height</option>
+
+														<?php echo  personHeightOptions(""); ?>
+													</select>
+												</div>
+												<div class="col-4">
+													<?php $marital_status = "" ; ?>
+													<select name="maritalStatus" id="maritalStatus"
+															class="form-control" style="width: 100%;" multiple>
+														<option value="">Select</option>
+														<option value="NeverMarried" <?php if($marital_status == "NeverMarried") { echo "selected"; }?>>Never Married</option>
+														<option value="Widowed" <?php if($marital_status == "Widowed") { echo "selected"; }?>>Widowed</option>
+														<option value="Divorced" <?php if($marital_status == "Divorced") { echo "selected"; }?>>Divorced</option>
+														<option value="AwaitingDivorce" <?php if($marital_status == "AwaitingDivorce") { echo "selected"; }?>>Awaiting divorce</option>
+													</select>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+						<!-- /.card -->
+					</div>
+				</div>
+				<div class="modal-footer justify-content-between">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" onclick="getUsersList()">Save changes</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
 </div>
 <!-- /.content-wrapper -->
+<script src="<?php echo base_url("assets/plugins/select2/js/select2.full.min.js"); ?>"></script>
 <script>
     var masterName = "<?php echo $title; ?>";
     var usersTable = $("#usersTable").DataTable({
@@ -107,48 +321,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         $("#masterName").html("Add "+masterName);
         $("#action").val("Add");
 
-        getUsersList(usersTable);
+        getUsersList();
 
-        $('#usersTable').on("click", "button", function(){
-            var rowId = $(this).attr("rowId")
-            var that = this;
-            $.get("/api/delete", {"id" : rowId, "tbl": "users"},  function(data, status) {
-                if(data.responseMessage == "success"){
-                    $("#messageDisplay").html(
-                        "<div class=\"alert alert-success alert-dismissible\">\n" +
-                        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>\n" +
-                        "<h5><i class=\"icon fas fa-check\"></i> Success!</h5>\n" +
-                        "Religion deleted successfully\n" +
-                        "</div>"
-                    );
-                    usersTable.row($(that).parents('tr')).remove().draw(false);
-                } else {
-                    $("#messageDisplay").html(
-                        "<div class=\"alert alert-danger alert-dismissible\">\n" +
-                        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>\n" +
-                        "<h5><i class=\"icon fas fa-check\"></i> Failure!</h5>\n" +
-                        "Could not perform this delete action." +
-                        "</div>"
-                    );
-                }
-                setTimeout(function () {
-                    $("#messageDisplay").html("");
-                }, 3000)
-            });
+        $('.select2').select2();
+
+        $("#maritalStatus").select2({
+            placeholder: "Marital Status"
         });
+
     });
-
-    function fetchSingle(id) {
-        $.get("/api/religion", {"dataId" : id}, function(data, status){
-            if(data.length > 0){
-                var link = " <a href='javascript:void(0)' onclick='changeToAdd()'>New</a>"
-                $("#masterName").html("Edit "+masterName + link);
-                $("#editId").val(data[0].religion_id);
-                $("#action").val("Edit");
-                $("#inputReligionName1").val(data[0].religion_name);
-            }
-        });
-    }
 
     function manageProfile(mId, action) {
         $.post('/api/profile', {matrimony: mId, action: action},  function(data, status){
@@ -159,8 +340,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			}
         })
     }
-    function getUsersList(usersTable) {
-        $.get("/api/users", {"dataId" : "All"}, function(data, status){
+
+    function getUsersList() {
+        // alert()
+        $.post("/api/search", $("#filterForm").serialize(), function(data, status){
             usersTable.clear().draw();
             data.map(function (d,i) {
                 let dropDown = '<div class="dropdown">' +
@@ -179,6 +362,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     d.full_name,
                     d.gender,
                     d.date_of_birth,
+                    d.age,
                     d.email_id,
                     d.mobile_number,
                     d.profile_status,
@@ -189,59 +373,5 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         });
     }
 
-    function addOrUpdate() {
-        let action = $("#action").val();
-        if(action == "Add" || action == "Edit"){
-            let editId = $("#editId").val();
-            let inputReligionName1 = $("#inputReligionName1").val();
-            let postJson = {
-                "action" : action,
-                "editId" : editId,
-                "religionName" : inputReligionName1
-            };
-            $.post("/api/save-religion", postJson, function(data, status){
-                if(data["responseMessage"] == "success"){
-                    $("#messageDisplay").html(
-                        "<div class=\"alert alert-success alert-dismissible\">\n" +
-                        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>\n" +
-                        "<h5><i class=\"icon fas fa-check\"></i> Success!</h5>\n" +
-                        "Submitted successfully\n" +
-                        "</div>"
-                    );
-                    getUsersList(usersTable)
-                } else if(data["responseMessage"] == "exist"){
-                    $("#messageDisplay").html(
-                        "<div class=\"alert alert-danger alert-dismissible\">\n" +
-                        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>\n" +
-                        "<h5><i class=\"icon fas fa-check\"></i> Failure!</h5>\n" +
-                        "Religion already exist" +
-                        "</div>"
-                    );
-                } else if(data["responseMessage"] == "error"){
-                    $("#messageDisplay").html(
-                        "<div class=\"alert alert-danger alert-dismissible\">\n" +
-                        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>\n" +
-                        "<h5><i class=\"icon fas fa-check\"></i> Failure!</h5>\n" +
-                        "Could not perform this delete action." +
-                        "</div>"
-                    );
-                }
-                setTimeout(function () {
-                    $("#messageDisplay").html("");
-                }, 3000)
-            });
-            $("#action").val("Add");
-            $("#editId").val("");
-            $("#inputReligionName1").val("");
-            $("#masterName").html("Add "+masterName);
-        }
-    }
-
-    function changeToAdd() {
-        $("#action").val("Add");
-        $("#editId").val("");
-        $("#inputReligionName1").val("");
-        $("#masterName").html("Add "+masterName);
-    }
 </script>
 

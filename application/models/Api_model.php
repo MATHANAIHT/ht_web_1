@@ -700,19 +700,144 @@ class Api_model extends CI_Model
 		}
 	}
 
+	function checkIsValueFiled($postDataArray, $index){
+		if(array_key_exists($index, $postDataArray) && $postDataArray[$index] != null && $postDataArray[$index] != ""){
+			return true;
+		}
+		return false;
+	}
+
 	function getUsers($postDataArray){
 		$queryStr = "";
-		if(array_key_exists("matrimony_id", $postDataArray) && $postDataArray['matrimony_id'] != null){
+		$searchQuery = "";
+		if(self::checkIsValueFiled($postDataArray, "matrimony_id")){
 			$matrimony_id = $postDataArray['matrimony_id'];
-			if($matrimony_id != null && $matrimony_id != ""){
-				$queryStr = "select *, ue.*, uf.*, up.* from tbl_user u left join tbl_user_login ul on ul.user_id=u.user_id left join tbl_user_education ue on ue.user_id=u.user_id  left join tbl_user_family uf on uf.user_id=u.user_id left join tbl_user_partner up on up.user_id=u.user_id where u.matrimony_id = '".$matrimony_id."'";
-			}
+			$searchQuery = " u.matrimony_id = '".$matrimony_id."' ";
+			$queryStr = "select *, ue.*, uf.*, up.* from tbl_user u left join tbl_user_login ul on ul.user_id=u.user_id left join tbl_user_education ue on ue.user_id=u.user_id  left join tbl_user_family uf on uf.user_id=u.user_id left join tbl_user_partner up on up.user_id=u.user_id ";
 		} else {
 			$queryStr = "select u.matrimony_id, u.user_id, u.full_name, u.date_of_birth, u.last_login, u.created_at, u.gender, u.religion, u.caste, ul.mobile_number, ul.email_id, u.profile_status from tbl_user u left join tbl_user_login ul on ul.user_id=u.user_id";
+		}
+		if($searchQuery != ""){
+			$queryStr .= " where ". $searchQuery;
 		}
 		$query = $this->db->query($queryStr);
 		$row = $query->result();
 		return $row;
+	}
+
+	function searchUser($postDataArray){
+		$queryStr = "";
+		$isAdmin = "YES";
+		$searchQuery1 = "";
+
+		// Basic Search Start :
+		if(self::checkIsValueFiled($postDataArray, "matrimony_id")){
+			$matrimony_id = $postDataArray['matrimony_id'];
+			$searchQuery1 .= "u.matrimony_id = '".$matrimony_id."' or ";
+		}
+		if(self::checkIsValueFiled($postDataArray, "searchByName")){
+			$searchByName = $postDataArray['searchByName'];
+			$searchQuery1 .= "u.full_name like '%".$searchByName."%' or ";
+		}
+		if(self::checkIsValueFiled($postDataArray, "searchByMobile")){
+			$searchByMobile = $postDataArray['searchByMobile'];
+			$searchQuery1 .= "ul.mobile_number like '%".$searchByMobile."%' or ";
+		}
+		if(self::checkIsValueFiled($postDataArray, "searchByEmail")){
+			$searchByEmail = $postDataArray['searchByEmail'];
+			$searchQuery1 .= "ul.email_id like '%".$searchByEmail."%' or ";
+		}
+		if($searchQuery1 != ""){
+			$searchQuery1 = rtrim($searchQuery1, "or ");
+		}
+		// Basic Search End :
+
+		//Advanced Search Start :
+		$searchQuery2 = "";
+		if(self::checkIsValueFiled($postDataArray, "profileStatus")){
+			$profileStatus = $postDataArray['profileStatus'];
+			$searchQuery2 .= "u.profile_status = '".$profileStatus."' and ";
+		}
+		if(self::checkIsValueFiled($postDataArray, "gender")){
+			$gender = $postDataArray['gender'];
+			$searchQuery2 .= "u.gender = '".$gender."' and ";
+		}
+		if(self::checkIsValueFiled($postDataArray, "lastLoginAt")){
+			$lastLoginAt = self::getTimestampCondition($postDataArray['lastLoginAt']);
+			$searchQuery2 .= "u.last_login ".$lastLoginAt." and ";
+		}
+		if(self::checkIsValueFiled($postDataArray, "profileCreatedAt")){
+			$profileCreatedAt = self::getTimestampCondition($postDataArray['profileCreatedAt']);
+			$searchQuery2 .= "u.created_at ".$profileCreatedAt." and ";
+		}
+		if(self::checkIsValueFiled($postDataArray, "fromHeight") && self::checkIsValueFiled($postDataArray, "endHeight")){
+			$fromHeight = $postDataArray['fromHeight'];
+			$endHeight = $postDataArray['endHeight'];
+			$searchQuery2 .= "(u.height between $fromHeight and $endHeight) and ";
+		}
+
+		if($searchQuery2 != ""){
+			$searchQuery2 = rtrim($searchQuery2, "and ");
+		}
+		//Advanced Search Start :
+
+		if($isAdmin == "YES") {
+			$queryStr = "select TIMESTAMPDIFF(YEAR, u.date_of_birth, CURDATE()) AS age, u.matrimony_id, u.user_id, u.full_name, u.date_of_birth, u.last_login, u.created_at, u.gender, u.religion, u.caste, ul.mobile_number, ul.email_id, u.profile_status from tbl_user u left join tbl_user_login ul on ul.user_id=u.user_id";
+		} else {
+			$queryStr = "select TIMESTAMPDIFF(YEAR, u.date_of_birth, CURDATE()) AS age, u.matrimony_id, u.user_id, u.full_name, u.date_of_birth, u.last_login, u.created_at, u.gender, u.religion, u.caste from tbl_user u left join tbl_user_login ul on ul.user_id=u.user_id";
+		}
+
+		if($searchQuery2 != "" && $searchQuery1 != ""){
+			$queryStr .= " where ". $searchQuery1 . " and " . $searchQuery2;
+		} else if($searchQuery2 != ""){
+			$queryStr .= " where ". $searchQuery2;
+		} else if($searchQuery1 != ""){
+			$queryStr .= " where ". $searchQuery1;
+		}
+
+		// For aggregate functions :
+		if(self::checkIsValueFiled($postDataArray, "fromAge") && self::checkIsValueFiled($postDataArray, "endAge")){
+			$fromAge = $postDataArray['fromAge'];
+			$endAge = $postDataArray['endAge'];
+			$queryStr .= " having (age between $fromAge and $endAge) ";
+		}
+//		echo $queryStr;
+//		echo "<br/>";
+		$query = $this->db->query($queryStr);
+		$row = $query->result();
+		return $row;
+	}
+
+	function getTimestampCondition($lastTimeStr) {
+		$date = new DateTime(); // For today/now, don't pass an arg.
+		switch ($lastTimeStr) {
+			case "1Day":
+				$date->modify("-1 day");
+				break;
+			case "1Week":
+				$date->modify('-1 week');
+				break;
+			case "1Month":
+				$date->modify('-1 month');
+				break;
+			case "3Month":
+				$date->modify('-3 month');
+				break;
+			case "6Month":
+				$date->modify('-6 month');
+				break;
+			case "1Year":
+				$date->modify('-1 year');
+				break;
+			case "MoreThan1Year":
+				$date->modify('-1 year');
+				return " <= '".$date->format("Y-m-d")."' ";
+				break;
+			case "NeverLoggedIn":
+				return " is NULL ";
+				break;
+		}
+		return " >= '".$date->format("Y-m-d")."' ";
 	}
 
 	function createUser($postDataArray){
